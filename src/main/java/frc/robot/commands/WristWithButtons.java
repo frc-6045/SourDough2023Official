@@ -27,6 +27,7 @@ public class WristWithButtons extends CommandBase {
   @Override
   public void initialize() {
     wristSubsystem.enable();
+    wristSubsystem.setGoal(1);
   }
 
   // Called every time the scheduler runs while the command is scheduled.

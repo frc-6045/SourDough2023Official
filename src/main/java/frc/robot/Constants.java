@@ -31,8 +31,8 @@ public final class Constants {
     public static final double kWristMotorD = 0.0;
     public static final double kWristMotorMaxVelocity = 0.0;
     public static final double kWristMotorMaxAcceleration = 0.0;
-    public static final double kWristMotorOffset = 0;
-    public static final int kWristMotorPort = 0;
+    public static final int kWristMotorCanId = 0;
+    public static final double kWristOffset = 0;
     //TO BE ANNOUNCED LATER
 
   }

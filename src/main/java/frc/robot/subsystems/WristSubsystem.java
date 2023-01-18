@@ -18,7 +18,7 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
   /** Creates a new WristSubsystem. */
 
   private final CANSparkMax m_WristMotor;
-  private final SparkMaxAbsoluteEncoder m_SparkMaxAbsoluteEncoder;
+  private final SparkMaxAbsoluteEncoder m_WristAbsoluteEncoder;
   private final ArmFeedforward m_WristFeedforward;
 
 
@@ -31,22 +31,25 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
             WristConstants.kWristMotorD,
             // The motion profile constraints
             new TrapezoidProfile.Constraints(WristConstants.kWristMotorMaxVelocity, WristConstants.kWristMotorMaxAcceleration)));
-            m_WristMotor = new CANSparkMax(WristConstants.kWristMotorPort, MotorType.kBrushless);
-            m_SparkMaxAbsoluteEncoder = m_WristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
+            m_WristMotor = new CANSparkMax(WristConstants.kWristMotorCanId, MotorType.kBrushless);
+            m_WristAbsoluteEncoder = m_WristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
             m_WristFeedforward = new ArmFeedforward(0, 0, 0);
-            //not putting position or velocity conversion methods here yet because i dont know what they should be
+            //dont know what the values should be for this
+            m_WristAbsoluteEncoder.setPositionConversionFactor(0);
+            m_WristAbsoluteEncoder.setVelocityConversionFactor(0);
+            setGoal(WristConstants.kWristOffset);
 
   }
 
   @Override
   public void useOutput(double output, TrapezoidProfile.State setpoint) {
-    double feedforward = m_WristFeedforward.calculate(setpoint.position, setpoint.velocity);
+    double feedforward = m_WristFeedforward.calculate(setpoint.position + WristConstants.kWristOffset, setpoint.velocity);
     m_WristMotor.setVoltage(output + feedforward);
   }
 
   @Override
   public double getMeasurement() {
     // Return the process variable measurement here
-    return m_SparkMaxAbsoluteEncoder.getPosition(); // + offset
+    return m_WristAbsoluteEncoder.getPosition() + WristConstants.kWristOffset;
   }
 }

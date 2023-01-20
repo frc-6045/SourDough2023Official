@@ -6,31 +6,44 @@ package frc.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Constants.ArmConstants;
 
 public class ArmIntake extends SubsystemBase {
 
   //Intake motors + the group
-  public final CANSparkMax intakeMotor;
-  public final CANSparkMax intakeMotor2;
+  public final CANSparkMax leftIntakeMotor;
+  public final CANSparkMax rightIntakeMotor;
   public final MotorControllerGroup intakeMotorGroup;
 
-  RelativeEncoder intakeEncoder;
-  RelativeEncoder intakeEncoder2;
+  RelativeEncoder leftIntakeEncoder;
+  RelativeEncoder rightIntakeEncoder;
 
   /** Creates a new ArmIntake. */
-  public ArmIntake(CANSparkMax intakeMotor, CANSparkMax intakeMotor2, MotorControllerGroup intakeMotorGroup) 
+  public ArmIntake() 
   {
-    this.intakeMotor = intakeMotor;
-    this.intakeMotor2 = intakeMotor2;
-    this.intakeMotorGroup = intakeMotorGroup;
-    this.intakeEncoder = intakeMotor.getEncoder();
-    this.intakeEncoder2 = intakeMotor2.getEncoder();
+    leftIntakeMotor = new CANSparkMax(ArmConstants.leftIntakeMotorCANID, MotorType.kBrushless);
+    rightIntakeMotor = new CANSparkMax(ArmConstants.rightIntakeMotorCANID, MotorType.kBrushless);
+    leftIntakeMotor.restoreFactoryDefaults();
+    rightIntakeMotor.restoreFactoryDefaults();
+    rightIntakeMotor.setInverted(true);
+
+    
+    intakeMotorGroup = new MotorControllerGroup(leftIntakeMotor, rightIntakeMotor);
+
+    leftIntakeEncoder = leftIntakeMotor.getEncoder();
+    rightIntakeEncoder = rightIntakeMotor.getEncoder();
+
+    leftIntakeEncoder.setPosition(0);
+    rightIntakeEncoder.setPosition(0);
+    rightIntakeEncoder.setInverted(true);
+    
   }
 
-
+  
 
   @Override
   public void periodic() {

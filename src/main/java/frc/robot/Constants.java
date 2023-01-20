@@ -26,13 +26,16 @@ import edu.wpi.first.math.util.Units;
 public final class Constants {
   public static final class WristConstants {
     //TO BE ANNOUNCED LATER 
-    public static final double kWristMotorP = 0.0;
+    //PLEASE KEEP IN MIND I AM A COMPLETE AND TOTAL IDIOTIC FRAUD 
+    public static final double kWristMotorP = 0.0; 
     public static final double kWristMotorI = 0.0;
     public static final double kWristMotorD = 0.0;
     public static final double kWristMotorMaxVelocity = 0.0;
     public static final double kWristMotorMaxAcceleration = 0.0;
+    public static final double kWristEncoderPositionFactor = (Math.PI * 2); //radians
+    public static final double kWristEncoderVelocityFactor = (Math.PI * 2) / 60.0; //radians per second | note: less sure on this one, stealing it from kTurningEncoderVelocityFactor |
     public static final int kWristMotorCanId = 0;
-    public static final double kWristOffset = 0;
+    public static final double kWristOffset = 0; //in radians
     //TO BE ANNOUNCED LATER
 
   }

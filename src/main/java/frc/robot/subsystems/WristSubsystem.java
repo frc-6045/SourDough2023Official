@@ -31,13 +31,17 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
             WristConstants.kWristMotorD,
             // The motion profile constraints
             new TrapezoidProfile.Constraints(WristConstants.kWristMotorMaxVelocity, WristConstants.kWristMotorMaxAcceleration)));
+            
             m_WristMotor = new CANSparkMax(WristConstants.kWristMotorCanId, MotorType.kBrushless);
+            m_WristMotor.restoreFactoryDefaults();
             m_WristAbsoluteEncoder = m_WristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
             m_WristFeedforward = new ArmFeedforward(0, 0, 0);
             //dont know what the values should be for this
-            m_WristAbsoluteEncoder.setPositionConversionFactor(0);
-            m_WristAbsoluteEncoder.setVelocityConversionFactor(0);
+            m_WristAbsoluteEncoder.setPositionConversionFactor(WristConstants.kWristEncoderPositionFactor);
+            m_WristAbsoluteEncoder.setVelocityConversionFactor(WristConstants.kWristEncoderVelocityFactor);
             setGoal(WristConstants.kWristOffset);
+            
+           
 
   }
 
@@ -50,6 +54,7 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
   @Override
   public double getMeasurement() {
     // Return the process variable measurement here
+  
     return m_WristAbsoluteEncoder.getPosition() + WristConstants.kWristOffset;
   }
 }

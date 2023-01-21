@@ -37,6 +37,13 @@ public final class Constants {
     public static final int kWristMotorCanId = 0;
     public static final double kWristOffset = 0; //in radians
     //TO BE ANNOUNCED LATER
+    //goals for the wrist to go to, in radians.
+    public static final double kWristState1 = 0.0;
+    public static final double kWristState2 = 1.0;
+    public static final double kWristState3 = -1.0;
+    public static final double kWristState4 = 2.0;
+    public static final double kWristState5 = -2.0;
+
 
   }
   public static final class DriveConstants {

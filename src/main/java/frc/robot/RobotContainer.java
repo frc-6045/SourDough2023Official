@@ -18,10 +18,11 @@ import edu.wpi.first.wpilibj.PS4Controller.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
-import frc.robot.commands.WristWithButtons;
+import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
@@ -58,6 +59,10 @@ public class RobotContainer {
                 MathUtil.applyDeadband(-m_driverController.getRightX(), 0.15),
                 true),
             m_robotDrive));
+    m_WristSubsystem.setDefaultCommand(Commands.runOnce(() -> {
+      m_WristSubsystem.setGoal(WristConstants.kWristOffset);
+      m_WristSubsystem.enable();
+    }, m_WristSubsystem));
   }
 
   /**
@@ -74,7 +79,46 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
+
+  //A
+new JoystickButton(m_driverController, Button.kCross.value).onTrue(Commands.runOnce(() -> {
+  m_WristSubsystem.setGoal(WristConstants.kWristState1);
+  m_WristSubsystem.enable();
+}, m_WristSubsystem));
+  //B
+new JoystickButton(m_driverController, Button.kCircle.value).onTrue(Commands.runOnce(() -> {
+  m_WristSubsystem.setGoal(WristConstants.kWristState2);
+  m_WristSubsystem.enable();
+}, m_WristSubsystem)); 
+//X
+new JoystickButton(m_driverController, Button.kSquare.value).onTrue(Commands.runOnce(() -> {
+  m_WristSubsystem.setGoal(WristConstants.kWristState3);
+  m_WristSubsystem.enable();
+}, m_WristSubsystem));
+//Y
+new JoystickButton(m_driverController, Button.kTriangle.value).onTrue(Commands.runOnce(() -> {
+  m_WristSubsystem.setGoal(WristConstants.kWristState4);
+  m_WristSubsystem.enable();
+}, m_WristSubsystem));
+
+
+boolean enableVariableOutput = false;
+//uggggghhhhhh this will not work for some reason i do not know
+//new JoystickButton(m_driverController, Button.kOptions.value).onTrue(Commands.runOnce(() -> { enableVariableOutput = !enableVariableOutput; }, m_WristSubsystem));
+
+new JoystickButton(m_driverController, Button.kR2.value).onTrue(Commands.runOnce(() -> {
+  if(enableVariableOutput){
+    m_WristSubsystem.goUp();
   }
+}, m_WristSubsystem));
+new JoystickButton(m_driverController, Button.kL2.value).onTrue(Commands.runOnce(() -> {
+  if(enableVariableOutput){
+    m_WristSubsystem.goDown();
+  }
+}, m_WristSubsystem));
+
+}
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -121,7 +165,12 @@ public class RobotContainer {
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
   }
-
+  //may need 
+  /* 
+  public double changeWristGoal(double amountChange, ){    
+    return amountChange += amountChange;
+  }
+  */
   public DriveSubsystem getDriveSubsystem()
   {
     return m_robotDrive;

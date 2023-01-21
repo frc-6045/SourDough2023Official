@@ -39,10 +39,6 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
             //dont know what the values should be for this
             m_WristAbsoluteEncoder.setPositionConversionFactor(WristConstants.kWristEncoderPositionFactor);
             m_WristAbsoluteEncoder.setVelocityConversionFactor(WristConstants.kWristEncoderVelocityFactor);
-            setGoal(WristConstants.kWristOffset);
-            
-           
-
   }
 
   @Override
@@ -54,7 +50,16 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
   @Override
   public double getMeasurement() {
     // Return the process variable measurement here
-  
     return m_WristAbsoluteEncoder.getPosition() + WristConstants.kWristOffset;
+  }
+  public void goUp(){
+    disable();
+    m_WristMotor.set(0.25);
+    setGoal(m_WristAbsoluteEncoder.getPosition());
+    enable();
+  }
+  public void goDown(){
+    disable();
+    m_WristMotor.set(-0.25);
   }
 }

@@ -130,8 +130,15 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
+public static final class ArmConstants{
+  public static final int leftIntakeMotorCANID = 0;
+  public static final int rightIntakeMotorCANID = 0;
+  
+}
+}
+
 
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
-}
+

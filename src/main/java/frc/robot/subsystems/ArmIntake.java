@@ -29,6 +29,7 @@ public class ArmIntake extends SubsystemBase {
 
     intakeMotor1.restoreFactoryDefaults();
     intakeMotor2.restoreFactoryDefaults();
+    intakeMotor2.setInverted(true);
 
   }
 

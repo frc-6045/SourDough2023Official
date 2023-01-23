@@ -27,8 +27,14 @@ public final class Constants {
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
+    
+    //Slew Constants
     public static final double kMaxSpeedMetersPerSecond = 4.8;
+    public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
+    public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = //
+    kMaxAngularSpeed / 4;
+public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26.5);
@@ -139,5 +145,18 @@ public final class Constants {
   {
     public static final int leftIntakeMotorCanId = 30;
     public static final int rightIntakeMotorCanId = 31;
+  }
+
+  public static final class ArmCostants
+  {
+    public static final int armMotorCANID = 40;
+    public static final double maxAmperageOnArm = 60;
+  }
+
+  public static final class WristConstants
+  {
+
+    public static final int WristMotorCANID = 51;
+
   }
 }

@@ -15,6 +15,8 @@ import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
@@ -24,10 +26,25 @@ import frc.robot.subsystems.ArmIntake;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPoint;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.commands.FollowPathWithEvents;
+import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -41,6 +58,8 @@ public class RobotContainer {
   private final ArmIntake m_armIntake = new ArmIntake();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+
+  SendableChooser<String> autoChooser = new SendableChooser<>();
 
 
 
@@ -63,6 +82,36 @@ public class RobotContainer {
                 MathUtil.applyDeadband(-m_driverController.getRightX(), 0.15),
                 true),
             m_robotDrive));
+
+            autoChooser.setDefaultOption("Drive Forwards", "Drive Forwards");
+
+            try {
+
+              
+              // Create a file object
+              File f = new File("./src/main/deploy/pathplanner");
+      
+              // Get all the names of the files present
+              // in the given directory
+              File[] files = f.listFiles();
+              System.out.println("Files are:");
+              // Display the names of the files
+              for (int i = 0; i < files.length; i++) {
+                  String file_name = files[i].getName();
+                  String file_extention = file_name.substring(file_name.length() - 5, file_name.length());
+                  String path_name = file_name.substring(0, file_name.length() - 5);
+                  if (file_extention.equals(".path")){
+                    autoChooser.addOption(path_name, path_name);
+                  }
+              }
+          }
+          catch (Exception e) {
+              System.err.println(e.getMessage());
+          }
+          //temporary stand in to make it show up.
+          autoChooser.addOption("ThePath", "ThePath");
+
+          SmartDashboard.putData("Autonomous routine", autoChooser);
   }
 
   /**
@@ -95,6 +144,59 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+
+    String autoName = autoChooser.getSelected();
+    PathPlannerTrajectory examplePath;
+    examplePath = PathPlanner.loadPath(autoName, new PathConstraints(4, 3));
+    
+    // If the path you gave is not in the list, drive forward  
+    if (examplePath == null) {
+      examplePath = PathPlanner.generatePath(
+        new PathConstraints(4, 3), 
+        new PathPoint(new Translation2d(1.0, 3.0), Rotation2d.fromDegrees(0)), // position, heading
+        new PathPoint(new Translation2d(3.0, 3.0), Rotation2d.fromDegrees(0)) // position, heading
+    );
+    }
+    // Prints for running in simulation, you can comment these our if you want 
+    System.out.print("========== Starting Auto ==========\n");
+    System.out.print("Path: " + autoName + "\n");
+    System.out.print("\n\n");
+
+    examplePath = PathPlanner.loadPath("Example Path", new PathConstraints(4, 3));
+
+
+    HashMap<String, Command> eventMap = new HashMap<>();
+    eventMap.put("marker1", new PrintCommand("Passed marker 1"));
+    eventMap.put("intakeDown", new PrintCommand("intakeDown"));
+
+    m_robotDrive.resetOdometry(examplePath.getInitialPose());
+
+    SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+      m_robotDrive::getPose, 
+      m_robotDrive::resetOdometry,
+      DriveConstants.kDriveKinematics,
+      new PIDConstants(5.0, 0.0 ,0.0),
+      new PIDConstants(0.5, 0.0, 0.0),
+      m_robotDrive::setModuleStates,
+      eventMap,
+      true,
+      m_robotDrive);
+
+      Command fullAuto = autoBuilder.fullAuto(examplePath);
+
+      return fullAuto.andThen(m_robotDrive::setX);
+
+// This is just an example event map. It would be better to have a constant, global event map
+// in your code that will be used by all path following commands.
+
+
+
+
+
+
+
+/* 
+
     // Create config for trajectory
     TrajectoryConfig config = new TrajectoryConfig(
         AutoConstants.kMaxSpeedMetersPerSecond,
@@ -138,10 +240,14 @@ public class RobotContainer {
 
     //changed to true for the field odometrey instead of default false. 
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, true));
+    */
   }
 
-  public DriveSubsystem getDriveSubsystem()
-  {
-    return m_robotDrive;
-  }
+
+
+
+  // public DriveSubsystem getDriveSubsystem()
+  // {
+  //   return m_robotDrive;
+  // }
 }

@@ -135,10 +135,11 @@ public static final class ArmConstants{
   public static final int rightIntakeMotorCANID = 0;
   
 }
+public static final class NeoMotorConstants {
+  public static final double kFreeSpeedRpm = 5676;
+}
 }
 
 
-  public static final class NeoMotorConstants {
-    public static final double kFreeSpeedRpm = 5676;
-  }
+  
 

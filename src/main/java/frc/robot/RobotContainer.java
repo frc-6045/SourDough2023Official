@@ -21,6 +21,7 @@ import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.WristSubsystem;
+import frc.robot.subsystems.WristSubsystemSmartMotion;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -38,6 +39,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final WristSubsystem m_WristSubsystem = new WristSubsystem();
+  private final WristSubsystemSmartMotion m_WristSubsystemSmartMotion = new WristSubsystemSmartMotion();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
@@ -59,10 +61,17 @@ public class RobotContainer {
                 MathUtil.applyDeadband(-m_driverController.getRightX(), 0.15),
                 true),
             m_robotDrive));
+
     m_WristSubsystem.setDefaultCommand(Commands.runOnce(() -> {
       m_WristSubsystem.setGoal(WristConstants.kWristOffset);
       m_WristSubsystem.enable();
     }, m_WristSubsystem));
+
+
+    m_WristSubsystemSmartMotion.setDefaultCommand(Commands.runOnce(() -> {
+      m_WristSubsystemSmartMotion.setMode(true);
+      m_WristSubsystemSmartMotion.setSetpoint(0.0);
+    }, m_WristSubsystemSmartMotion));
   }
 
   /**
@@ -79,7 +88,8 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
-
+//Wrist Subsystem Commands
+/* 
   //A
 new JoystickButton(m_driverController, Button.kCross.value).onTrue(Commands.runOnce(() -> {
   m_WristSubsystem.setGoal(WristConstants.kWristState1);
@@ -116,6 +126,28 @@ new JoystickButton(m_driverController, Button.kL2.value).onTrue(Commands.runOnce
     m_WristSubsystem.goDown();
   }
 }, m_WristSubsystem));
+*/
+  //WristSubsystemSmartMotion Commands (to be chosen)
+new JoystickButton(m_driverController, Button.kCross.value).onTrue(Commands.runOnce(() -> {
+  m_WristSubsystemSmartMotion.setMode(true);
+  m_WristSubsystemSmartMotion.setSetpoint(1.0);
+}, m_WristSubsystemSmartMotion));
+new JoystickButton(m_driverController, Button.kCircle.value).onTrue(Commands.runOnce(() -> {
+  m_WristSubsystemSmartMotion.setMode(true);
+  m_WristSubsystemSmartMotion.setSetpoint(2.0);
+}, m_WristSubsystemSmartMotion));
+new JoystickButton(m_driverController, Button.kSquare.value).onTrue(Commands.runOnce(() -> {
+  m_WristSubsystemSmartMotion.setMode(true);
+  m_WristSubsystemSmartMotion.setSetpoint(-1.0);
+}, m_WristSubsystemSmartMotion));
+new JoystickButton(m_driverController, Button.kTriangle.value).onTrue(Commands.runOnce(() -> {
+  m_WristSubsystemSmartMotion.setMode(true);
+  m_WristSubsystemSmartMotion.setSetpoint(-2.0);
+}, m_WristSubsystemSmartMotion));
+
+
+
+
 
 }
   

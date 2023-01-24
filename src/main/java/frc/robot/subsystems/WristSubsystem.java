@@ -39,6 +39,7 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
             //dont know what the values should be for this
             m_WristAbsoluteEncoder.setPositionConversionFactor(WristConstants.kWristEncoderPositionFactor);
             m_WristAbsoluteEncoder.setVelocityConversionFactor(WristConstants.kWristEncoderVelocityFactor);
+            
   }
 
   @Override

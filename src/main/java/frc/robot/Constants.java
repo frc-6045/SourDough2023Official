@@ -36,6 +36,8 @@ public final class Constants {
     public static final double kWristEncoderVelocityFactor = (Math.PI * 2) / 60.0; //radians per second | note: less sure on this one, stealing it from kTurningEncoderVelocityFactor |
     public static final int kWristMotorCanId = 0;
     public static final double kWristOffset = 0; //in radians
+    public static final double kWristMinOutput = 0;
+    public static final double kWristMaxOutput = 0;
     //TO BE ANNOUNCED LATER
     //goals for the wrist to go to, in radians.
     public static final double kWristState1 = 0.0;

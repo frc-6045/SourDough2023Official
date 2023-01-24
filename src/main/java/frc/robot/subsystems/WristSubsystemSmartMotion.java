@@ -33,7 +33,7 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
     m_WristController.setD(WristConstants.kWristMotorD);
     m_WristController.setIZone(0);
     m_WristController.setFF(0); //feedfoward constant??
-    m_WristController.setOutputRange(0, 0); //max and min in rpm
+    m_WristController.setOutputRange(WristConstants.kWristMinOutput, WristConstants.kWristMaxOutput); //max and min in rpm
 
     int smartMotionSlot = 0;
     m_WristController.setSmartMotionMaxVelocity(0, smartMotionSlot);
@@ -67,5 +67,11 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
   }
   public void setMode(boolean mode){
     this.mode = mode;
+  }
+  public double getMinValue(){
+    return WristConstants.kWristMinOutput;
+  }
+  public double getDifference(){
+    return WristConstants.kWristMaxOutput - WristConstants.kWristMinOutput;
   }
 }

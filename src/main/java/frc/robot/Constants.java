@@ -131,6 +131,13 @@ public final class Constants {
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
   }
 
+    public static final class ArmConstants
+    {
+      public static final int leftIntakeMotorCANID = 0;
+      public static final int rightIntakeMotorCANID = 0;
+      public static final double armIntakeMotorSpeed = 2.5;
+    }
+
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }

@@ -31,7 +31,7 @@ public class ArmIntake extends SubsystemBase {
     rightIntakeMotor.restoreFactoryDefaults();
     rightIntakeMotor.setInverted(true);
 
-    
+
     intakeMotorGroup = new MotorControllerGroup(leftIntakeMotor, rightIntakeMotor);
 
     leftIntakeEncoder = leftIntakeMotor.getEncoder();
@@ -40,7 +40,7 @@ public class ArmIntake extends SubsystemBase {
     leftIntakeEncoder.setPosition(0);
     rightIntakeEncoder.setPosition(0);
     rightIntakeEncoder.setInverted(true);
-    
+
   }
 
   

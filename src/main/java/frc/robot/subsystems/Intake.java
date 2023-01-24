@@ -7,6 +7,7 @@ import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxLimitSwitch;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
+import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.motorcontrol.MotorController;
 import edu.wpi.first.wpilibj.motorcontrol.MotorControllerGroup;
 import edu.wpi.first.wpilibj.motorcontrol.Spark;
@@ -22,11 +23,11 @@ public class Intake extends SubsystemBase{
   public final CANSparkMax leftIntakeMotor;
   public final CANSparkMax rightIntakeMotor;
   public final MotorControllerGroup intakeMotorGroup;
-s
+
  RelativeEncoder leftIntakeEncoder;
  RelativeEncoder rightIntakeEncoder;
 private int position;
-
+private double speed;
 public Intake()
 {
     leftIntakeMotor = new CANSparkMax(ArmConstants.leftIntakeMotorCANID, MotorType.kBrushless);
@@ -49,9 +50,16 @@ intakeMotorGroup = new MotorControllerGroup(leftIntakeMotor, rightIntakeMotor);
 
 
 leftIntakeEncoder.setPosition(0);
-rightIntakeEncoder.setInverted(false);
+rightIntakeEncoder.setPosition(0);
+leftIntakeMotor.setInverted(true);
+} 
 
-}
+
+    public void setSpeed(double speed)
+    {
+        leftIntakeMotor.set(speed);
+        rightIntakeMotor.set(speed);
+    }
 
 
     @Override 

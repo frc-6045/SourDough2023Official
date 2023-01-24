@@ -44,7 +44,7 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
     m_WristController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
     m_WristController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
     m_WristController.setSmartMotionMaxAccel(maxAccel, smartMotionSlot);
-    m_WristController.setSmartMotionAllowedClosedLoopError(.5, smartMotionSlot);
+    m_WristController.setSmartMotionAllowedClosedLoopError(0, smartMotionSlot);
 
 
 

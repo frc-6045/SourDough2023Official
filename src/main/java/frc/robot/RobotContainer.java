@@ -136,7 +136,7 @@ new JoystickButton(m_driverController, Button.kCross.value).onTrue(Commands.runO
   //B
 new JoystickButton(m_driverController, Button.kCircle.value).onTrue(Commands.runOnce(() -> {
   m_WristSubsystemSmartMotion.setMode(true);
-  m_WristSubsystemSmartMotion.setSetpoint(2.0);
+  m_WristSubsystemSmartMotion.setSetpoint(.5);
 }, m_WristSubsystemSmartMotion));
 //X
 new JoystickButton(m_driverController, Button.kSquare.value).onTrue(Commands.runOnce(() -> {
@@ -146,7 +146,7 @@ new JoystickButton(m_driverController, Button.kSquare.value).onTrue(Commands.run
 //Y
 new JoystickButton(m_driverController, Button.kTriangle.value).onTrue(Commands.runOnce(() -> {
   m_WristSubsystemSmartMotion.setMode(true);
-  m_WristSubsystemSmartMotion.setSetpoint(-2.0);
+  m_WristSubsystemSmartMotion.setSetpoint(-.5);
 }, m_WristSubsystemSmartMotion));
 //Start
 new JoystickButton(m_driverController, Button.kOptions.value).onTrue(Commands.runOnce(() -> {
@@ -161,15 +161,18 @@ new JoystickButton(m_driverController, Button.kR2.value).whileTrue(new RunComman
   m_WristSubsystemSmartMotion.setMode(false);
   m_WristSubsystemSmartMotion.setSetpoint(Axis * m_WristSubsystemSmartMotion.getMaxVelocity());
 }, m_WristSubsystemSmartMotion));
+
 new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new RunCommand(() -> {
   double Axis = m_driverController.getLeftTriggerAxis();
   m_WristSubsystemSmartMotion.setMode(false);
   m_WristSubsystemSmartMotion.setSetpoint(-Axis * m_WristSubsystemSmartMotion.getMaxVelocity());
 }, m_WristSubsystemSmartMotion));
+
 new JoystickButton(m_driverController, Button.kL2.value).onFalse(Commands.runOnce(() -> {
   m_WristSubsystemSmartMotion.setMode(true);
   m_WristSubsystemSmartMotion.setSetpoint(m_WristSubsystemSmartMotion.getProccessVar());
 }, m_WristSubsystemSmartMotion));
+
 new JoystickButton(m_driverController, Button.kR2.value).onFalse(Commands.runOnce(() -> {
   m_WristSubsystemSmartMotion.setMode(true);
   m_WristSubsystemSmartMotion.setSetpoint(m_WristSubsystemSmartMotion.getProccessVar());

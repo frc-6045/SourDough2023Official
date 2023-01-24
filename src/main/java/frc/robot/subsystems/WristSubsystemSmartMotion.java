@@ -11,16 +11,21 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.WristConstants;
-//testing wrist with smart motion support (see: https://github.com/REVrobotics/SPARK-MAX-Examples/tree/master/Java)
+//testing wrist with smart motion support (see: https://github.com/REVrobotics/SPARK-MAX-Examples/tree/master/Java/Smart%20Motion%20Example)
 public class WristSubsystemSmartMotion extends SubsystemBase {
   /** Creates a new WristSubsystem2. */
   private final CANSparkMax m_WristMotor;
   private final SparkMaxPIDController m_WristController;
-  private final SparkMaxAbsoluteEncoder m_WristEncoder; //why
+  private final SparkMaxAbsoluteEncoder m_WristEncoder;
   private double setpoint = 0.0;
   private boolean mode = true; 
-  
+  private double processVar = 0;
 
+  //using values from the example
+  private double maxRPM = 5700;
+  private double maxVel = 2000;
+  private double minVel = 0;
+  private double maxAccel = 1500;
   public WristSubsystemSmartMotion() {
     m_WristMotor = new CANSparkMax(WristConstants.kWristMotorCanId, MotorType.kBrushless);
     m_WristMotor.restoreFactoryDefaults();
@@ -34,12 +39,12 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
     m_WristController.setIZone(0);
     m_WristController.setFF(0); //feedfoward constant??
     m_WristController.setOutputRange(WristConstants.kWristMinOutput, WristConstants.kWristMaxOutput); //max and min in rpm
-
+    
     int smartMotionSlot = 0;
-    m_WristController.setSmartMotionMaxVelocity(0, smartMotionSlot);
-    m_WristController.setSmartMotionMinOutputVelocity(0, smartMotionSlot);
-    m_WristController.setSmartMotionMaxAccel(0, smartMotionSlot);
-    m_WristController.setSmartMotionAllowedClosedLoopError(0, smartMotionSlot);
+    m_WristController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
+    m_WristController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
+    m_WristController.setSmartMotionMaxAccel(maxAccel, smartMotionSlot);
+    m_WristController.setSmartMotionAllowedClosedLoopError(.5, smartMotionSlot);
 
 
 
@@ -49,9 +54,11 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
   public void periodic() {
     if(mode){
       m_WristController.setReference(setpoint, CANSparkMax.ControlType.kSmartMotion);
+      processVar = m_WristEncoder.getPosition();
       //may want to add proccess variable and output to dashboard as seen in smart motion example later
     } else {
       m_WristController.setReference(setpoint, CANSparkMax.ControlType.kVelocity);
+      processVar = m_WristEncoder.getVelocity();
     }
   }
 
@@ -71,7 +78,10 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
   public double getMinValue(){
     return WristConstants.kWristMinOutput;
   }
-  public double getDifference(){
-    return WristConstants.kWristMaxOutput - WristConstants.kWristMinOutput;
+  public double getMaxVelocity(){
+    return maxVel;
+  }
+  public double getProccessVar(){
+    return processVar;
   }
 }

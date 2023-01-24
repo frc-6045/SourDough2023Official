@@ -155,23 +155,24 @@ new JoystickButton(m_driverController, Button.kOptions.value).onTrue(Commands.ru
 }));
 
 //Triggers control velocity up and down
+//not certain about functionality
 new JoystickButton(m_driverController, Button.kR2.value).whileTrue(new RunCommand(() -> {
   double Axis = m_driverController.getRightTriggerAxis();
   m_WristSubsystemSmartMotion.setMode(false);
-  m_WristSubsystemSmartMotion.setSetpoint(Axis);
+  m_WristSubsystemSmartMotion.setSetpoint(Axis * m_WristSubsystemSmartMotion.getMaxVelocity());
 }, m_WristSubsystemSmartMotion));
 new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new RunCommand(() -> {
   double Axis = m_driverController.getLeftTriggerAxis();
   m_WristSubsystemSmartMotion.setMode(false);
-  m_WristSubsystemSmartMotion.setSetpoint(-Axis);
+  m_WristSubsystemSmartMotion.setSetpoint(-Axis * m_WristSubsystemSmartMotion.getMaxVelocity());
 }, m_WristSubsystemSmartMotion));
 new JoystickButton(m_driverController, Button.kL2.value).onFalse(Commands.runOnce(() -> {
   m_WristSubsystemSmartMotion.setMode(true);
-  m_WristSubsystemSmartMotion.setSetpoint(0.0);
+  m_WristSubsystemSmartMotion.setSetpoint(m_WristSubsystemSmartMotion.getProccessVar());
 }, m_WristSubsystemSmartMotion));
 new JoystickButton(m_driverController, Button.kR2.value).onFalse(Commands.runOnce(() -> {
   m_WristSubsystemSmartMotion.setMode(true);
-  m_WristSubsystemSmartMotion.setSetpoint(0.0);
+  m_WristSubsystemSmartMotion.setSetpoint(m_WristSubsystemSmartMotion.getProccessVar());
 }, m_WristSubsystemSmartMotion));
 
 

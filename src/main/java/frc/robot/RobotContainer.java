@@ -110,8 +110,12 @@ public class RobotContainer {
           }
           //temporary stand in to make it show up.
           autoChooser.addOption("ThePath", "ThePath");
+          autoChooser.addOption("TheOG", "TheOG");
+          autoChooser.addOption("3 meters", "3 meters");
 
           SmartDashboard.putData("Autonomous routine", autoChooser);
+          
+         
   }
 
   /**
@@ -149,7 +153,7 @@ public class RobotContainer {
     PathPlannerTrajectory examplePath;
     examplePath = PathPlanner.loadPath(autoName, new PathConstraints(4, 3));
     
-    // If the path you gave is not in the list, drive forward  
+    //If the path you gave is not in the list, drive forward  
     if (examplePath == null) {
       examplePath = PathPlanner.generatePath(
         new PathConstraints(4, 3), 
@@ -157,12 +161,15 @@ public class RobotContainer {
         new PathPoint(new Translation2d(3.0, 3.0), Rotation2d.fromDegrees(0)) // position, heading
     );
     }
+
+
+
     // Prints for running in simulation, you can comment these our if you want 
     System.out.print("========== Starting Auto ==========\n");
     System.out.print("Path: " + autoName + "\n");
     System.out.print("\n\n");
 
-    examplePath = PathPlanner.loadPath("Example Path", new PathConstraints(4, 3));
+   // examplePath = PathPlanner.loadPath("Example Path", new PathConstraints(4, 3));
 
 
     HashMap<String, Command> eventMap = new HashMap<>();
@@ -175,8 +182,8 @@ public class RobotContainer {
       m_robotDrive::getPose, 
       m_robotDrive::resetOdometry,
       DriveConstants.kDriveKinematics,
-      new PIDConstants(5.0, 0.0 ,0.0),
-      new PIDConstants(0.5, 0.0, 0.0),
+      new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
+      new PIDConstants(1.2, 0.0, 0),
       m_robotDrive::setModuleStates,
       eventMap,
       true,

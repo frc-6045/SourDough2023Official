@@ -200,6 +200,15 @@ public class DriveSubsystem extends SubsystemBase {
     return maxArray;
   }
 
+  public double getAverageDistanceMeters()
+  {
+      return (m_frontLeft.getEncoderCounts() + 
+      m_frontRight.getEncoderCounts() + 
+      m_rearLeft.getEncoderCounts() + 
+      m_rearRight.getEncoderCounts()
+      ) / 4;
+  }
+
 
 
   

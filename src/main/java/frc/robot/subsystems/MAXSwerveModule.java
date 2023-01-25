@@ -167,6 +167,11 @@ public class MAXSwerveModule {
     return m_turningEncoder.getZeroOffset();
   }
 
+  public double getEncoderCounts()
+  {
+    return m_drivingEncoder.getPositionConversionFactor() * m_drivingEncoder.getPosition();
+  }
+
 
 
 

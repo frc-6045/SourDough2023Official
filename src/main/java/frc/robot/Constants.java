@@ -147,16 +147,28 @@ public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
     public static final int rightIntakeMotorCanId = 31;
   }
 
-  public static final class ArmCostants
+  public static final class ArmConstants
   {
     public static final int armMotorCANID = 40;
     public static final double maxAmperageOnArm = 60;
+    public static final int kArmMotorCanId = 0;
+    public static final double kArmMotorP = 0;
+    public static final double kArmMotorI = 0;
+    public static final double kArmMotorD = 0;
+    public static final double kArmMinOutput = 0;
+    public static final double kArmMaxOutput = 0;
   }
 
   public static final class WristConstants
   {
 
     public static final int WristMotorCANID = 51;
+    public static final double kWristMotorP = 0;
+    public static final double kWristMotorI = 0;
+    public static final double kWristMotorD = 0;
+    public static final double kWristMinOutput = 0;
+    public static final double kWristMaxOutput = 0;
+    public static final int kWristMotorCanId = 0;
 
   }
 }

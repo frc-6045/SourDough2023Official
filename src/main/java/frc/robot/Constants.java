@@ -34,7 +34,7 @@ public final class Constants {
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
     public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = //
     kMaxAngularSpeed / 4;
-public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 1;
+public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26);

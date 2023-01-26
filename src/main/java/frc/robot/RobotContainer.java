@@ -38,7 +38,6 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final WristSubsystem m_WristSubsystem = new WristSubsystem();
   private final WristSubsystemSmartMotion m_WristSubsystemSmartMotion = new WristSubsystemSmartMotion();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -61,18 +60,8 @@ public class RobotContainer {
                 MathUtil.applyDeadband(-m_driverController.getRightX(), 0.15),
                 true),
             m_robotDrive));
-
-    m_WristSubsystem.setDefaultCommand(Commands.runOnce(() -> {
-      m_WristSubsystem.setGoal(WristConstants.kWristOffset);
-      m_WristSubsystem.enable();
-    }, m_WristSubsystem));
-
-
-    m_WristSubsystemSmartMotion.setDefaultCommand(Commands.runOnce(() -> {
-      m_WristSubsystemSmartMotion.setMode(true);
-      m_WristSubsystemSmartMotion.setSetpoint(0.0);
-    }, m_WristSubsystemSmartMotion));
   }
+
 
   /**
    * Use this method to define your button->command mappings. Buttons can be
@@ -88,7 +77,7 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
-//Wrist Subsystem Commands
+//Base NO SMART MOTION Wrist Subsystem Commands
 /* 
   //A
 new JoystickButton(m_driverController, Button.kCross.value).onTrue(Commands.runOnce(() -> {
@@ -157,13 +146,16 @@ new JoystickButton(m_driverController, Button.kOptions.value).onTrue(Commands.ru
 //Triggers control velocity up and down
 //not certain about functionality
 new JoystickButton(m_driverController, Button.kR2.value).whileTrue(new RunCommand(() -> {
+
   double Axis = m_driverController.getRightTriggerAxis();
   m_WristSubsystemSmartMotion.setMode(false);
   m_WristSubsystemSmartMotion.setSetpoint(Axis * m_WristSubsystemSmartMotion.getMaxVelocity());
 }, m_WristSubsystemSmartMotion));
 
 new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new RunCommand(() -> {
+
   double Axis = m_driverController.getLeftTriggerAxis();
+
   m_WristSubsystemSmartMotion.setMode(false);
   m_WristSubsystemSmartMotion.setSetpoint(-Axis * m_WristSubsystemSmartMotion.getMaxVelocity());
 }, m_WristSubsystemSmartMotion));
@@ -228,12 +220,6 @@ new JoystickButton(m_driverController, Button.kR2.value).onFalse(Commands.runOnc
     // Run path following command, then stop at the end.
     return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
   }
-  //may need 
-  /* 
-  public double changeWristGoal(double amountChange, ){    
-    return amountChange += amountChange;
-  }
-  */
   public DriveSubsystem getDriveSubsystem()
   {
     return m_robotDrive;

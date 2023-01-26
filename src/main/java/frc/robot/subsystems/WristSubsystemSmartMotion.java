@@ -38,16 +38,17 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
     m_WristController.setD(WristConstants.kWristMotorD);
     m_WristController.setIZone(0);
     m_WristController.setFF(0); //feedfoward constant??
-    m_WristController.setOutputRange(WristConstants.kWristMinOutput, WristConstants.kWristMaxOutput); //max and min in rpm
+    m_WristController.setOutputRange(WristConstants.kWristMinOutput, WristConstants.kWristMaxOutput); 
     
     int smartMotionSlot = 0;
     m_WristController.setSmartMotionMaxVelocity(maxVel, smartMotionSlot);
     m_WristController.setSmartMotionMinOutputVelocity(minVel, smartMotionSlot);
     m_WristController.setSmartMotionMaxAccel(maxAccel, smartMotionSlot);
     m_WristController.setSmartMotionAllowedClosedLoopError(0, smartMotionSlot);
+    m_WristController.setReference(setpoint, CANSparkMax.ControlType.kSmartMotion);
 
-
-
+  //smart motion is rotations (rad)      
+  //velocity should be RPM
   }
 
   @Override

@@ -14,10 +14,8 @@ import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.ArmConstants;
 
-/*spark max motor controler  
-dont to create motor objects
-encoders
-*/
+
+
 public class Intake extends SubsystemBase{
  
   public final CANSparkMax leftIntakeMotor;

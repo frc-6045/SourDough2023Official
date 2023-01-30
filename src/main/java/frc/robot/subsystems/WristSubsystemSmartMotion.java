@@ -22,10 +22,10 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
   private double processVar = 0;
 
   //using values from the example
-  private double maxRPM = 5700;
-  private double maxVel = 2000;
-  private double minVel = 0;
-  private double maxAccel = 1500;
+  private double maxRPM = 5600; //true max i think is around 5650
+  private double maxVel = 500;
+  private double minVel = 100;
+  private double maxAccel = 500;
   public WristSubsystemSmartMotion() {
     m_WristMotor = new CANSparkMax(WristConstants.kWristMotorCanId, MotorType.kBrushless);
     m_WristMotor.restoreFactoryDefaults();

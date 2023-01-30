@@ -26,7 +26,7 @@ public class ActuateArmUp extends CommandBase {
   @Override
   public void execute() 
   {
-    m_Arm.setSpeed(0.3);
+    m_Arm.setSpeed(0.1);
     
   }
 

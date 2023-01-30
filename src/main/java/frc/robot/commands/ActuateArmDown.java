@@ -26,7 +26,7 @@ public class ActuateArmDown extends CommandBase {
   @Override
   public void execute() 
   {
-    m_Arm.setSpeed(-0.3);
+    m_Arm.setSpeed(-0.1);
   }
 
   // Called once the command ends or is interrupted.

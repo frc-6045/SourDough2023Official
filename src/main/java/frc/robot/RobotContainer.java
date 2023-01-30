@@ -20,8 +20,11 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.ActuateArmDown;
+import frc.robot.commands.ActuateArmUp;
 import frc.robot.commands.ArmEjectSlow;
 import frc.robot.commands.ArmIntakeSlow;
+import frc.robot.subsystems.Arm;
 import frc.robot.subsystems.ArmIntake;
 import frc.robot.subsystems.DriveSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -56,6 +59,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ArmIntake m_armIntake = new ArmIntake();
+  private final Arm m_ArmSubsystem = new Arm();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
 
@@ -133,8 +137,10 @@ public class RobotContainer {
     .onTrue(new InstantCommand(
       ()-> m_robotDrive.zeroHeading(),
        m_robotDrive));
-    // new JoystickButton(m_driverController, Button.kL1.value).whileTrue(new ArmIntakeSlow(m_armIntake));
+    //new JoystickButton(m_driverController, Button.kL1.value).whileTrue(new ArmIntakeSlow(m_armIntake));
     // new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new ArmEjectSlow(m_armIntake));
+    new JoystickButton(m_driverController, Button.kCross.value).whileTrue(new ActuateArmUp(m_ArmSubsystem));
+    new JoystickButton(m_driverController, Button.kSquare.value).whileTrue(new ActuateArmDown(m_ArmSubsystem));
 
   }
 

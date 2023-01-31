@@ -39,7 +39,7 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
     m_WristController.setI(WristConstants.kWristMotorI);
     m_WristController.setD(WristConstants.kWristMotorD);
     m_WristController.setIZone(0);
-    m_WristController.setFF(0); //feedfoward constant??
+    m_WristController.setFF(.000156); //feedfoward constant??
     m_WristController.setOutputRange(WristConstants.kWristMinOutput, WristConstants.kWristMaxOutput); 
     
     int smartMotionSlot = 0;
@@ -58,7 +58,6 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
     if(mode){
       m_WristController.setReference(setpoint, CANSparkMax.ControlType.kSmartMotion);
       processVar = m_WristEncoder.getPosition();
-      //may want to add proccess variable and output to dashboard as seen in smart motion example later
     } else {
       m_WristController.setReference(setpoint, CANSparkMax.ControlType.kVelocity);
       processVar = m_WristEncoder.getVelocity();

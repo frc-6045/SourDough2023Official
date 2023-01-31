@@ -5,6 +5,7 @@
 package frc.robot.commands;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.Constants.VisonConstants;
 import frc.robot.subsystems.BadLimelightFactFinding;
 import frc.robot.subsystems.DriveSubsystem;
 
@@ -34,13 +35,12 @@ public class BadVisonSeeking extends CommandBase {
     if(v != 1.0 &&  x >= 5.0 || x <= -5.0){
       m_DriveSubsystem.drive(0, 0, 0.5, true);
     } else {
-      if((x <= 5.0 || x >= -5.0) && m_Limelight.getDistance() >= 12.0){ //note distance is in inches
-        //this should if distance 
+      if(m_Limelight.getDistance() >= 12.0){ //note distance is in inches
         m_DriveSubsystem.zeroHeading();
         m_DriveSubsystem.drive(0, 1.0, 0, true);
-      } else if(x >= 5.0){
+      } else if(x <= VisonConstants.kCameraXOffset){
         m_DriveSubsystem.drive(0, 0, -0.1, true);
-      } else {
+      } else if(x >= VisonConstants.kCameraXOffset) {
         m_DriveSubsystem.drive(0, 0, 0.1, true);
       }
     }

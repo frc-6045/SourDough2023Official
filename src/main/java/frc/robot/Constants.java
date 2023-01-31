@@ -24,6 +24,9 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final class VisonConstants {
+    public static final double kCameraXOffset = 0.0; //how far away a target is on the X axis when the target is in the correct posistion 
+  }
   public static final class WristConstants {
     //TO BE ANNOUNCED LATER 
     //PLEASE KEEP IN MIND I AM A COMPLETE AND TOTAL IDIOTIC FRAUD 
@@ -34,7 +37,7 @@ public final class Constants {
     public static final double kWristMotorMaxAcceleration = 0.0;
     public static final double kWristEncoderPositionFactor = (Math.PI * 2); //radians
     public static final double kWristEncoderVelocityFactor = (Math.PI * 2) / 60.0; //radians per second | note: less sure on this one, stealing it from kTurningEncoderVelocityFactor |
-    public static final int kWristMotorCanId = 0;
+    public static final int kWristMotorCanId = 31;
     public static final double kWristOffset = 0; //in radians
     public static final double kWristMinOutput = -0.5;
     public static final double kWristMaxOutput = .5;
@@ -160,4 +163,5 @@ public final class Constants {
   public static final class NeoMotorConstants {
     public static final double kFreeSpeedRpm = 5676;
   }
+  
 }

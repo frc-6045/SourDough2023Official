@@ -24,11 +24,9 @@ public class BadLimelightFactFinding extends SubsystemBase {
     tx = table.getEntry("tx");
     ty = table.getEntry("ty");
     ta = table.getEntry("ta");
-    limelightMountAngle = 0.0;
-    limelightLensHeight = 12.0;
-    goalHeight = 2.0;
-  
-    
+    limelightMountAngle = 0.0; //placeholder
+    limelightLensHeight = 12.0; //placeholder
+    goalHeight = 2.0; // placeholder    
   }
   @Override
   public void periodic() {
@@ -37,8 +35,8 @@ public class BadLimelightFactFinding extends SubsystemBase {
     double area = ta.getDouble(0.0);   
     targetOffset = ty.getDouble(0.0);
     angleToGoalDeg = limelightMountAngle + targetOffset;
-    angleToGoalRad = angleToGoalDeg * (Math.PI / 180.0);
-    goalDistance = (goalHeight - limelightLensHeight)/Math.tan(angleToGoalRad);
+    angleToGoalRad = angleToGoalDeg * (Math.PI / 180.0); 
+    goalDistance = (goalHeight - limelightLensHeight)/Math.tan(angleToGoalRad); //distance is in inches
 
     SmartDashboard.putNumber("LimelightX", x);
     SmartDashboard.putNumber("LimelightY", y);
@@ -56,6 +54,6 @@ public class BadLimelightFactFinding extends SubsystemBase {
     return tv.getDouble(0.0);
   }
   public double getDistance(){
-    return goalDistance;
+    return goalDistance; //distnace is in inches 
   }
 }

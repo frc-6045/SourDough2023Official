@@ -8,6 +8,7 @@ import com.revrobotics.CANSparkMax;
 import com.revrobotics.SparkMaxAbsoluteEncoder;
 import com.revrobotics.SparkMaxPIDController;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
+import frc.robot.Constants.NeoMotorConstants;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.WristConstants;
@@ -19,10 +20,11 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
   private final SparkMaxAbsoluteEncoder m_WristEncoder;
   private double setpoint = 0.0;
   private boolean mode = true; 
+  private double output;
   private double processVar = 0;
 
   //using values from the example
-  private double maxRPM = 5600; //true max i think is around 5650
+  private double maxRPM = 2000; 
   private double maxVel = 500;
   private double minVel = 100;
   private double maxAccel = 500;
@@ -61,6 +63,7 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
       m_WristController.setReference(setpoint, CANSparkMax.ControlType.kVelocity);
       processVar = m_WristEncoder.getVelocity();
     }
+    output = m_WristMotor.getAppliedOutput();
   }
 
   public double getSetpoint(){

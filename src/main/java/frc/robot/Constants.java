@@ -29,7 +29,6 @@ public final class Constants {
   }
   public static final class WristConstants {
     //TO BE ANNOUNCED LATER 
-    //PLEASE KEEP IN MIND I AM A COMPLETE AND TOTAL IDIOTIC FRAUD 
     public static final double kWristMotorP = 0.01; 
     public static final double kWristMotorI = 0.0;
     public static final double kWristMotorD = 0.0;

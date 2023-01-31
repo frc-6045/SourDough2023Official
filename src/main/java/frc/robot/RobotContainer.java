@@ -120,22 +120,22 @@ new JoystickButton(m_driverController, Button.kL2.value).onTrue(Commands.runOnce
   //A 
 new JoystickButton(m_driverController, Button.kCross.value).onTrue(Commands.runOnce(() -> {
   m_WristSubsystemSmartMotion.setMode(true);
-  m_WristSubsystemSmartMotion.setSetpoint(1.0);
+  m_WristSubsystemSmartMotion.setSetpoint(.5);
 }, m_WristSubsystemSmartMotion));
   //B
 new JoystickButton(m_driverController, Button.kCircle.value).onTrue(Commands.runOnce(() -> {
   m_WristSubsystemSmartMotion.setMode(true);
-  m_WristSubsystemSmartMotion.setSetpoint(.5);
+  m_WristSubsystemSmartMotion.setSetpoint(.2);
 }, m_WristSubsystemSmartMotion));
 //X
 new JoystickButton(m_driverController, Button.kSquare.value).onTrue(Commands.runOnce(() -> {
   m_WristSubsystemSmartMotion.setMode(true);
-  m_WristSubsystemSmartMotion.setSetpoint(-1.0);
+  m_WristSubsystemSmartMotion.setSetpoint(-.5);
 }, m_WristSubsystemSmartMotion));
 //Y
 new JoystickButton(m_driverController, Button.kTriangle.value).onTrue(Commands.runOnce(() -> {
   m_WristSubsystemSmartMotion.setMode(true);
-  m_WristSubsystemSmartMotion.setSetpoint(-.5);
+  m_WristSubsystemSmartMotion.setSetpoint(-.2);
 }, m_WristSubsystemSmartMotion));
 //Start
 new JoystickButton(m_driverController, Button.kOptions.value).onTrue(Commands.runOnce(() -> {
@@ -146,16 +146,24 @@ new JoystickButton(m_driverController, Button.kOptions.value).onTrue(Commands.ru
 //Triggers control velocity up and down
 //not certain about functionality
 new JoystickButton(m_driverController, Button.kR2.value).whileTrue(new RunCommand(() -> {
-
   double Axis = m_driverController.getRightTriggerAxis();
   m_WristSubsystemSmartMotion.setMode(false);
-  m_WristSubsystemSmartMotion.setSetpoint(Axis * m_WristSubsystemSmartMotion.getMaxVelocity());
+  if(m_WristSubsystemSmartMotion.getEncoder().getPosition() > 0.268 /* max encoder position*/){ 
+  m_WristSubsystemSmartMotion.setSetpoint(-Axis * m_WristSubsystemSmartMotion.getMaxVelocity());
+  } else {
+    m_WristSubsystemSmartMotion.setSetpoint(0.0);
+  }
 }, m_WristSubsystemSmartMotion));
 
 new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new RunCommand(() -> {
   double Axis = m_driverController.getLeftTriggerAxis();
   m_WristSubsystemSmartMotion.setMode(false);
-  m_WristSubsystemSmartMotion.setSetpoint(-Axis * m_WristSubsystemSmartMotion.getMaxVelocity());
+  if(m_WristSubsystemSmartMotion.getEncoder().getPosition() < 0.95 /* min encoder position*/){
+    m_WristSubsystemSmartMotion.setSetpoint((Axis) * m_WristSubsystemSmartMotion.getMaxVelocity());
+  } else {
+    m_WristSubsystemSmartMotion.setSetpoint(0.0);
+  }
+
 }, m_WristSubsystemSmartMotion));
 
 new JoystickButton(m_driverController, Button.kL2.value).onFalse(Commands.runOnce(() -> {

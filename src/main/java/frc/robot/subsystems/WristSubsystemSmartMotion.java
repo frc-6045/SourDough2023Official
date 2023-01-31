@@ -24,7 +24,7 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
   private double processVar = 0;
 
   //using values from the example
-  private double maxRPM = 2000; 
+  private double maxRPM = NeoMotorConstants.kFreeSpeedRpm; 
   private double maxVel = 500;
   private double minVel = 100;
   private double maxAccel = 500;
@@ -64,7 +64,9 @@ public class WristSubsystemSmartMotion extends SubsystemBase {
     }
     output = m_WristMotor.getAppliedOutput();
   }
-
+  public SparkMaxAbsoluteEncoder getEncoder() {
+    return m_WristEncoder;
+  }
   public double getSetpoint(){
     return setpoint;
   } 

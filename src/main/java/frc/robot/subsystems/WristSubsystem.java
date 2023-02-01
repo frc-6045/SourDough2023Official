@@ -31,7 +31,6 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
             WristConstants.kWristMotorD,
             // The motion profile constraints
             new TrapezoidProfile.Constraints(WristConstants.kWristMotorMaxVelocity, WristConstants.kWristMotorMaxAcceleration)));
-            
             m_WristMotor = new CANSparkMax(WristConstants.kWristMotorCanId, MotorType.kBrushless);
             m_WristMotor.restoreFactoryDefaults();
             m_WristAbsoluteEncoder = m_WristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);

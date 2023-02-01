@@ -28,8 +28,8 @@ public final class Constants {
     public static final double kCameraXOffset = 0.0; //how far away a target is on the X axis when the target is in the correct posistion 
   }
   public static final class WristConstants {
-    //TO BE ANNOUNCED LATER 
-    public static final double kWristMotorP = 0.01; 
+
+    public static final double kWristMotorP = 0.1; 
     public static final double kWristMotorI = 0.0;
     public static final double kWristMotorD = 0.0;
     public static final double kWristMotorMaxVelocity = 0.2;
@@ -40,16 +40,7 @@ public final class Constants {
     public static final double kWristOffset = 0; //in radians
     public static final double kWristMinOutput = -0.2;
     public static final double kWristMaxOutput = .2;
-    //TO BE ANNOUNCED LATER
-    //goals for the wrist to go to, in radians.
-    /* 
-    public static final double kWristState1 = 0.0;
-    public static final double kWristState2 = 1.0;
-    public static final double kWristState3 = -1.0;
-    public static final double kWristState4 = 2.0;
-    public static final double kWristState5 = -2.0;
-    */
-
+    
 
   }
   public static final class DriveConstants {

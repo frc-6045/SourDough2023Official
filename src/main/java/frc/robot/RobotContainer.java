@@ -38,6 +38,7 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final WristSubsystem m_WristSubsystem = new WristSubsystem();
   private final WristSubsystemSmartMotion m_WristSubsystemSmartMotion = new WristSubsystemSmartMotion();
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
@@ -78,44 +79,20 @@ public class RobotContainer {
             () -> m_robotDrive.setX(),
             m_robotDrive));
 //Base NO SMART MOTION Wrist Subsystem Commands
-/* 
+
   //A
 new JoystickButton(m_driverController, Button.kCross.value).onTrue(Commands.runOnce(() -> {
-  m_WristSubsystem.setGoal(WristConstants.kWristState1);
+  m_WristSubsystem.setGoal(0.5);
   m_WristSubsystem.enable();
 }, m_WristSubsystem));
   //B
 new JoystickButton(m_driverController, Button.kCircle.value).onTrue(Commands.runOnce(() -> {
-  m_WristSubsystem.setGoal(WristConstants.kWristState2);
+  m_WristSubsystem.setGoal(0.2);
   m_WristSubsystem.enable();
 }, m_WristSubsystem)); 
-//X
-new JoystickButton(m_driverController, Button.kSquare.value).onTrue(Commands.runOnce(() -> {
-  m_WristSubsystem.setGoal(WristConstants.kWristState3);
-  m_WristSubsystem.enable();
-}, m_WristSubsystem));
-//Y
-new JoystickButton(m_driverController, Button.kTriangle.value).onTrue(Commands.runOnce(() -> {
-  m_WristSubsystem.setGoal(WristConstants.kWristState4);
-  m_WristSubsystem.enable();
-}, m_WristSubsystem));
 
 
-boolean enableVariableOutput = false;
-//uggggghhhhhh this will not work for some reason i do not know
-//new JoystickButton(m_driverController, Button.kOptions.value).onTrue(Commands.runOnce(() -> { enableVariableOutput = !enableVariableOutput; }, m_WristSubsystem));
-
-new JoystickButton(m_driverController, Button.kR2.value).onTrue(Commands.runOnce(() -> {
-  if(enableVariableOutput){
-    m_WristSubsystem.goUp();
-  }
-}, m_WristSubsystem));
-new JoystickButton(m_driverController, Button.kL2.value).onTrue(Commands.runOnce(() -> {
-  if(enableVariableOutput){
-    m_WristSubsystem.goDown();
-  }
-}, m_WristSubsystem));
-*/
+/*  
   //WristSubsystemSmartMotion Commands (to be chosen)
   //A 
 new JoystickButton(m_driverController, Button.kCross.value).onTrue(Commands.runOnce(() -> {
@@ -148,7 +125,7 @@ new JoystickButton(m_driverController, Button.kOptions.value).onTrue(Commands.ru
 new JoystickButton(m_driverController, Button.kR2.value).whileTrue(new RunCommand(() -> {
   double Axis = m_driverController.getRightTriggerAxis();
   m_WristSubsystemSmartMotion.setMode(false);
-  if(m_WristSubsystemSmartMotion.getEncoder().getPosition() > 0.268 /* max encoder position*/){ 
+  if(m_WristSubsystemSmartMotion.getEncoder().getPosition() > 0.268 ){ 
   m_WristSubsystemSmartMotion.setSetpoint(-Axis * m_WristSubsystemSmartMotion.getMaxVelocity());
   } else {
     m_WristSubsystemSmartMotion.setSetpoint(0.0);
@@ -158,7 +135,7 @@ new JoystickButton(m_driverController, Button.kR2.value).whileTrue(new RunComman
 new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new RunCommand(() -> {
   double Axis = m_driverController.getLeftTriggerAxis();
   m_WristSubsystemSmartMotion.setMode(false);
-  if(m_WristSubsystemSmartMotion.getEncoder().getPosition() < 0.95 /* min encoder position*/){
+  if(m_WristSubsystemSmartMotion.getEncoder().getPosition() < 0.95 ){
     m_WristSubsystemSmartMotion.setSetpoint((Axis) * m_WristSubsystemSmartMotion.getMaxVelocity());
   } else {
     m_WristSubsystemSmartMotion.setSetpoint(0.0);
@@ -175,7 +152,7 @@ new JoystickButton(m_driverController, Button.kR2.value).onFalse(Commands.runOnc
   m_WristSubsystemSmartMotion.setMode(true);
   m_WristSubsystemSmartMotion.setSetpoint(m_WristSubsystemSmartMotion.getProccessVar());
 }, m_WristSubsystemSmartMotion));
-
+*/
 
 
 }

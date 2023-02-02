@@ -113,9 +113,10 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) {
     // Adjust input based on max speed
-    // xSpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
-    // ySpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
-    // rot *= DriveConstants.kMaxAngularSpeed;
+    xSpeed *= 0.5;
+    ySpeed *= 0.5;
+    rot *= 0.5;
+
 
     xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kMaxSpeedMetersPerSecond;
     ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kMaxSpeedMetersPerSecond;

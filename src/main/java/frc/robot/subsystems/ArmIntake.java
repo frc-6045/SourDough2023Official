@@ -18,14 +18,11 @@ import frc.robot.Constants.ArmIntakeConstants;
 public class ArmIntake extends SubsystemBase {
   private final CANSparkMax intakeMotor1;
   private final CANSparkMax intakeMotor2;
-  private final RelativeEncoder intakeEncoder;
   /** Creates a new ArmIntake. */
   public ArmIntake()
   {
     intakeMotor1 = new CANSparkMax(ArmIntakeConstants.leftIntakeMotorCanId, MotorType.kBrushless);
     intakeMotor2 = new CANSparkMax(ArmIntakeConstants.rightIntakeMotorCanId, MotorType.kBrushless);
-
-    intakeEncoder = intakeMotor1.getEncoder();
 
     intakeMotor1.restoreFactoryDefaults();
     intakeMotor2.restoreFactoryDefaults();

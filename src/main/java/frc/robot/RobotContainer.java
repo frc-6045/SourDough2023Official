@@ -20,10 +20,16 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.ActuateArmDown;
+import frc.robot.commands.ActuateArmUp;
+import frc.robot.commands.ActuateWristDown;
+import frc.robot.commands.ActuateWristUp;
 import frc.robot.commands.ArmEjectSlow;
 import frc.robot.commands.ArmIntakeSlow;
 import frc.robot.subsystems.ArmIntake;
+import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -56,8 +62,12 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ArmIntake m_armIntake = new ArmIntake();
+  private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
+  private final WristSubsystem m_WristSubsystem = new WristSubsystem();
+  
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+
 
   SendableChooser<String> autoChooser = new SendableChooser<>();
 
@@ -128,7 +138,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, Button.kR1.value)
+    new JoystickButton(m_driverController, Button.kTouchpad.value)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
@@ -139,6 +149,15 @@ public class RobotContainer {
        m_robotDrive));
     // new JoystickButton(m_driverController, Button.kL1.value).whileTrue(new ArmIntakeSlow(m_armIntake));
     // new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new ArmEjectSlow(m_armIntake));
+
+    new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new ArmIntakeSlow(m_armIntake));
+    new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new ArmEjectSlow(m_armIntake));
+
+    new JoystickButton(m_driverController, XboxController.Button.kB.value).whileTrue(new ActuateWristUp(m_WristSubsystem));
+    new JoystickButton(m_driverController, XboxController.Button.kA.value).whileTrue(new ActuateWristDown(m_WristSubsystem));
+    new JoystickButton(m_driverController, XboxController.Button.kX.value).whileTrue(new ActuateArmDown(m_ArmSubsystem));
+    new JoystickButton(m_driverController, XboxController.Button.kY.value).whileTrue(new ActuateArmUp(m_ArmSubsystem));
+
 
   }
 

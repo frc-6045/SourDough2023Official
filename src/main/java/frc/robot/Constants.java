@@ -34,7 +34,7 @@ public final class Constants {
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
     public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = //
     kMaxAngularSpeed / 4;
-public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
+public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 1;
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26);
@@ -120,6 +120,7 @@ public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
 
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
+    public static final int kDriverControllerPort2 = 1;
   }
 
   public static final class AutoConstants {
@@ -143,13 +144,13 @@ public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
 
   public static final class ArmIntakeConstants
   {
-    public static final int leftIntakeMotorCanId = 30;
-    public static final int rightIntakeMotorCanId = 31;
+    public static final int leftIntakeMotorCanId = 33;
+    public static final int rightIntakeMotorCanId = 34;
   }
 
   public static final class ArmConstants
   {
-    public static final int armMotorCANID = 40;
+    public static final int kArmCANID = 31;
     public static final double maxAmperageOnArm = 60;
     public static final int kArmMotorCanId = 0;
     public static final double kArmMotorP = 0;
@@ -157,12 +158,12 @@ public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 3;
     public static final double kArmMotorD = 0;
     public static final double kArmMinOutput = 0;
     public static final double kArmMaxOutput = 0;
+ 
   }
 
   public static final class WristConstants
   {
-
-    public static final int WristMotorCANID = 51;
+    public static final int kWristCANID = 32;
     public static final double kWristMotorP = 0;
     public static final double kWristMotorI = 0;
     public static final double kWristMotorD = 0;

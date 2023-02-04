@@ -25,7 +25,7 @@ public class ArmIntakeSlow extends CommandBase {
   @Override
   public void execute() 
   {
-    armIntake.setMotorSpeeds(0.3);
+    armIntake.setMotorSpeeds(0.7);
 
   }
 

@@ -10,7 +10,7 @@ import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import frc.robot.Constants.ArmConstants;
-
+import frc.robot.commands.ActuateArmDown;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsystem extends SubsystemBase {
@@ -26,10 +26,16 @@ public class ArmSubsystem extends SubsystemBase {
   
 
   @Override
-  public void periodic() {
-    
+  public void periodic() 
+  {
     // This method will be called once per scheduler run
+
+
   }
+
+
+
+
   public void setSpeed(double speed)
   {
     armMotor.set(speed);

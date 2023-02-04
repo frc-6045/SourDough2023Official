@@ -5,6 +5,7 @@
 package frc.robot.subsystems;
 
 import java.net.CacheRequest;
+import java.util.function.Supplier;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.RelativeEncoder;
@@ -19,6 +20,10 @@ public class ArmIntake extends SubsystemBase {
   private final CANSparkMax intakeMotor1;
   private final CANSparkMax intakeMotor2;
   /** Creates a new ArmIntake. */
+
+
+
+
   public ArmIntake()
   {
     intakeMotor1 = new CANSparkMax(ArmIntakeConstants.leftIntakeMotorCanId, MotorType.kBrushless);
@@ -26,9 +31,8 @@ public class ArmIntake extends SubsystemBase {
 
     intakeMotor1.restoreFactoryDefaults();
     intakeMotor2.restoreFactoryDefaults();
-    intakeMotor2.setInverted(true);
-
   }
+
 
   public void setMotorSpeeds(double speed)
   {
@@ -42,7 +46,9 @@ public class ArmIntake extends SubsystemBase {
     intakeMotor2.setVoltage(voltage);
   }
 
+  @Override
   public void periodic() {
     // This method will be called once per scheduler run
+    
   }
 }

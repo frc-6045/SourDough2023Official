@@ -13,30 +13,40 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
+import edu.wpi.first.wpilibj.event.BooleanEvent;
+import edu.wpi.first.wpilibj.simulation.JoystickSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.commands.ActuateArm;
 import frc.robot.commands.ActuateArmDown;
 import frc.robot.commands.ActuateArmUp;
+import frc.robot.commands.ActuateWrist;
 import frc.robot.commands.ActuateWristDown;
 import frc.robot.commands.ActuateWristUp;
+import frc.robot.commands.ArmConsume;
+import frc.robot.commands.ArmEject;
 import frc.robot.commands.ArmEjectSlow;
 import frc.robot.commands.ArmIntakeSlow;
 import frc.robot.subsystems.ArmIntake;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.OtherPIDWrist;
 import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -63,10 +73,14 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ArmIntake m_armIntake = new ArmIntake();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
-  private final WristSubsystem m_WristSubsystem = new WristSubsystem();
+ // private final WristSubsystem m_WristSubsystem = new WristSubsystem();
+  private final OtherPIDWrist m_OtherWrist = new OtherPIDWrist();
   
+  
+
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
+  XboxController m_OperatorController = new XboxController(OIConstants.kDriverControllerPort2);
 
 
   SendableChooser<String> autoChooser = new SendableChooser<>();
@@ -92,6 +106,9 @@ public class RobotContainer {
                 MathUtil.applyDeadband(-m_driverController.getRightX(), 0.15),
                 true),
             m_robotDrive));
+    m_ArmSubsystem.setDefaultCommand(new ActuateArm(m_ArmSubsystem, m_OperatorController::getLeftY));
+    //m_WristSubsystem.setDefaultCommand(new ActuateWrist(m_WristSubsystem, m_OperatorController::getRightY));
+
 
             autoChooser.setDefaultOption("Drive Forwards", "Drive Forwards");
 
@@ -138,28 +155,65 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController, Button.kTouchpad.value)
+    new JoystickButton(m_driverController,  XboxController.Button.kRightBumper.value)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
 
-    new JoystickButton(m_driverController, Button.kTriangle.value)
+    new JoystickButton(m_driverController,  XboxController.Button.kStart.value)
     .onTrue(new InstantCommand(
       ()-> m_robotDrive.zeroHeading(),
        m_robotDrive));
     // new JoystickButton(m_driverController, Button.kL1.value).whileTrue(new ArmIntakeSlow(m_armIntake));
     // new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new ArmEjectSlow(m_armIntake));
 
-    new JoystickButton(m_driverController, XboxController.Button.kRightBumper.value).whileTrue(new ArmIntakeSlow(m_armIntake));
-    new JoystickButton(m_driverController, XboxController.Button.kLeftBumper.value).whileTrue(new ArmEjectSlow(m_armIntake));
+    new JoystickButton(m_OperatorController, XboxController.Button.kRightBumper.value).whileTrue(new ArmIntakeSlow(m_armIntake));
+    new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value).whileTrue(new ArmEjectSlow(m_armIntake));
 
-    new JoystickButton(m_driverController, XboxController.Button.kB.value).whileTrue(new ActuateWristUp(m_WristSubsystem));
-    new JoystickButton(m_driverController, XboxController.Button.kA.value).whileTrue(new ActuateWristDown(m_WristSubsystem));
-    new JoystickButton(m_driverController, XboxController.Button.kX.value).whileTrue(new ActuateArmDown(m_ArmSubsystem));
-    new JoystickButton(m_driverController, XboxController.Button.kY.value).whileTrue(new ActuateArmUp(m_ArmSubsystem));
+    //coneIntake
+    new Trigger(() ->
+    {
+      if(m_OperatorController.getLeftTriggerAxis() > 0 || m_OperatorController.getLeftTriggerAxis() < 0)
+        return true;
+      else
+      {
+        return false;
+      }
+    } ).whileTrue(new ArmConsume(m_armIntake, m_OperatorController::getLeftTriggerAxis));
 
+    //cubeIntake
+    new Trigger(() ->
+    {
+      if(m_OperatorController.getRightTriggerAxis() > 0 || m_OperatorController.getRightTriggerAxis() < 0)
+        return true;
+      else
+      {
+        return false;
+      }
+    } ).whileTrue(new ArmEject(m_armIntake, m_OperatorController::getRightTriggerAxis));
+   
+
+    
+
+    // new JoystickButton(m_OperatorController, XboxController.Button.kB.value).whileTrue(new ActuateWristUp(m_WristSubsystem));
+    // new JoystickButton(m_OperatorController, XboxController.Button.kA.value).whileTrue(new ActuateWristDown(m_WristSubsystem));
+    new JoystickButton(m_OperatorController, XboxController.Button.kY.value).whileTrue(new ActuateArmDown(m_ArmSubsystem));
+    new JoystickButton(m_OperatorController, XboxController.Button.kX.value).whileTrue(new ActuateArmUp(m_ArmSubsystem));
+
+  
+new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(Commands.runOnce(() -> {
+  m_OtherWrist.setGoal(0.25 * Math.PI * 2);
+  m_OtherWrist.enable();
+}, m_OtherWrist));
+
+new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(Commands.runOnce(() -> {
+  m_OtherWrist.setGoal(0.1 * Math.PI * 2);
+  m_OtherWrist.enable();
+}, m_OtherWrist)); 
 
   }
+
+  
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

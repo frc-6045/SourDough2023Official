@@ -9,14 +9,16 @@ import java.util.function.Supplier;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.WristSubsystem;
 
-public class ActuateWristDown extends CommandBase {
+public class ActuateWrist extends CommandBase {
   /** Creates a new ActuateWristDown. */
   private final WristSubsystem m_WristSubsystem;
+  private Supplier speedSupplier;
   /** Creates a new ActuateUp. */
-  public ActuateWristDown(WristSubsystem m_WristSubsystem) {
+  public ActuateWrist(WristSubsystem m_WristSubsystem, Supplier speedSupplier) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_WristSubsystem = m_WristSubsystem;
-
+    this.speedSupplier = speedSupplier;
+    addRequirements(m_WristSubsystem);
   }
 
   // Called when the command is initially scheduled.
@@ -33,7 +35,23 @@ public class ActuateWristDown extends CommandBase {
     // }
     // else
     //{
-      m_WristSubsystem.setSpeed(-0.5);
+    
+
+    double speed = -(double)speedSupplier.get();
+    if(speed > 0.1 || speed < -0.1)
+    {
+      if(speed > 0.5)
+        speed = 0.5;
+      else if(speed < -0.5)
+        speed = -0.5;
+      m_WristSubsystem.setSpeed(speed);
+    }
+    else
+    {
+      m_WristSubsystem.stop();
+    }
+
+  
     // }
 
     // System.out.println("wristEncoder: " + m_WristSubsystem.getAbsoluteEncoder().getPosition());

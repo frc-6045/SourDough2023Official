@@ -24,6 +24,22 @@ import edu.wpi.first.math.util.Units;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+  public static final class Wristconstants {
+
+    public static final double kWristMotorP = 0.1; 
+    public static final double kWristMotorI = 0.0;
+    public static final double kWristMotorD = 0.0;
+    public static final double kWristMotorMaxVelocity = 0.2;
+    public static final double kWristMotorMaxAcceleration = 0.5;
+    public static final double kWristEncoderPositionFactor = (Math.PI * 2); //radians
+    public static final double kWristEncoderVelocityFactor = (Math.PI * 2) / 60.0; //radians per second | note: less sure on this one, stealing it from kTurningEncoderVelocityFactor |
+    public static final int kWristMotorCanId = 32;
+    public static final double kWristOffset = 0; //in radians
+    public static final double kWristMinOutput = -0.2;
+    public static final double kWristMaxOutput = .2;
+    
+
+  }
   public static final class DriveConstants {
     // Driving Parameters - Note that these are not the maximum capable speeds of
     // the robot, rather the allowed maximum speeds
@@ -34,7 +50,7 @@ public final class Constants {
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
     public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = //
     kMaxAngularSpeed / 4;
-public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 1;
+public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 2;
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26);

@@ -4,17 +4,23 @@
 
 package frc.robot.commands;
 
+import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmSubsystem;
 
-public class ActuateArmUp extends CommandBase {
+public class ActuateArm extends CommandBase {
   private final ArmSubsystem m_ArmSubsystem;
+  private Supplier speedSupplier;
+  
   /** Creates a new ActuateUp. */
-  public ActuateArmUp(ArmSubsystem m_ArmSubsystem) {
+  public ActuateArm(ArmSubsystem m_ArmSubsystem, Supplier speedSupplier) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_ArmSubsystem = m_ArmSubsystem;
+    addRequirements(m_ArmSubsystem);
+    this.speedSupplier = speedSupplier;
+    
 
   }
 
@@ -27,9 +33,23 @@ public class ActuateArmUp extends CommandBase {
   public void execute() 
   {
     // if(m_ArmSubsystem.getAbsoluteEncoder().getPosition() > 0.268);
-    //       m_ArmSubsystem.stop();
+    //     m_ArmSubsystem.stop();
 
-    m_ArmSubsystem.setSpeed(0.6);
+    double speed = (double)speedSupplier.get();
+    if(speed > 0.1 || speed < -0.1)
+    {
+      if(speed > 0.6)
+        speed = 0.6;
+      else if(speed < -0.6)
+        speed = -0.6;
+      m_ArmSubsystem.setSpeed(speed);
+    }
+    else
+    {
+      m_ArmSubsystem.stop();
+    }
+
+  
   }
 
   // Called once the command ends or is interrupted.

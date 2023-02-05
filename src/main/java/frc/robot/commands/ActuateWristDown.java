@@ -16,6 +16,7 @@ public class ActuateWristDown extends CommandBase {
   public ActuateWristDown(WristSubsystem m_WristSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_WristSubsystem = m_WristSubsystem;
+    addRequirements(m_WristSubsystem);
 
   }
 

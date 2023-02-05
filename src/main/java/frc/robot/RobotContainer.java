@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
+import frc.robot.Constants.PositionConstants;
 import frc.robot.commands.ActuateArm;
 import frc.robot.commands.ActuateArmDown;
 import frc.robot.commands.ActuateArmUp;
@@ -33,10 +34,14 @@ import frc.robot.commands.ArmConsume;
 import frc.robot.commands.ArmEject;
 import frc.robot.commands.ArmEjectSlow;
 import frc.robot.commands.ArmIntakeSlow;
+import frc.robot.commands.PIDArmCommand;
+import frc.robot.commands.PIDWristCommand;
+import frc.robot.commands.StopArmPID;
+import frc.robot.commands.StopWristPID;
 import frc.robot.subsystems.ArmIntake;
 import frc.robot.subsystems.ArmSubsystem;
 import frc.robot.subsystems.DriveSubsystem;
-import frc.robot.subsystems.OtherPIDWrist;
+// import frc.robot.subsystems.OtherPIDWrist;
 import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -73,8 +78,8 @@ public class RobotContainer {
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ArmIntake m_armIntake = new ArmIntake();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
- // private final WristSubsystem m_WristSubsystem = new WristSubsystem();
-  private final OtherPIDWrist m_OtherWrist = new OtherPIDWrist();
+  private final WristSubsystem m_WristSubsystem = new WristSubsystem();
+  // private final OtherPIDWrist m_OtherWrist = new OtherPIDWrist();
   
   
 
@@ -107,7 +112,7 @@ public class RobotContainer {
                 true),
             m_robotDrive));
     m_ArmSubsystem.setDefaultCommand(new ActuateArm(m_ArmSubsystem, m_OperatorController::getLeftY));
-    //m_WristSubsystem.setDefaultCommand(new ActuateWrist(m_WristSubsystem, m_OperatorController::getRightY));
+    m_WristSubsystem.setDefaultCommand(new ActuateWrist(m_WristSubsystem, m_OperatorController::getRightY));
 
 
             autoChooser.setDefaultOption("Drive Forwards", "Drive Forwards");
@@ -167,8 +172,8 @@ public class RobotContainer {
     // new JoystickButton(m_driverController, Button.kL1.value).whileTrue(new ArmIntakeSlow(m_armIntake));
     // new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new ArmEjectSlow(m_armIntake));
 
-    new JoystickButton(m_OperatorController, XboxController.Button.kRightBumper.value).whileTrue(new ArmIntakeSlow(m_armIntake));
-    new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value).whileTrue(new ArmEjectSlow(m_armIntake));
+    // new JoystickButton(m_OperatorController, XboxController.Button.kRightBumper.value).whileTrue(new ArmIntakeSlow(m_armIntake));
+    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value).whileTrue(new ArmEjectSlow(m_armIntake));
 
     //coneIntake
     new Trigger(() ->
@@ -190,26 +195,420 @@ public class RobotContainer {
       {
         return false;
       }
-    } ).whileTrue(new ArmEject(m_armIntake, m_OperatorController::getRightTriggerAxis));
-   
+    } 
+    ).whileTrue(new ArmEject(m_armIntake, m_OperatorController::getRightTriggerAxis));
+
+    //PID Wrist to 0.3
+    // new Trigger(()->
+    // {
+    //   if(m_OperatorController.getRightBumper())
+    //     return true;
+    //   else
+    //     return false;
+
+    // }
+    // ).and(()->
+    // {
+    //   if(m_OperatorController.getPOV() == 0)
+    //   return true;
+    // else
+    //   return false;
+    // }
+    // ).onTrue(new PIDWristCommand(m_WristSubsystem, 0.4));
+
+
+
+
+    // //PID Wrist to 0
+    // new Trigger(()->
+    // {
+    //   if(m_OperatorController.getRightBumper())
+    //     return true;
+    //   else
+    //     return false;
+
+    // }
+    // ).and(()->
+    // {
+    //   if(m_OperatorController.getPOV() == 90)
+    //   return true;
+    // else
+    //   return false;
+    // }
+    // ).onTrue(new PIDWristCommand(m_WristSubsystem, 0.0));
+
+
+    // new Trigger(()->
+    // {
+    //   if(m_OperatorController.getRightBumper())
+    //     return true;
+    //   else
+    //     return false;
+
+    // }
+    // ).and(()->
+    // {
+    //   if(m_OperatorController.getPOV() == 180)
+    //   return true;
+    // else
+    //   return false;
+    // }
+    // ).onTrue(new PIDWristCommand(m_WristSubsystem, -0.2));
+
+
+
+
+
+
+    // //ArmPID
+    // new Trigger(()->
+    // {
+    //   if(m_OperatorController.getLeftBumper())
+    //     return true;
+    //   else
+    //     return false;
+    // }
+    // ).and(()->
+    // {
+    //   if(m_OperatorController.getPOV() == 0)
+    //   return true;
+    // else
+    //   return false;
+    // }
+    // ).onTrue(new PIDArmCommand(m_ArmSubsystem, 0.2));
+
+
+
+
+
+    // new Trigger(()->
+    // {
+    //   if(m_OperatorController.getLeftBumper())
+    //     return true;
+    //   else
+    //     return false;
+
+    // }
+    // ).and(()->
+    // {
+    //   if(m_OperatorController.getPOV() == 90)
+    //   return true;
+    // else
+    //   return false;
+    // }
+    // ).onTrue(new PIDArmCommand(m_ArmSubsystem, 0.1));
+
+
+
+
+
+    // new Trigger(()->
+    // {
+    //   if(m_OperatorController.getLeftBumper())
+    //     return true;
+    //   else
+    //     return false;
+
+    // }
+    // ).and(()->
+    // {
+    //   if(m_OperatorController.getPOV() == 180)
+    //   return true;
+    // else
+    //   return false;
+    // }
+    // ).onTrue(new PIDArmCommand(m_ArmSubsystem, -0.005));
+
+
+
+
+
+
+
+
+
+    //working example
+    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kA.value)
+    // .onTrue(new PIDArmCommand(m_ArmSubsystem, 0.1))
+    // .onTrue(new PIDWristCommand(m_WristSubsystem, 0));
+
+    //HomePosition
+    new Trigger(()->
+    {
+      if(m_OperatorController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_OperatorController.getPOV() == 180)
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HomeWristPosition))
+    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HomeArmPosition));
+
+
+
+
+
+
+
+
+
+    //ConeIntake
+
+    new Trigger(()->
+    {
+      if(m_OperatorController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_OperatorController.getBButton())
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition))
+    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
+
+    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kB.value)
+    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition))
+    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
+
+
+
+
+
+
+
+
+    //CubeIntake
+
+    new Trigger(()->
+    {
+      if(m_OperatorController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_OperatorController.getAButton())
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition))
+    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
+
+    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kA.value)
+    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition))
+    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
+
+
+
+
+
+
+
+
+
+    //StationCone
+    new Trigger(()->
+    {
+      if(m_OperatorController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_OperatorController.getYButton())
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationConeWristPosition))
+    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationConeArmPosition));
+    
+    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kY.value)
+    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationConeWristPosition))
+    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationConeArmPosition));
+
+
+
+
+
+
+
+
+
+
+    //StationCube
+
+    new Trigger(()->
+    {
+      if(m_OperatorController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_OperatorController.getXButton())
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationCubeWristPosition))
+    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationCubeArmPosition));
+    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kX.value)
+    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationCubeWristPosition))
+    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationCubeArmPosition));
+
+
+
+
+
+
+
+
+
+
+
+
+
+    //ScoreHigh
+    new Trigger(()->
+    {
+      if(m_OperatorController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_OperatorController.getPOV() == 0)
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreHighWristPosition))
+    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreHighArmPosition));
+
+
+
+
+
+
+
+
+    //ScoreMid
+    new Trigger(()->
+    {
+      if(m_OperatorController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_OperatorController.getPOV() == 270)
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreMidWristPosition))
+    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+
+
+
+
+
+
+
+
+
+
+    //Hold
+    new Trigger(()->
+    {
+      if(m_OperatorController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_OperatorController.getPOV() == 90)
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HoldWristPosition))
+    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HoldArmPostion));
+
+    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kRightBumper.value)
+    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HoldWristPosition))
+    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HoldArmPostion));
+
+
+    //Cancel active PID Commands
+    new Trigger(()->
+    {
+      if(m_OperatorController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_OperatorController.getStartButton())
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new StopWristPID(m_WristSubsystem))
+    .onTrue(new StopArmPID(m_ArmSubsystem));
+
+
+
+
+    
+    
 
     
 
     // new JoystickButton(m_OperatorController, XboxController.Button.kB.value).whileTrue(new ActuateWristUp(m_WristSubsystem));
     // new JoystickButton(m_OperatorController, XboxController.Button.kA.value).whileTrue(new ActuateWristDown(m_WristSubsystem));
-    new JoystickButton(m_OperatorController, XboxController.Button.kY.value).whileTrue(new ActuateArmDown(m_ArmSubsystem));
-    new JoystickButton(m_OperatorController, XboxController.Button.kX.value).whileTrue(new ActuateArmUp(m_ArmSubsystem));
+    // new JoystickButton(m_OperatorController, XboxController.Button.kY.value).whileTrue(new ActuateArmDown(m_ArmSubsystem));
+    // new JoystickButton(m_OperatorController, XboxController.Button.kX.value).whileTrue(new ActuateArmUp(m_ArmSubsystem));
 
   
-new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(Commands.runOnce(() -> {
-  m_OtherWrist.setGoal(0.25 * Math.PI * 2);
-  m_OtherWrist.enable();
-}, m_OtherWrist));
+// new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(Commands.runOnce(() -> {
+//   m_OtherWrist.setGoal(0.25 * Math.PI * 2);
+//   m_OtherWrist.enable();
+// }, m_OtherWrist));
 
-new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(Commands.runOnce(() -> {
-  m_OtherWrist.setGoal(0.1 * Math.PI * 2);
-  m_OtherWrist.enable();
-}, m_OtherWrist)); 
+// new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(Commands.runOnce(() -> {
+//   m_OtherWrist.setGoal(0.1 * Math.PI * 2);
+//   m_OtherWrist.enable();
+// }, m_OtherWrist)); 
 
   }
 

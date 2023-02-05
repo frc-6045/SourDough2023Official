@@ -11,6 +11,7 @@ import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import frc.robot.Constants.ArmConstants;
 import frc.robot.commands.ActuateArmDown;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class ArmSubsystem extends SubsystemBase {
@@ -22,6 +23,11 @@ public class ArmSubsystem extends SubsystemBase {
     armMotor = new CANSparkMax(ArmConstants.kArmCANID, MotorType.kBrushless);
     armMotor.restoreFactoryDefaults();
     m_AbsoluteEncoder = armMotor.getAbsoluteEncoder(Type.kDutyCycle);
+    m_AbsoluteEncoder.setInverted(true);
+    // armMotor.enableSoftLimit(SoftLimitDirection.kForward, true);
+    // armMotor.enableSoftLimit(SoftLimitDirection.kReverse, true);
+    // armMotor.setSoftLimit(SoftLimitDirection.kForward, (float)0.25);
+    // armMotor.setSoftLimit(SoftLimitDirection.kReverse, (float)0.95);
   }
   
 
@@ -29,6 +35,7 @@ public class ArmSubsystem extends SubsystemBase {
   public void periodic() 
   {
     // This method will be called once per scheduler run
+    SmartDashboard.putNumber("Arm", getAbsoluteEncoderPosition());
 
 
   }
@@ -49,6 +56,11 @@ public class ArmSubsystem extends SubsystemBase {
   public void stop()
   {
     armMotor.stopMotor();
+  }
+
+  public double getAbsoluteEncoderPosition()
+  {
+    return m_AbsoluteEncoder.getPosition();
   }
 
 

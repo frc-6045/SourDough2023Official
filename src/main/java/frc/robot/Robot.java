@@ -42,10 +42,8 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
 
-   private final EventLoop m_loop = new EventLoop();
   @Override
   public void robotPeriodic() {
-    m_loop.poll();
 
     // MAXSwerveModule[] maxArray = m_robotContainer.getDriveSubsystem().getMaxSwerveModules();
     // SmartDashboard.putNumber("frontLeftAbsolute: ", maxArray[0].getAbsoluteEncoderZeroOffset());

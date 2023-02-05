@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -49,8 +50,9 @@ public final class Constants {
     public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
     public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = //
-    kMaxAngularSpeed / 4;
-public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 2;
+    kMaxAngularSpeed / 6;
+    public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 2;
+
 
     // Chassis configuration
     public static final double kTrackWidth = Units.inchesToMeters(26);
@@ -180,12 +182,53 @@ public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 2;
   public static final class WristConstants
   {
     public static final int kWristCANID = 32;
-    public static final double kWristMotorP = 0;
+    public static final double kWristMotorP = .2;
     public static final double kWristMotorI = 0;
     public static final double kWristMotorD = 0;
     public static final double kWristMinOutput = 0;
     public static final double kWristMaxOutput = 0;
     public static final int kWristMotorCanId = 0;
+    public static final double kWristMotorMaxVelocity = 0.5;
+    public static final double kWristMotorMaxAcceleration = 0.2;
+
+
+    public static final TrapezoidProfile.Constraints constraints = new TrapezoidProfile.Constraints(
+      kWristMotorMaxVelocity, kWristMotorMaxAcceleration);
+  }
+
+  public static final class PositionConstants
+  {
+    //HomePosition
+    public static final double HomeWristPosition = 0.4467;
+    public static final double HomeArmPosition = 0;
+
+    //ConeIntake
+    public static final double ConeIntakeWristPosition = 0.2732;
+    public static final double ConeIntakeArmPosition = 0;
+
+    //CubeIntake
+    public static final double CubeIntakeWristPosition = 0.2420;
+    public static final double CubeIntakeArmPosition = 0.01356;
+
+    //StationCone
+    public static final double StationConeWristPosition = 0.05663;
+    public static final double StationConeArmPosition = 0.2243;
+
+    //StationCube
+    public static final double StationCubeWristPosition = 0.0975;
+    public static final double StationCubeArmPosition = 0.2067;
+
+    //ScoreHigh
+    public static final double ScoreHighWristPosition = 0.1561;
+    public static final double ScoreHighArmPosition = 0.1979;
+
+    //ScoreMid
+    public static final double ScoreMidWristPosition = 0.3366;
+    public static final double ScoreMidArmPosition = 0.0906;
+
+    //Hold
+    public static final double HoldWristPosition = 0.40776;
+    public static final double HoldArmPostion = 0.0029;
 
   }
 }

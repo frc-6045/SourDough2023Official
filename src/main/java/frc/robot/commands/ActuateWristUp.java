@@ -15,6 +15,7 @@ public class ActuateWristUp extends CommandBase {
   public ActuateWristUp(WristSubsystem m_WristSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_WristSubsystem = m_WristSubsystem;
+    addRequirements(m_WristSubsystem);
   }
 
   // Called when the command is initially scheduled.

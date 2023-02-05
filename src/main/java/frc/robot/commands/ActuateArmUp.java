@@ -15,6 +15,7 @@ public class ActuateArmUp extends CommandBase {
   public ActuateArmUp(ArmSubsystem m_ArmSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_ArmSubsystem = m_ArmSubsystem;
+    addRequirements(m_ArmSubsystem);
 
   }
 

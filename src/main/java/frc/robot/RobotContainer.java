@@ -158,7 +158,7 @@ new JoystickButton(m_driverController, Button.kR2.value).whileTrue(new RunComman
 new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new RunCommand(() -> {
   double Axis = m_driverController.getLeftTriggerAxis();
   m_WristSubsystemSmartMotion.setMode(false);
-  if(m_WristSubsystemSmartMotion.getEncoder().getPosition() < 0.95 /* min encoder position*/){
+  if(m_WristSubsystemSmartMotion.getEncoder().getPosition() > 0.8 /* min encoder position*/){
     m_WristSubsystemSmartMotion.setSetpoint((Axis) * m_WristSubsystemSmartMotion.getMaxVelocity());
   } else {
     m_WristSubsystemSmartMotion.setSetpoint(0.0);

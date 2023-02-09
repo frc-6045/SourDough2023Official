@@ -35,7 +35,6 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
             m_WristMotor.restoreFactoryDefaults();
             m_WristAbsoluteEncoder = m_WristMotor.getAbsoluteEncoder(SparkMaxAbsoluteEncoder.Type.kDutyCycle);
             m_WristFeedforward = new ArmFeedforward(0, 0, 0);
-            //dont know what the values should be for this
             m_WristAbsoluteEncoder.setPositionConversionFactor(WristConstants.kWristEncoderPositionFactor);
             m_WristAbsoluteEncoder.setVelocityConversionFactor(WristConstants.kWristEncoderVelocityFactor);
             
@@ -52,14 +51,14 @@ public class WristSubsystem extends ProfiledPIDSubsystem {
     // Return the process variable measurement here
     return m_WristAbsoluteEncoder.getPosition() + WristConstants.kWristOffset;
   }
-  public void goUp(){
-    disable();
-    m_WristMotor.set(0.25);
-    setGoal(m_WristAbsoluteEncoder.getPosition());
-    enable();
-  }
-  public void goDown(){
-    disable();
-    m_WristMotor.set(-0.25);
-  }
+  // public void goUp(){
+  //   disable();
+  //   m_WristMotor.set(0.25);
+  //   setGoal(m_WristAbsoluteEncoder.getPosition());
+  //   enable();
+  // }
+  // public void goDown(){
+  //   disable();
+  //   m_WristMotor.set(-0.25);
+  // }
 }

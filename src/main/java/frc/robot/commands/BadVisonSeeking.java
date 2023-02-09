@@ -34,25 +34,23 @@ public class BadVisonSeeking extends CommandBase {
   public void execute() {
     if(v != 1.0 &&  x >= 5.0 || x <= -5.0){
       m_DriveSubsystem.drive(0, 0, 0.5, true);
-    } else {
-      if(m_Limelight.getDistance() >= 12.0){ //note distance is in inches
-        m_DriveSubsystem.zeroHeading();
-        m_DriveSubsystem.drive(0, 1.0, 0, true);
-      } else if(x <= VisonConstants.kCameraXOffset){
-        m_DriveSubsystem.drive(0, 0, -0.1, true);
-      } else if(x >= VisonConstants.kCameraXOffset) {
-        m_DriveSubsystem.drive(0, 0, 0.1, true);
-      }
     }
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) {}
-
+  public void end(boolean interrupted) {
+    m_DriveSubsystem.zeroHeading();
+  }
+ 
+    
+    
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
+    if(m_Limelight.getDistance() >= 12.0){ //note distance is in inches
+      return true;
+    }
     return false;
   }
 }

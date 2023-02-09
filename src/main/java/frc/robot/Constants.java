@@ -35,12 +35,12 @@ public final class Constants {
     public static final double kWristMotorMaxVelocity = 0.2;
     public static final double kWristMotorMaxAcceleration = 0.5;
     public static final double kWristEncoderPositionFactor = (Math.PI * 2); //radians
-    public static final double kWristEncoderVelocityFactor = (Math.PI * 2) / 60.0; //radians per second | note: less sure on this one, stealing it from kTurningEncoderVelocityFactor |
+    public static final double kWristEncoderVelocityFactor = (Math.PI * 2) / 60.0; //radians per second;
     public static final int kWristMotorCanId = 32;
     public static final double kWristOffset = 0; //in radians
     public static final double kWristMinOutput = -0.2;
     public static final double kWristMaxOutput = .2;
-    
+
 
   }
   public static final class DriveConstants {

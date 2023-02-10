@@ -6,6 +6,8 @@ package frc.robot;
 
 import com.revrobotics.CANSparkMax.IdleMode;
 
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -135,6 +137,9 @@ public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 1;
     // Constraint for the motion profiled robot angle controller
     public static final TrapezoidProfile.Constraints kThetaControllerConstraints = new TrapezoidProfile.Constraints(
         kMaxAngularSpeedRadiansPerSecond, kMaxAngularSpeedRadiansPerSecondSquared);
+  
+    public static final TrapezoidProfile.Constraints kDriveControllerConstraints = new TrapezoidProfile.Constraints(
+    DriveConstants.kMaxSpeedMetersPerSecond, DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
   }
 
   public static final class NeoMotorConstants {
@@ -170,5 +175,34 @@ public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 1;
     public static final double kWristMaxOutput = 0;
     public static final int kWristMotorCanId = 0;
 
+  }
+
+  public static final class PIDSwerveConstants
+  {
+    public static final ProfiledPIDController thetaController = new ProfiledPIDController(0.5, 0, 0, AutoConstants.kThetaControllerConstraints);
+    public static final ProfiledPIDController m_XController = new ProfiledPIDController(0.5, 0, 0, AutoConstants.kDriveControllerConstraints);
+    public static final ProfiledPIDController m_YController = new ProfiledPIDController(0.5, 0, 0, AutoConstants.kDriveControllerConstraints);
+  
+
+  }
+
+  public static final class LimelightConstants
+  {
+    public static final double CAMERA_ELEVATION = 30.75; // TEST BOT
+    public static final double TARGET_ELEVATION = 258; // TEST BOT
+    public static final double LIMELIGHT_TO_ROBOT_CENTER = 9; // TEST BOT
+    // UNIT = degrees
+    public static final double CAMERA_ANGLE = 0; // TEST BOT
+
+
+    // LED MODES /limelight/ledMode
+    public static final int LED_MODE_FROM_PIPELINE = 0;
+    public static final int LED_MODE_FORCE_OFF = 1;
+    public static final int LED_MODE_FORCE_BLINK = 2;
+    public static final int LED_MODE_FORCE_ON = 3;
+
+    // pipeline numbers
+    public static final int PIPELINE_TELEOP = 0;
+    public static final int PIPELINE_GET_POS = 1;
   }
 }

@@ -136,6 +136,8 @@ public class RobotContainer {
     // new JoystickButton(m_driverController, Button.kL1.value).whileTrue(new ArmIntakeSlow(m_armIntake));
     // new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new ArmEjectSlow(m_armIntake));
 
+    new JoystickButton(m_driverController, Button.kCircle.value).toggleOnTrue(new RunCommand(() -> m_robotDrive.drive(0, 0, 0, false), m_robotDrive));
+
   }
 
   /**
@@ -170,6 +172,8 @@ public class RobotContainer {
     eventMap.put("intakeDown", new PrintCommand("intakeDown"));
 
     m_robotDrive.resetOdometry(examplePath.getInitialPose());
+
+  
 
     SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
       m_robotDrive::getPose, 

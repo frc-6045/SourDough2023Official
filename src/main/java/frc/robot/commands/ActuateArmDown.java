@@ -4,17 +4,24 @@
 
 package frc.robot.commands;
 
-import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmIntake;
+import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-public class ArmIntakeSlow extends CommandBase {
-  /** Creates a new ArmIntakeSlow. */
-  public final ArmIntake armIntake;
-  public ArmIntakeSlow(ArmIntake armIntake) 
-  {
-    this.armIntake = armIntake;
-    addRequirements(armIntake);
+import edu.wpi.first.wpilibj2.command.CommandBase;
+import frc.robot.subsystems.ArmSubsystem;
+
+public class ActuateArmDown extends CommandBase {
+  private final ArmSubsystem m_ArmSubsystem;
+
+  
+  /** Creates a new ActuateUp. */
+  public ActuateArmDown(ArmSubsystem m_ArmSubsystem) {
     // Use addRequirements() here to declare subsystem dependencies.
+    this.m_ArmSubsystem = m_ArmSubsystem;
+    addRequirements(m_ArmSubsystem);
+
+    
+
   }
 
   // Called when the command is initially scheduled.
@@ -25,15 +32,16 @@ public class ArmIntakeSlow extends CommandBase {
   @Override
   public void execute() 
   {
-    armIntake.setMotorSpeeds(0.7);
-
+    // if(m_ArmSubsystem.getAbsoluteEncoder().getPosition() > 0.268);
+    //     m_ArmSubsystem.stop();
+    m_ArmSubsystem.setSpeed(-0.6);
+  
   }
 
   // Called once the command ends or is interrupted.
   @Override
-  public void end(boolean interrupted) 
-  {
-    armIntake.setMotorSpeeds(0);
+  public void end(boolean interrupted) {
+    m_ArmSubsystem.setSpeed(0);
   }
 
   // Returns true when the command should end.

@@ -58,7 +58,7 @@ public class DriveSubsystem extends SubsystemBase {
   public DriveSubsystem() {
     this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
     this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
-    this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
+    this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond);
   }
 
   @Override
@@ -114,9 +114,10 @@ public class DriveSubsystem extends SubsystemBase {
   public void drive(double xSpeed, double ySpeed, double rot, boolean fieldRelative) 
   {
     // Adjust input based on max speed
-    // xSpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
-    // ySpeed *= DriveConstants.kMaxSpeedMetersPerSecond;
-    // rot *= DriveConstants.kMaxAngularSpeed;
+    // xSpeed *= 0.5;
+    // ySpeed *= 0.5;
+    rot *= 0.3;
+
 
     xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kMaxSpeedMetersPerSecond;
     ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kMaxSpeedMetersPerSecond;
@@ -200,6 +201,15 @@ public class DriveSubsystem extends SubsystemBase {
       m_rearLeft, 
       m_rearRight};
     return maxArray;
+  }
+
+  public double getAverageDistanceMeters()
+  {
+      return (m_frontLeft.getEncoderCounts() + 
+      m_frontRight.getEncoderCounts() + 
+      m_rearLeft.getEncoderCounts() + 
+      m_rearRight.getEncoderCounts()
+      ) / 4;
   }
 
 

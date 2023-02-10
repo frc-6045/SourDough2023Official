@@ -4,16 +4,20 @@
 
 package frc.robot.commands;
 
+import java.util.function.Supplier;
+
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.ArmIntake;
 
-public class ArmIntakeSlow extends CommandBase {
-  /** Creates a new ArmIntakeSlow. */
+public class ArmConsume extends CommandBase {
   public final ArmIntake armIntake;
-  public ArmIntakeSlow(ArmIntake armIntake) 
-  {
+  public Supplier speedSupplier;
+
+  /** Creates a new ArmEjectSlow. */
+  public ArmConsume(ArmIntake armIntake, Supplier speedSupplier) {
     this.armIntake = armIntake;
     addRequirements(armIntake);
+    this.speedSupplier = speedSupplier;
     // Use addRequirements() here to declare subsystem dependencies.
   }
 
@@ -23,10 +27,10 @@ public class ArmIntakeSlow extends CommandBase {
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
-  public void execute() 
-  {
-    armIntake.setMotorSpeeds(0.7);
+  public void execute() {
 
+    double speed = (double)speedSupplier.get();
+    armIntake.setMotorSpeeds(speed);
   }
 
   // Called once the command ends or is interrupted.

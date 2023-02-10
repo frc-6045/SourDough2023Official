@@ -1,0 +1,109 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 2.001620306558149,
+        "y": 2.906367708470014
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.001620306558153,
+        "y": 2.906367708470014
+      },
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.9636285718069073,
+        "y": 4.881937915534599
+      },
+      "prevControl": {
+        "x": 1.9636285718069073,
+        "y": 3.881937915534599
+      },
+      "nextControl": {
+        "x": 1.9636285718069073,
+        "y": 3.881937915534599
+      },
+      "holonomicAngle": 0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": true,
+      "stopEvent": {
+        "names": [
+          "CubeIntake"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 5.4398723015455515,
+        "y": 4.578004037524663
+      },
+      "prevControl": {
+        "x": 3.72074630405185,
+        "y": 4.53051436908561
+      },
+      "nextControl": null,
+      "holonomicAngle": -179.3259631020155,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "CubeDeposit"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "markers": [
+    {
+      "position": 0.0,
+      "names": [
+        "event"
+      ]
+    },
+    {
+      "position": 0.0,
+      "names": [
+        "event"
+      ]
+    },
+    {
+      "position": 0.2060606060605965,
+      "names": [
+        "Home"
+      ]
+    },
+    {
+      "position": 0.5818181818181691,
+      "names": [
+        "CubeGroundIntake"
+      ]
+    },
+    {
+      "position": 1.6242424242424187,
+      "names": [
+        "ScoreCubeMid"
+      ]
+    }
+  ]
+}

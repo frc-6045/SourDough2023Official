@@ -50,7 +50,7 @@ public final class Constants {
     public static final double kPhysicalMaxAngularSpeedRadiansPerSecond = 2 * 2 * Math.PI;
     public static final double kMaxAngularSpeed = 2 * Math.PI; // radians per second
     public static final double kTeleDriveMaxAngularSpeedRadiansPerSecond = //
-    kMaxAngularSpeed / 6;
+    kMaxAngularSpeed / 4;
     public static final double kTeleDriveMaxAccelerationUnitsPerSecond = 2;
 
 
@@ -211,8 +211,8 @@ public final class Constants {
     public static final double CubeIntakeArmPosition = 0.01356;
 
     //StationCone
-    public static final double StationConeWristPosition = 0.05663;
-    public static final double StationConeArmPosition = 0.2243;
+    public static final double StationConeWristPosition = 0.0380;
+    public static final double StationConeArmPosition = 0.227;
 
     //StationCube
     public static final double StationCubeWristPosition = 0.0975;
@@ -223,8 +223,8 @@ public final class Constants {
     public static final double ScoreHighArmPosition = 0.1979;
 
     //ScoreMid
-    public static final double ScoreMidWristPosition = 0.3366;
-    public static final double ScoreMidArmPosition = 0.0906;
+    public static final double ScoreMidWristPosition = 0.2400;
+    public static final double ScoreMidArmPosition = 0.123;
 
     //Hold
     public static final double HoldWristPosition = 0.40776;

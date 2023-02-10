@@ -17,6 +17,8 @@ import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.event.BooleanEvent;
+import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
+import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.simulation.JoystickSim;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -86,6 +88,9 @@ public class RobotContainer {
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_OperatorController = new XboxController(OIConstants.kDriverControllerPort2);
+  ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
+  ShuffleboardTab teleOpTab = Shuffleboard.getTab("TeleOp");
+
 
 
   SendableChooser<String> autoChooser = new SendableChooser<>();
@@ -146,8 +151,13 @@ public class RobotContainer {
           autoChooser.addOption("3 meters", "3 meters");
           
 
-          SmartDashboard.putData("Autonomous routine", autoChooser);
+          //SmartDashboard.putData("Autonomous routine", autoChooser);
+          autoTab.add(autoChooser);
+          teleOpTab.addDouble("Wrist Position", m_WristSubsystem::getAbsoluteEncoderCounts);
+          teleOpTab.addDouble("Arm position", m_ArmSubsystem::getAbsoluteEncoderPosition);
           
+
+
          
   }
 
@@ -623,6 +633,7 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
 
     String autoName = autoChooser.getSelected();
+    
     PathPlannerTrajectory examplePath;
     examplePath = PathPlanner.loadPath(autoName, new PathConstraints(4, 3));
     
@@ -646,8 +657,12 @@ public class RobotContainer {
 
 
     HashMap<String, Command> eventMap = new HashMap<>();
-    eventMap.put("marker1", new PrintCommand("Passed marker 1"));
-    eventMap.put("intakeDown", new PrintCommand("intakeDown"));
+    eventMap.put("home", new PrintCommand("entering home position"));
+    eventMap.put("CubeGroundIntake", new PrintCommand("entering ground intake position"));
+    eventMap.put("CubeIntake", new PrintCommand("intaking cube")); 
+    eventMap.put("ScoreCubeMid", new PrintCommand("entering mid scoring position"));
+    eventMap.put("CubeDeposit", new PrintCommand("Cube deposit"));
+
 
     m_robotDrive.resetOdometry(examplePath.getInitialPose());
 
@@ -662,9 +677,18 @@ public class RobotContainer {
       true,
       m_robotDrive);
 
-      Command fullAuto = autoBuilder.fullAuto(examplePath);
+      Command driveAuto = autoBuilder.fullAuto(examplePath);
+
+      FollowPathWithEvents fullAuto = new FollowPathWithEvents(
+        driveAuto,
+        examplePath.getMarkers(),
+        eventMap
+      );
 
       return fullAuto.andThen(m_robotDrive::setX);
+
+
+
 
 // This is just an example event map. It would be better to have a constant, global event map
 // in your code that will be used by all path following commands.

@@ -8,6 +8,8 @@ import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -106,7 +108,8 @@ public final class Constants {
     public static final double kDriveWheelFreeSpeedRps = (kDrivingMotorFreeSpeedRps * kWheelCircumferenceMeters)
         / kDrivingMotorReduction;
 
-    public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI)
+        //TODO: maybe remove this multiplier
+    public static final double kDrivingEncoderPositionFactor = (kWheelDiameterMeters * Math.PI ) 
         / kDrivingMotorReduction; // meters
     public static final double kDrivingEncoderVelocityFactor = ((kWheelDiameterMeters * Math.PI)
         / kDrivingMotorReduction) / 60.0; // meters per second
@@ -239,9 +242,9 @@ public final class Constants {
 
   public static final class PIDSwerveConstants
   {
-    public static final ProfiledPIDController thetaController = new ProfiledPIDController(0.5, 0, 0, AutoConstants.kThetaControllerConstraints);
-    public static final ProfiledPIDController m_XController = new ProfiledPIDController(0.5, 0, 0, AutoConstants.kDriveControllerConstraints);
-    public static final ProfiledPIDController m_YController = new ProfiledPIDController(0.5, 0, 0, AutoConstants.kDriveControllerConstraints);
+    public static final ProfiledPIDController thetaController = new ProfiledPIDController(0.04, 0, 0, AutoConstants.kThetaControllerConstraints);
+    public static final ProfiledPIDController m_XController = new ProfiledPIDController(0.04, 0, 0, AutoConstants.kDriveControllerConstraints);
+    public static final ProfiledPIDController m_YController = new ProfiledPIDController(0.1, 0, 0, AutoConstants.kDriveControllerConstraints);
   
 
   }
@@ -264,5 +267,10 @@ public final class Constants {
     // pipeline numbers
     public static final int PIPELINE_TELEOP = 0;
     public static final int PIPELINE_GET_POS = 1;
+  }
+
+  public static final class PoseConstants
+  {
+    public static final Pose2d targetPose1 = new Pose2d(14, 1, null);
   }
 }

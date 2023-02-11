@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.event.BooleanEvent;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.simulation.JoystickSim;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.AutoConstants;
@@ -34,8 +35,6 @@ import frc.robot.commands.ActuateWristDown;
 import frc.robot.commands.ActuateWristUp;
 import frc.robot.commands.ArmConsume;
 import frc.robot.commands.ArmEject;
-import frc.robot.commands.ArmEjectSlow;
-import frc.robot.commands.ArmIntakeSlow;
 import frc.robot.commands.PIDArmCommand;
 import frc.robot.commands.PIDWristCommand;
 import frc.robot.commands.StopArmPID;
@@ -90,6 +89,9 @@ public class RobotContainer {
   XboxController m_OperatorController = new XboxController(OIConstants.kDriverControllerPort2);
   ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
   ShuffleboardTab teleOpTab = Shuffleboard.getTab("TeleOp");
+
+
+
 
 
 
@@ -155,8 +157,10 @@ public class RobotContainer {
           autoTab.add(autoChooser);
           teleOpTab.addDouble("Wrist Position", m_WristSubsystem::getAbsoluteEncoderCounts);
           teleOpTab.addDouble("Arm position", m_ArmSubsystem::getAbsoluteEncoderPosition);
+          teleOpTab.addDouble("Gyro", m_robotDrive::getHeading);
+          teleOpTab.addDouble("Position", m_robotDrive::getAverageDistanceMeters);
           
-
+ 
 
          
   }

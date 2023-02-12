@@ -69,9 +69,9 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
           },
-          new Pose2d(14.6, 1, new Rotation2d(0)),
+          new Pose2d(), //14.6, 1, new Rotation2d(0)
           VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)), // initiial was 0.05 for both on top and 0.5 for bottom
-          VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(90)));
+          VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
 
       LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight");
       ShuffleboardTab limeLightTab = Shuffleboard.getTab("limelight");

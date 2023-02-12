@@ -51,6 +51,7 @@ import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -151,6 +152,8 @@ public class RobotContainer {
           autoChooser.addOption("ThePath", "ThePath");
           autoChooser.addOption("TheOG", "TheOG");
           autoChooser.addOption("3 meters", "3 meters");
+          autoChooser.addOption("TheOGWithEvents", "TheOGWithEvents");
+          autoChooser.addOption("Extra", "Extra");
           
 
           //SmartDashboard.putData("Autonomous routine", autoChooser);
@@ -1084,7 +1087,7 @@ public class RobotContainer {
     //If the path you gave is not in the list, drive forward  
     if (examplePath == null) {
       examplePath = PathPlanner.generatePath(
-        new PathConstraints(4, 3), 
+        new PathConstraints(4.8, 1.5),  // 4, 3
         new PathPoint(new Translation2d(1.0, 3.0), Rotation2d.fromDegrees(0)), // position, heading
         new PathPoint(new Translation2d(3.0, 3.0), Rotation2d.fromDegrees(0)) // position, heading
     );
@@ -1102,10 +1105,11 @@ public class RobotContainer {
 
     HashMap<String, Command> eventMap = new HashMap<>();
     eventMap.put("home", new PrintCommand("entering home position"));
-    eventMap.put("CubeGroundIntake", new PrintCommand("entering ground intake position"));
+    //eventMap.put("CubeGroundIntake", new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition));
     eventMap.put("CubeIntake", new PrintCommand("intaking cube")); 
     eventMap.put("ScoreCubeMid", new PrintCommand("entering mid scoring position"));
     eventMap.put("CubeDeposit", new PrintCommand("Cube deposit"));
+    eventMap.put("Wait5Seconds", new WaitCommand(5));
 
 
     m_robotDrive.resetOdometry(examplePath.getInitialPose());

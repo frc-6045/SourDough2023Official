@@ -27,23 +27,18 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PositionConstants;
-import frc.robot.commands.ActuateArm;
-import frc.robot.commands.ActuateArmDown;
-import frc.robot.commands.ActuateArmUp;
-import frc.robot.commands.ActuateWrist;
-import frc.robot.commands.ActuateWristDown;
-import frc.robot.commands.ActuateWristUp;
-import frc.robot.commands.ArmConsume;
-import frc.robot.commands.ArmEject;
-import frc.robot.commands.PIDArmCommand;
-import frc.robot.commands.PIDWristCommand;
-import frc.robot.commands.StopArmPID;
-import frc.robot.commands.StopWristPID;
-import frc.robot.subsystems.ArmIntake;
-import frc.robot.subsystems.ArmSubsystem;
-import frc.robot.subsystems.DriveSubsystem;
-// import frc.robot.subsystems.OtherPIDWrist;
-import frc.robot.subsystems.WristSubsystem;
+import frc.robot.commands.ArmCommands.ClosedLoopArm.PIDArmCommand;
+import frc.robot.commands.ArmCommands.ClosedLoopArm.StopArmPID;
+import frc.robot.commands.ArmCommands.OpenLoopArm.ActuateArm;
+import frc.robot.commands.WristCommands.WristConsume;
+import frc.robot.commands.WristCommands.WristEject;
+import frc.robot.commands.WristCommands.ClosedLoopWrist.PIDWristCommand;
+import frc.robot.commands.WristCommands.ClosedLoopWrist.StopWristPID;
+import frc.robot.commands.WristCommands.OpenLoopWrist.ActuateWrist;
+import frc.robot.subsystems.Arm.ArmSubsystem;
+import frc.robot.subsystems.Swerve.DriveSubsystem;
+import frc.robot.subsystems.Wrist.WristIntake;
+import frc.robot.subsystems.Wrist.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -82,7 +77,7 @@ import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
-  private final ArmIntake m_armIntake = new ArmIntake();
+  private final WristIntake m_armIntake = new WristIntake();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final WristSubsystem m_WristSubsystem = new WristSubsystem();
   // private final OtherPIDWrist m_OtherWrist = new OtherPIDWrist();
@@ -208,7 +203,7 @@ public class RobotContainer {
       {
         return false;
       }
-    } ).whileTrue(new ArmConsume(m_armIntake, m_OperatorController::getLeftTriggerAxis));
+    } ).whileTrue(new WristConsume(m_armIntake, m_OperatorController::getLeftTriggerAxis));
 
     //cubeIntake
     new Trigger(() ->
@@ -220,7 +215,7 @@ public class RobotContainer {
         return false;
       }
     } 
-    ).whileTrue(new ArmEject(m_armIntake, m_OperatorController::getRightTriggerAxis));
+    ).whileTrue(new WristEject(m_armIntake, m_OperatorController::getRightTriggerAxis));
 
 
 
@@ -442,7 +437,7 @@ public class RobotContainer {
       {
         return false;
       }
-    } ).whileTrue(new ArmConsume(m_armIntake, m_OperatorController::getLeftTriggerAxis));
+    } ).whileTrue(new WristConsume(m_armIntake, m_OperatorController::getLeftTriggerAxis));
 
     //cubeIntake
     new Trigger(() ->
@@ -454,7 +449,7 @@ public class RobotContainer {
         return false;
       }
     } 
-    ).whileTrue(new ArmEject(m_armIntake, m_OperatorController::getRightTriggerAxis));
+    ).whileTrue(new WristEject(m_armIntake, m_OperatorController::getRightTriggerAxis));
 
 
     //HomePosition
@@ -691,7 +686,8 @@ public class RobotContainer {
      m_robotDrive);
 
      m_robotDrive.resetOdometry(examplePath.getInitialPose());
-        return autoBuilder.fullAuto(examplePath);
+    return autoBuilder.fullAuto(examplePath);
+    
 
   }
 

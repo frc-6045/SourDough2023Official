@@ -2,19 +2,19 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands;
+package frc.robot.commands.WristCommands;
 
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.subsystems.ArmIntake;
+import frc.robot.subsystems.Wrist.WristIntake;
 
-public class ArmEject extends CommandBase {
-  public final ArmIntake armIntake;
+public class WristConsume extends CommandBase {
+  public final WristIntake armIntake;
   public Supplier speedSupplier;
 
   /** Creates a new ArmEjectSlow. */
-  public ArmEject(ArmIntake armIntake, Supplier speedSupplier) {
+  public WristConsume(WristIntake armIntake, Supplier speedSupplier) {
     this.armIntake = armIntake;
     addRequirements(armIntake);
     this.speedSupplier = speedSupplier;
@@ -30,7 +30,7 @@ public class ArmEject extends CommandBase {
   public void execute() {
 
     double speed = (double)speedSupplier.get();
-    armIntake.setMotorSpeeds(-speed);
+    armIntake.setMotorSpeeds(speed);
   }
 
   // Called once the command ends or is interrupted.

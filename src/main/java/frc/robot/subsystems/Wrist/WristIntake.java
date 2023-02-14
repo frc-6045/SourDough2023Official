@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.subsystems;
+package frc.robot.subsystems.Wrist;
 
 import java.net.CacheRequest;
 import java.util.function.Supplier;
@@ -16,7 +16,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants;
 import frc.robot.Constants.ArmIntakeConstants;
 
-public class ArmIntake extends SubsystemBase {
+public class WristIntake extends SubsystemBase {
   private final CANSparkMax intakeMotor1;
   private final CANSparkMax intakeMotor2;
   /** Creates a new ArmIntake. */
@@ -24,7 +24,7 @@ public class ArmIntake extends SubsystemBase {
 
 
 
-  public ArmIntake()
+  public WristIntake()
   {
     intakeMotor1 = new CANSparkMax(ArmIntakeConstants.leftIntakeMotorCanId, MotorType.kBrushless);
     intakeMotor2 = new CANSparkMax(ArmIntakeConstants.rightIntakeMotorCanId, MotorType.kBrushless);

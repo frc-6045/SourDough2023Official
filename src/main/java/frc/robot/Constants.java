@@ -4,6 +4,8 @@
 
 package frc.robot;
 
+import java.util.HashMap;
+
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
@@ -14,6 +16,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
 
 /**
@@ -162,6 +165,11 @@ public final class Constants {
   
     public static final TrapezoidProfile.Constraints kDriveControllerConstraints = new TrapezoidProfile.Constraints(
     DriveConstants.kMaxSpeedMetersPerSecond, DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
+
+    public static final double maxAutoSpeed = 4.0;
+    public static final double maxAutoAcceleration = 2.0;
+
+
   }
 
   public static final class NeoMotorConstants {
@@ -215,8 +223,8 @@ public final class Constants {
     public static final double ConeIntakeArmPosition = 0;
 
     //CubeIntake
-    public static final double CubeIntakeWristPosition = 0.2420;
-    public static final double CubeIntakeArmPosition = 0.01356;
+    public static final double CubeIntakeWristPosition = 0.2470;
+    public static final double CubeIntakeArmPosition = 0.01856;
 
     //StationCone
     public static final double StationConeWristPosition = 0.0380;
@@ -273,4 +281,6 @@ public final class Constants {
   {
     public static final Pose2d targetPose1 = new Pose2d(14, 1, null);
   }
+
+  
 }

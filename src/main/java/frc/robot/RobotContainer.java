@@ -45,7 +45,9 @@ import frc.robot.subsystems.DriveSubsystem;
 // import frc.robot.subsystems.OtherPIDWrist;
 import frc.robot.subsystems.WristSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -59,6 +61,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+
 
 import com.pathplanner.lib.PathConstraints;
 import com.pathplanner.lib.PathPlanner;
@@ -154,6 +158,8 @@ public class RobotContainer {
           autoChooser.addOption("3 meters", "3 meters");
           autoChooser.addOption("TheOGWithEvents", "TheOGWithEvents");
           autoChooser.addOption("Extra", "Extra");
+          autoChooser.addOption("Thing", "Thing");
+      
           
 
           //SmartDashboard.putData("Autonomous routine", autoChooser);
@@ -216,133 +222,6 @@ public class RobotContainer {
     } 
     ).whileTrue(new ArmEject(m_armIntake, m_OperatorController::getRightTriggerAxis));
 
-    //PID Wrist to 0.3
-    // new Trigger(()->
-    // {
-    //   if(m_OperatorController.getRightBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_OperatorController.getPOV() == 0)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDWristCommand(m_WristSubsystem, 0.4));
-
-
-
-
-    // //PID Wrist to 0
-    // new Trigger(()->
-    // {
-    //   if(m_OperatorController.getRightBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_OperatorController.getPOV() == 90)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDWristCommand(m_WristSubsystem, 0.0));
-
-
-    // new Trigger(()->
-    // {
-    //   if(m_OperatorController.getRightBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_OperatorController.getPOV() == 180)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDWristCommand(m_WristSubsystem, -0.2));
-
-
-
-
-
-
-    // //ArmPID
-    // new Trigger(()->
-    // {
-    //   if(m_OperatorController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
-    // }
-    // ).and(()->
-    // {
-    //   if(m_OperatorController.getPOV() == 0)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDArmCommand(m_ArmSubsystem, 0.2));
-
-
-
-
-
-    // new Trigger(()->
-    // {
-    //   if(m_OperatorController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_OperatorController.getPOV() == 90)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDArmCommand(m_ArmSubsystem, 0.1));
-
-
-
-
-
-    // new Trigger(()->
-    // {
-    //   if(m_OperatorController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_OperatorController.getPOV() == 180)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDArmCommand(m_ArmSubsystem, -0.005));
-
-
-
-
-
-
-
 
 
     //working example
@@ -371,12 +250,6 @@ public class RobotContainer {
 
 
 
-
-
-
-
-
-
     //ConeIntake
 
     new Trigger(()->
@@ -396,14 +269,6 @@ public class RobotContainer {
     }
     ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition))
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
-
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kB.value)
-    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition))
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
-
-
-
-
 
 
 
@@ -428,16 +293,6 @@ public class RobotContainer {
     ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition))
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
 
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kA.value)
-    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition))
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
-
-
-
-
-
-
-
 
 
     //StationCone
@@ -458,16 +313,6 @@ public class RobotContainer {
     }
     ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationConeWristPosition))
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationConeArmPosition));
-    
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kY.value)
-    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationConeWristPosition))
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationConeArmPosition));
-
-
-
-
-
-
 
 
 
@@ -494,16 +339,6 @@ public class RobotContainer {
     // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kX.value)
     // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationCubeWristPosition))
     // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationCubeArmPosition));
-
-
-
-
-
-
-
-
-
-
 
 
 
@@ -554,13 +389,6 @@ public class RobotContainer {
 
 
 
-
-
-
-
-
-
-
     //Hold
     new Trigger(()->
     {
@@ -604,32 +432,6 @@ public class RobotContainer {
     ).onTrue(new StopWristPID(m_WristSubsystem))
     .onTrue(new StopArmPID(m_ArmSubsystem));
 
-
-
-
-    
-    
-
-    
-
-    // new JoystickButton(m_OperatorController, XboxController.Button.kB.value).whileTrue(new ActuateWristUp(m_WristSubsystem));
-    // new JoystickButton(m_OperatorController, XboxController.Button.kA.value).whileTrue(new ActuateWristDown(m_WristSubsystem));
-    // new JoystickButton(m_OperatorController, XboxController.Button.kY.value).whileTrue(new ActuateArmDown(m_ArmSubsystem));
-    // new JoystickButton(m_OperatorController, XboxController.Button.kX.value).whileTrue(new ActuateArmUp(m_ArmSubsystem));
-
-  
-// new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(Commands.runOnce(() -> {
-//   m_OtherWrist.setGoal(0.25 * Math.PI * 2);
-//   m_OtherWrist.enable();
-// }, m_OtherWrist));
-
-// new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(Commands.runOnce(() -> {
-//   m_OtherWrist.setGoal(0.1 * Math.PI * 2);
-//   m_OtherWrist.enable();
-// }, m_OtherWrist)); 
-
-    // new JoystickButton(m_OperatorController, XboxController.Button.kRightBumper.value).whileTrue(new ArmIntakeSlow(m_armIntake));
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value).whileTrue(new ArmEjectSlow(m_armIntake));
 
     //coneIntake
     new Trigger(() ->
@@ -654,139 +456,6 @@ public class RobotContainer {
     } 
     ).whileTrue(new ArmEject(m_armIntake, m_OperatorController::getRightTriggerAxis));
 
-    //PID Wrist to 0.3
-    // new Trigger(()->
-    // {
-    //   if(m_OperatorController.getRightBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_OperatorController.getPOV() == 0)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDWristCommand(m_WristSubsystem, 0.4));
-
-
-
-
-    // //PID Wrist to 0
-    // new Trigger(()->
-    // {
-    //   if(m_OperatorController.getRightBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_OperatorController.getPOV() == 90)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDWristCommand(m_WristSubsystem, 0.0));
-
-
-    // new Trigger(()->
-    // {
-    //   if(m_OperatorController.getRightBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_OperatorController.getPOV() == 180)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDWristCommand(m_WristSubsystem, -0.2));
-
-
-
-
-
-
-    // //ArmPID
-    // new Trigger(()->
-    // {
-    //   if(m_OperatorController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
-    // }
-    // ).and(()->
-    // {
-    //   if(m_OperatorController.getPOV() == 0)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDArmCommand(m_ArmSubsystem, 0.2));
-
-
-
-
-
-    // new Trigger(()->
-    // {
-    //   if(m_OperatorController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_OperatorController.getPOV() == 90)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDArmCommand(m_ArmSubsystem, 0.1));
-
-
-
-
-
-    // new Trigger(()->
-    // {
-    //   if(m_OperatorController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_OperatorController.getPOV() == 180)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDArmCommand(m_ArmSubsystem, -0.005));
-
-
-
-
-
-
-
-
-
-    //working example
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kA.value)
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, 0.1))
-    // .onTrue(new PIDWristCommand(m_WristSubsystem, 0));
 
     //HomePosition
     new Trigger(()->
@@ -806,14 +475,6 @@ public class RobotContainer {
     }
     ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HomeWristPosition))
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HomeArmPosition));
-
-
-
-
-
-
-
-
 
     //ConeIntake
 
@@ -835,17 +496,6 @@ public class RobotContainer {
     ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition))
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
 
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kB.value)
-    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition))
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
-
-
-
-
-
-
-
-
     //CubeIntake
 
     new Trigger(()->
@@ -866,18 +516,6 @@ public class RobotContainer {
     ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition))
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
 
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kA.value)
-    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition))
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
-
-
-
-
-
-
-
-
-
     //StationCone
     new Trigger(()->
     {
@@ -896,19 +534,6 @@ public class RobotContainer {
     }
     ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationConeWristPosition))
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationConeArmPosition));
-    
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kY.value)
-    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationConeWristPosition))
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationConeArmPosition));
-
-
-
-
-
-
-
-
-
 
     //StationCube
 
@@ -929,20 +554,6 @@ public class RobotContainer {
     }
     ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationCubeWristPosition))
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationCubeArmPosition));
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kX.value)
-    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationCubeWristPosition))
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationCubeArmPosition));
-
-
-
-
-
-
-
-
-
-
-
 
 
     //ScoreHigh
@@ -965,12 +576,6 @@ public class RobotContainer {
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreHighArmPosition));
 
 
-
-
-
-
-
-
     //ScoreMid
     new Trigger(()->
     {
@@ -989,14 +594,6 @@ public class RobotContainer {
     }
     ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreMidWristPosition))
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
-
-
-
-
-
-
-
-
 
 
     //Hold
@@ -1018,10 +615,6 @@ public class RobotContainer {
     ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HoldWristPosition))
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HoldArmPostion));
 
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kRightBumper.value)
-    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HoldWristPosition))
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HoldArmPostion));
-
 
     //Cancel active PID Commands
     new Trigger(()->
@@ -1042,29 +635,6 @@ public class RobotContainer {
     ).onTrue(new StopWristPID(m_WristSubsystem))
     .onTrue(new StopArmPID(m_ArmSubsystem));
 
-
-
-
-    
-    
-
-    
-
-    // new JoystickButton(m_OperatorController, XboxController.Button.kB.value).whileTrue(new ActuateWristUp(m_WristSubsystem));
-    // new JoystickButton(m_OperatorController, XboxController.Button.kA.value).whileTrue(new ActuateWristDown(m_WristSubsystem));
-    // new JoystickButton(m_OperatorController, XboxController.Button.kY.value).whileTrue(new ActuateArmDown(m_ArmSubsystem));
-    // new JoystickButton(m_OperatorController, XboxController.Button.kX.value).whileTrue(new ActuateArmUp(m_ArmSubsystem));
-
-  
-// new JoystickButton(m_driverController, XboxController.Button.kA.value).onTrue(Commands.runOnce(() -> {
-//   m_OtherWrist.setGoal(0.25 * Math.PI * 2);
-//   m_OtherWrist.enable();
-// }, m_OtherWrist));
-
-// new JoystickButton(m_driverController, XboxController.Button.kB.value).onTrue(Commands.runOnce(() -> {
-//   m_OtherWrist.setGoal(0.1 * Math.PI * 2);
-//   m_OtherWrist.enable();
-// }, m_OtherWrist)); 
 
     new JoystickButton(m_driverController, Button.kCircle.value).toggleOnTrue(new RunCommand(() -> m_robotDrive.drive(0, 0, 0, false), m_robotDrive));
 
@@ -1093,8 +663,6 @@ public class RobotContainer {
     );
     }
 
-
-
     // Prints for running in simulation, you can comment these our if you want 
     System.out.print("========== Starting Auto ==========\n");
     System.out.print("Path: " + autoName + "\n");
@@ -1102,106 +670,29 @@ public class RobotContainer {
 
    // examplePath = PathPlanner.loadPath("Example Path", new PathConstraints(4, 3));
 
+   HashMap<String, Command> eventMap = new HashMap<>();
+   eventMap.put("home", new PrintCommand("entering home position"));
+   eventMap.put("CubeGroundIntake", new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition));
+   eventMap.put("Thing", new PrintCommand("Thing"));
+   eventMap.put("CubeIntake", new PrintCommand("intaking cube")); 
+   eventMap.put("ScoreCubeMid", new PrintCommand("entering mid scoring position"));
+   eventMap.put("CubeDeposit", new PrintCommand("Cube deposit"));
+   eventMap.put("Wait5Seconds", new WaitCommand(5));
 
-    HashMap<String, Command> eventMap = new HashMap<>();
-    eventMap.put("home", new PrintCommand("entering home position"));
-    //eventMap.put("CubeGroundIntake", new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition));
-    eventMap.put("CubeIntake", new PrintCommand("intaking cube")); 
-    eventMap.put("ScoreCubeMid", new PrintCommand("entering mid scoring position"));
-    eventMap.put("CubeDeposit", new PrintCommand("Cube deposit"));
-    eventMap.put("Wait5Seconds", new WaitCommand(5));
+   SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+     m_robotDrive::getPose, 
+     m_robotDrive::resetOdometry,
+     DriveConstants.kDriveKinematics,
+     new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
+     new PIDConstants(1.2, 0.0, 0),
+     m_robotDrive::setModuleStates,
+     eventMap,
+     true,
+     m_robotDrive);
 
+     m_robotDrive.resetOdometry(examplePath.getInitialPose());
+        return autoBuilder.fullAuto(examplePath);
 
-    m_robotDrive.resetOdometry(examplePath.getInitialPose());
-
-  
-
-    SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
-      m_robotDrive::getPose, 
-      m_robotDrive::resetOdometry,
-      DriveConstants.kDriveKinematics,
-      new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
-      new PIDConstants(1.2, 0.0, 0),
-      m_robotDrive::setModuleStates,
-      eventMap,
-      true,
-      m_robotDrive);
-
-      Command driveAuto = autoBuilder.fullAuto(examplePath);
-
-      FollowPathWithEvents fullAuto = new FollowPathWithEvents(
-        driveAuto,
-        examplePath.getMarkers(),
-        eventMap
-      );
-
-      return fullAuto.andThen(m_robotDrive::setX);
-
-
-
-
-// This is just an example event map. It would be better to have a constant, global event map
-// in your code that will be used by all path following commands.
-
-
-
-
-
-
-
-/* 
-
-    // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(
-        AutoConstants.kMaxSpeedMetersPerSecond,
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-        // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(DriveConstants.kDriveKinematics);
-
-    // An example trajectory to follow. All units in meters.
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
-        config);
-
-    var thetaController = new ProfiledPIDController(
-        AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-        exampleTrajectory,
-        m_robotDrive::getPose, // Functional interface to feed supplier
-        DriveConstants.kDriveKinematics,
-
-        // Position controllers
-        new PIDController(AutoConstants.kPXController, 0, 0),
-        new PIDController(AutoConstants.kPYController, 0, 0),
-        thetaController,
-        m_robotDrive::setModuleStates,
-        m_robotDrive);
-
-    // Reset odometry to the starting pose of the trajectory.
-    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
-
-    // Run path following command, then stop at the end.
-    
-
-
-
-    //changed to true for the field odometrey instead of default false. 
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, true));
-    */
   }
 
-
-
-
-  // public DriveSubsystem getDriveSubsystem()
-  // {
-  //   return m_robotDrive;
-  // }
 }

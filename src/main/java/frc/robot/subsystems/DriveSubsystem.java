@@ -70,8 +70,8 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
           },
           new Pose2d(), //14.6, 1, new Rotation2d(0)
-          VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(5)), // initiial was 0.05 for both on top and 0.5 for bottom
-          VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(30)));
+          VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(0)), // initiial was 0.05 for both on top and 0.5 for bottom
+          VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(720)));
 
       LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight");
       ShuffleboardTab limeLightTab = Shuffleboard.getTab("limelight");
@@ -95,6 +95,10 @@ public class DriveSubsystem extends SubsystemBase {
   public void periodic() {
     // Update the odometry in the periodic block
     boolean colorEqualsBlue = true;
+
+    // double xDistance = m_poseEstimator.getEstimatedPosition().getX() - LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX();
+    // double yDistance = m_poseEstimator.getEstimatedPosition().getY() - LimelightHelpers.getBotPose3d_wpiBlue("limelight").getY();
+    // double rotDistance = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees() - LimelightHelpers.getBotPose3d_wpiBlue("limelight").getRotation().getAngle() / Math.PI / 2 * 360;
     
     if(LimelightHelpers.getBotPose2d("limelight").getX() != 0 && colorEqualsBlue == true)
     {

@@ -27,6 +27,7 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PositionConstants;
+import frc.robot.commands.SetArmWithWristPosition;
 import frc.robot.commands.ArmCommands.ClosedLoopArm.PIDArmCommand;
 import frc.robot.commands.ArmCommands.ClosedLoopArm.StopArmPID;
 import frc.robot.commands.ArmCommands.OpenLoopArm.ActuateArm;
@@ -44,7 +45,9 @@ import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
@@ -164,6 +167,7 @@ public class RobotContainer {
           autoChooser.addOption("TheOGWithEvents", "TheOGWithEvents");
           autoChooser.addOption("Extra", "Extra");
           autoChooser.addOption("Thing", "Thing");
+          autoChooser.addOption("LinearStopLinear", "LinearStopLinear");
       
           
 
@@ -651,7 +655,7 @@ public class RobotContainer {
     String autoName = autoChooser.getSelected();
     
     PathPlannerTrajectory examplePath;
-    examplePath = PathPlanner.loadPath(autoName, new PathConstraints(4, 3));
+    examplePath = PathPlanner.loadPath(autoName, new PathConstraints(3, 2));
     
     //If the path you gave is not in the list, drive forward  
     if (examplePath == null) {
@@ -669,14 +673,19 @@ public class RobotContainer {
 
    // examplePath = PathPlanner.loadPath("Example Path", new PathConstraints(4, 3));
 
-   HashMap<String, Command> eventMap = new HashMap<>();
-   eventMap.put("home", new PrintCommand("entering home position"));
-   eventMap.put("CubeGroundIntake", new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition));
-   eventMap.put("Thing", new PrintCommand("Thing"));
-   eventMap.put("CubeIntake", new PrintCommand("intaking cube")); 
-   eventMap.put("ScoreCubeMid", new PrintCommand("entering mid scoring position"));
-   eventMap.put("CubeDeposit", new PrintCommand("Cube deposit"));
-   eventMap.put("Wait5Seconds", new WaitCommand(5));
+AutoConstants.eventMap.put("Home", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.HomeWristPosition, m_ArmSubsystem, PositionConstants.HomeArmPosition));
+AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.HomeWristPosition, m_ArmSubsystem, PositionConstants.HomeArmPosition));
+AutoConstants.eventMap.put("MidScore", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+
+  //  eventMap.put("home", new PrintCommand("entering home position"));
+  //  eventMap.put("CubeGroundIntake", new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition));
+  //  eventMap.put("Thing", new PrintCommand("Thing"));
+  //  eventMap.put("CubeIntake", new PrintCommand("intaking cube")); 
+  //  eventMap.put("ScoreCubeMid", new PrintCommand("entering mid scoring position"));
+  //  eventMap.put("CubeDeposit", new PrintCommand("Cube deposit"));
+  //  eventMap.put("Wait5Seconds", new WaitCommand(5));
+
+ 
 
    SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
      m_robotDrive::getPose, 
@@ -685,12 +694,37 @@ public class RobotContainer {
      new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
      new PIDConstants(1.2, 0.0, 0),
      m_robotDrive::setModuleStates,
-     eventMap,
+     AutoConstants.eventMap,
      true,
      m_robotDrive);
+     
+     List<PathPlannerTrajectory> auto1Paths =
+        PathPlanner.loadPathGroup("LinearStopLinear", 
+        AutoConstants.maxAutoSpeed, 
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
-     m_robotDrive.resetOdometry(examplePath.getInitialPose());
-    return autoBuilder.fullAuto(examplePath);
+        m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
+     
+        Command AutoTest = 
+        new SequentialCommandGroup(
+            new FollowPathWithEvents(
+              new ProxyCommand(autoBuilder.followPathWithEvents(auto1Paths.get(0))), 
+                               auto1Paths.get(0).getMarkers(), 
+                               AutoConstants.eventMap),
+            new ParallelCommandGroup(new WristConsume(m_armIntake, () -> 0.5),
+                                      new WaitCommand(3)),
+            new FollowPathWithEvents(
+                                      new ProxyCommand(autoBuilder.followPathWithEvents(auto1Paths.get(1))), 
+                                                        auto1Paths.get(1).getMarkers(), 
+                                                        AutoConstants.eventMap)
+        );     
+
+        return AutoTest;
+
+   
+   
+   //  return autoBuilder.fullAuto(examplePath);
+    
     
 
   }

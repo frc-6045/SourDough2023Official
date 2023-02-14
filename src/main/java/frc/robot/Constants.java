@@ -169,6 +169,8 @@ public final class Constants {
     public static final double maxAutoSpeed = 4.0;
     public static final double maxAutoAcceleration = 2.0;
 
+    public static final HashMap<String, Command> eventMap = new HashMap<>();
+
 
   }
 
@@ -281,6 +283,8 @@ public final class Constants {
   {
     public static final Pose2d targetPose1 = new Pose2d(14, 1, null);
   }
+
+  
 
   
 }

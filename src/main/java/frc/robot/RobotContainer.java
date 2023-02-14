@@ -98,7 +98,14 @@ public class RobotContainer {
   SendableChooser<String> autoChooser = new SendableChooser<>();
 
 
-
+//Command F points of interest:
+/*
+ * Top_
+ * Configure default commands
+ * Add list of paths to shuffleBoard
+ * Triggers Begin
+ * getAutonomousCommand
+ */
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
@@ -107,10 +114,12 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
 
+
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
+        
         new RunCommand(
             () -> m_robotDrive.drive(
                 MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.15),
@@ -123,7 +132,6 @@ public class RobotContainer {
 
 
             autoChooser.setDefaultOption("Drive Forwards", "Drive Forwards");
-
             try {
 
               
@@ -148,6 +156,8 @@ public class RobotContainer {
               System.err.println(e.getMessage());
           }
           //temporary stand in to make it show up.
+
+          //Add list of paths to shuffleBoard. have to do this since the file directory automation part doesn't work.
           autoChooser.addOption("ThePath", "ThePath");
           autoChooser.addOption("TheOG", "TheOG");
           autoChooser.addOption("3 meters", "3 meters");
@@ -188,13 +198,11 @@ public class RobotContainer {
     .onTrue(new InstantCommand(
       ()-> m_robotDrive.zeroHeading(),
        m_robotDrive));
-    // new JoystickButton(m_driverController, Button.kL1.value).whileTrue(new ArmIntakeSlow(m_armIntake));
-    // new JoystickButton(m_driverController, Button.kL2.value).whileTrue(new ArmEjectSlow(m_armIntake));
 
-    // new JoystickButton(m_OperatorController, XboxController.Button.kRightBumper.value).whileTrue(new ArmIntakeSlow(m_armIntake));
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value).whileTrue(new ArmEjectSlow(m_armIntake));
 
-    //coneIntake
+
+    //Triggers Begin
+    //ConeConsume
     new Trigger(() ->
     {
       if(m_OperatorController.getLeftTriggerAxis() > 0 || m_OperatorController.getLeftTriggerAxis() < 0)
@@ -205,7 +213,7 @@ public class RobotContainer {
       }
     } ).whileTrue(new WristConsume(m_armIntake, m_OperatorController::getLeftTriggerAxis));
 
-    //cubeIntake
+    //cubeConsume
     new Trigger(() ->
     {
       if(m_OperatorController.getRightTriggerAxis() > 0 || m_OperatorController.getRightTriggerAxis() < 0)
@@ -402,10 +410,6 @@ public class RobotContainer {
     }
     ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HoldWristPosition))
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HoldArmPostion));
-
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kRightBumper.value)
-    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HoldWristPosition))
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HoldArmPostion));
 
 
     //Cancel active PID Commands

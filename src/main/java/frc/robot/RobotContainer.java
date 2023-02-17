@@ -31,6 +31,9 @@ import frc.robot.commands.SetArmWithWristPosition;
 import frc.robot.commands.ArmCommands.ClosedLoopArm.PIDArmCommand;
 import frc.robot.commands.ArmCommands.ClosedLoopArm.StopArmPID;
 import frc.robot.commands.ArmCommands.OpenLoopArm.ActuateArm;
+import frc.robot.commands.AutoCommands.FollowTrajectory;
+import frc.robot.commands.AutoCommands.WristConsumeWithTime;
+import frc.robot.commands.AutoCommands.WristEjectWithTime;
 import frc.robot.commands.WristCommands.WristConsume;
 import frc.robot.commands.WristCommands.WristEject;
 import frc.robot.commands.WristCommands.ClosedLoopWrist.PIDWristCommand;
@@ -46,6 +49,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
+import edu.wpi.first.wpilibj2.command.ParallelDeadlineGroup;
+import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -127,7 +132,7 @@ public class RobotContainer {
             () -> m_robotDrive.drive(
                 MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.15),
                 MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.15),
-                MathUtil.applyDeadband(-m_driverController.getRightX(), 0.15),
+                MathUtil.applyDeadband(-m_driverController.getRightX(), 0.20),
                 true),
             m_robotDrive));
     m_ArmSubsystem.setDefaultCommand(new ActuateArm(m_ArmSubsystem, m_OperatorController::getLeftY));
@@ -175,7 +180,7 @@ public class RobotContainer {
           autoTab.add(autoChooser);
           teleOpTab.addDouble("Wrist Position", m_WristSubsystem::getAbsoluteEncoderCounts);
           teleOpTab.addDouble("Arm position", m_ArmSubsystem::getAbsoluteEncoderPosition);
-          teleOpTab.addDouble("Gyro", m_robotDrive::getHeading);
+          teleOpTab.addDouble("Gyro", m_robotDrive::getHeadingDegrees);
           teleOpTab.addDouble("Position", m_robotDrive::getAverageDistanceMeters);
           
  
@@ -676,6 +681,8 @@ public class RobotContainer {
 AutoConstants.eventMap.put("Home", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.HomeWristPosition, m_ArmSubsystem, PositionConstants.HomeArmPosition));
 AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.HomeWristPosition, m_ArmSubsystem, PositionConstants.HomeArmPosition));
 AutoConstants.eventMap.put("MidScore", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+AutoConstants.eventMap.put("WristIntakeWithTime", new WristConsumeWithTime(m_armIntake, 3));
+
 
   //  eventMap.put("home", new PrintCommand("entering home position"));
   //  eventMap.put("CubeGroundIntake", new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition));
@@ -699,25 +706,74 @@ AutoConstants.eventMap.put("MidScore", new SetArmWithWristPosition(m_WristSubsys
      m_robotDrive);
      
      List<PathPlannerTrajectory> auto1Paths =
-        PathPlanner.loadPathGroup("LinearStopLinear", 
+        PathPlanner.loadPathGroup("Thing", 
         AutoConstants.maxAutoSpeed, 
         AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+
+     
 
         m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
      
         Command AutoTest = 
         new SequentialCommandGroup(
-            new FollowPathWithEvents(
-              new ProxyCommand(autoBuilder.followPathWithEvents(auto1Paths.get(0))), 
-                               auto1Paths.get(0).getMarkers(), 
-                               AutoConstants.eventMap),
-            new ParallelCommandGroup(new WristConsume(m_armIntake, () -> 0.5),
-                                      new WaitCommand(3)),
-            new FollowPathWithEvents(
-                                      new ProxyCommand(autoBuilder.followPathWithEvents(auto1Paths.get(1))), 
-                                                        auto1Paths.get(1).getMarkers(), 
-                                                        AutoConstants.eventMap)
-        );     
+              //new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreHighWristPosition, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition),
+              new FollowPathWithEvents(new FollowTrajectory(m_robotDrive, auto1Paths.get(0), true), auto1Paths.get(0).getMarkers(), AutoConstants.eventMap),
+              new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition)
+
+              
+
+
+
+
+
+
+              
+              // new FollowPathWithEvents(
+              //         new ProxyCommand(autoBuilder.followPathWithEvents(auto1Paths.get(0))), 
+              //                          auto1Paths.get(0).getMarkers(), 
+              //                          AutoConstants.eventMap),
+              // // new ParallelRaceGroup(new WristEject(m_armIntake, () -> 0.5),
+              // //                       new WaitCommand(3)),
+              // new FollowPathWithEvents(
+              //   new ProxyCommand(autoBuilder.followPathWithEvents(auto1Paths.get(1))), 
+              //                     auto1Paths.get(1).getMarkers(), 
+              //                     AutoConstants.eventMap),
+              // new FollowPathWithEvents(
+              //   new ProxyCommand(autoBuilder.followPathWithEvents(auto1Paths.get(2))), 
+              //                     auto1Paths.get(2).getMarkers(), 
+              //                     AutoConstants.eventMap),
+              // new PrintCommand("auto1Paths size: "  + auto1Paths.size()),
+              // new WristEjectWithTime(m_armIntake, 3)
+              // // new ParallelRaceGroup(new WristEject(m_armIntake, () -> 0.5),
+              // //                       new WaitCommand(3)),
+              // // new FollowPathWithEvents(
+              // //   new ProxyCommand(autoBuilder.followPathWithEvents(auto1Paths.get(3))), 
+              // //                   auto1Paths.get(3).getMarkers(), 
+              // //                   AutoConstants.eventMap)
+              // // new FollowPathWithEvents(
+              // //   new ProxyCommand(autoBuilder.followPathWithEvents(auto1Paths.get(4))), 
+              // //                   auto1Paths.get(4).getMarkers(), 
+              // //                   AutoConstants.eventMap)
+        );
+   
+   
+   
+   
+   
+   
+   
+        // new SequentialCommandGroup(
+        //     new FollowPathWithEvents(
+        //       new ProxyCommand(autoBuilder.followPathWithEvents(auto1Paths.get(0))), 
+        //                        auto1Paths.get(0).getMarkers(), 
+        //                        AutoConstants.eventMap),
+        //     new ParallelRaceGroup(new WristConsume(m_armIntake, () -> 0.5),
+        //                               new WaitCommand(3)),
+        //     new FollowPathWithEvents(
+        //                               new ProxyCommand(autoBuilder.followPathWithEvents(auto1Paths.get(1))), 
+        //                                                 auto1Paths.get(1).getMarkers(), 
+        //                                                 AutoConstants.eventMap)
+        // );     
 
         return AutoTest;
 

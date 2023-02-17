@@ -4,6 +4,8 @@
 
 package frc.robot.subsystems.Swerve;
 
+import com.kauailabs.navx.frc.AHRS;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
@@ -16,6 +18,7 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -50,9 +53,12 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kBackRightChassisAngularOffset);
 
   // The gyro sensor
-  private final ADIS16470_IMU m_gyro = new ADIS16470_IMU();
+  private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
+
 
   // Odometry class for tracking robot pose
+
+  //gyro.getHeadingDegrees();
 
 
 
@@ -62,20 +68,21 @@ public class DriveSubsystem extends SubsystemBase {
       private final SwerveDrivePoseEstimator m_poseEstimator =
       new SwerveDrivePoseEstimator(
           DriveConstants.kDriveKinematics,
-          Rotation2d.fromDegrees(m_gyro.getAngle()),
+          Rotation2d.fromDegrees(getHeadingDegrees()),
           new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
           },
-          new Pose2d(), //14.6, 1, new Rotation2d(0)
+          new Pose2d(13.5, 1.45, new Rotation2d(0)), //14.6, 1, new Rotation2d(0)
           VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(0)), // initiial was 0.05 for both on top and 0.5 for bottom
           VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(720)));
 
       LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight");
       ShuffleboardTab limeLightTab = Shuffleboard.getTab("limelight");
       Field2d m_field = new Field2d();
+
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
@@ -86,7 +93,11 @@ public class DriveSubsystem extends SubsystemBase {
     double[] botposeBlue = llresults.targetingResults.botpose_wpired;
     limeLightTab.add("limeLightBluePose", botposeBlue[0]);
     limeLightTab.add(m_field);
-   
+    m_gyro.setAngleAdjustment(-1);   
+
+    zeroHeading();
+  
+    
 
 
   }
@@ -98,15 +109,17 @@ public class DriveSubsystem extends SubsystemBase {
 
     // double xDistance = m_poseEstimator.getEstimatedPosition().getX() - LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX();
     // double yDistance = m_poseEstimator.getEstimatedPosition().getY() - LimelightHelpers.getBotPose3d_wpiBlue("limelight").getY();
-    // double rotDistance = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees() - LimelightHelpers.getBotPose3d_wpiBlue("limelight").getRotation().getAngle() / Math.PI / 2 * 360;
-    
-    if(LimelightHelpers.getBotPose2d("limelight").getX() != 0 && colorEqualsBlue == true)
+    // double rotDistance = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees() - LimelightHelpers.getBotPose3d_wpiBlue("limelight").getRotation().getHeadingDegrees() / Math.PI / 2 * 360;
+    if(LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX() > 13.6)
     {
-      m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiBlue("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight"));
-    }
-    if(LimelightHelpers.getBotPose2d("limelight").getX() != 0 && colorEqualsBlue == false)
-    {
-      m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiRed("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight"));
+      if(LimelightHelpers.getBotPose2d("limelight").getX() != 0 && colorEqualsBlue == true)
+      {
+        m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiBlue("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight"));
+      }
+      if(LimelightHelpers.getBotPose2d("limelight").getX() != 0 && colorEqualsBlue == false)
+      {
+        m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiRed("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight"));
+      }
     }
     
 
@@ -141,7 +154,7 @@ public class DriveSubsystem extends SubsystemBase {
    */
   public void resetOdometry(Pose2d pose) {
     m_poseEstimator.resetPosition(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(getHeadingDegrees()),
         new SwerveModulePosition[] {
             m_frontLeft.getPosition(),
             m_frontRight.getPosition(),
@@ -154,7 +167,7 @@ public class DriveSubsystem extends SubsystemBase {
   public void updateOdometry() 
   {
     m_poseEstimator.update(
-        Rotation2d.fromDegrees(m_gyro.getAngle()),
+        Rotation2d.fromDegrees(getHeadingDegrees()),
         new SwerveModulePosition[] {
           m_frontLeft.getPosition(),
           m_frontRight.getPosition(),
@@ -186,7 +199,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_gyro.getAngle()))
+            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(getHeadingDegrees()))
             : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -233,7 +246,9 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
-    m_gyro.reset();
+    m_gyro.zeroYaw();
+    m_gyro.setAngleAdjustment(-1);
+    
   }
 
   /**
@@ -241,9 +256,41 @@ public class DriveSubsystem extends SubsystemBase {
    *
    * @return the robot's heading in degrees, from -180 to 180
    */
-  public double getHeading() {
-    return Rotation2d.fromDegrees(m_gyro.getAngle()).getDegrees();
+  public double getHeadingDegrees() {
+   // return Rotation2d.fromDegrees(m_gyro.getHeadingDegrees()).getDegrees();
+      // FIXME Uncomment if you are using a NavX
+    // FIXME Remove if you are using a Pigeon
+    //return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
+
+    // FIXME Uncomment if you are using a NavX
+    if (m_gyro.isMagnetometerCalibrated()) {
+      //      // We will only get valid fused headings if the magnetometer is calibrated
+          return m_gyro.getFusedHeading() * -1;
+         }
+      //
+      //    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
+         return (m_gyro.getAngle() *-1);
+        }
+
+
+
+  public Rotation2d getHeadingRotation2d()
+  {
+    // FIXME Remove if you are using a Pigeon
+    //return Rotation2d.fromDegrees(m_pigeon.getFusedHeading());
+
+    // FIXME Uncomment if you are using a NavX
+    if (m_gyro.isMagnetometerCalibrated()) {
+      //      // We will only get valid fused headings if the magnetometer is calibrated
+          return Rotation2d.fromDegrees(m_gyro.getFusedHeading() * -1);
+         }
+      //
+      //    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
+         return Rotation2d.fromDegrees(m_gyro.getAngle() * -1);
   }
+  
+
+
 
   /**
    * Returns the turn rate of the robot.

@@ -13,6 +13,8 @@ import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj2.command.CommandBase;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.ProxyCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
@@ -21,24 +23,28 @@ import frc.robot.subsystems.Swerve.DriveSubsystem;
 import java.io.IOException;
 import java.nio.file.Path;
 
+import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.auto.PIDConstants;
+import com.pathplanner.lib.auto.SwerveAutoBuilder;
+
 public class FollowTrajectory extends CommandBase {
 
   private final DriveSubsystem drive;
-  private Trajectory trajectory;
+  private PathPlannerTrajectory trajectory;
   private boolean toReset;
 
-  public FollowTrajectory(DriveSubsystem drive, String trajectoryFilePath, boolean toReset) {
+  public FollowTrajectory(DriveSubsystem drive, PathPlannerTrajectory trajectory, boolean toReset) {
     this.drive = drive;
     this.toReset = toReset;
     addRequirements(drive);
 
-    try {
-      Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryFilePath);
-      trajectory = TrajectoryUtil.fromPathweaverJson(trajectoryPath);
-    } catch (IOException e) {
-      DriverStation.reportError("Unable to open trajectory: " + trajectoryFilePath,
-          e.getStackTrace());
-    }
+    // try {
+    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryFilePath);
+      this.trajectory = trajectory;
+    // } catch (IOException e) {
+    //   DriverStation.reportError("Unable to open trajectory: " + trajectoryFilePath,
+    //       e.getStackTrace());
+    // }
   }
 
   @Override
@@ -62,8 +68,24 @@ public class FollowTrajectory extends CommandBase {
         new PIDController(AutoConstants.kPYController, 0, 0),
         thetaController,
         drive::setModuleStates,
-        drive).andThen(() -> drive.drive(0, 0, 0, false)).schedule(); // Stops the robot
+        drive).andThen(new PrintCommand("Stopped")).andThen(() -> drive.drive(0, 0, 0, true)).schedule(); // Stops the robot
 
+
+        // SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+        //   drive::getPose, 
+        //   drive::resetOdometry,
+        //   DriveConstants.kDriveKinematics,
+        //   new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
+        //   new PIDConstants(1.2, 0.0, 0),
+        //   drive::setModuleStates,
+        //   AutoConstants.eventMap,
+        //   true,
+        //   drive);
+
+
+        //   new ProxyCommand(autoBuilder.followPath(trajectory)).andThen(new PrintCommand("Screw You")).schedule();
+
+          
     // Reset odometry to the starting pose of the trajectory.
     // drive.resetOdometry(trajectory.getInitialPose());
   }
@@ -79,6 +101,7 @@ public class FollowTrajectory extends CommandBase {
   @Override
   public boolean isFinished() {
     return false;
+    
   }
 
 }

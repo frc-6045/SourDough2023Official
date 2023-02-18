@@ -679,9 +679,12 @@ public class RobotContainer {
    // examplePath = PathPlanner.loadPath("Example Path", new PathConstraints(4, 3));
 
 AutoConstants.eventMap.put("Home", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.HomeWristPosition, m_ArmSubsystem, PositionConstants.HomeArmPosition));
-AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.HomeWristPosition, m_ArmSubsystem, PositionConstants.HomeArmPosition));
-AutoConstants.eventMap.put("MidScore", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
-AutoConstants.eventMap.put("WristIntakeWithTime", new WristConsumeWithTime(m_armIntake, 3));
+AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
+AutoConstants.eventMap.put("ScoreMid", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+AutoConstants.eventMap.put("ConeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition, m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
+AutoConstants.eventMap.put("WristConsumeWithTime", new WristConsumeWithTime(m_armIntake, 2));
+AutoConstants.eventMap.put("WristEjectWithTime", new WristEjectWithTime(m_armIntake, 2));
+AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreHighWristPosition, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition));
 
 
   //  eventMap.put("home", new PrintCommand("entering home position"));
@@ -694,16 +697,16 @@ AutoConstants.eventMap.put("WristIntakeWithTime", new WristConsumeWithTime(m_arm
 
  
 
-  //  SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
-  //    m_robotDrive::getPose, 
-  //    m_robotDrive::resetOdometry,
-  //    DriveConstants.kDriveKinematics,
-  //    new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
-  //    new PIDConstants(1.2, 0.0, 0),
-  //    m_robotDrive::setModuleStates,
-  //    AutoConstants.eventMap,
-  //    true,
-  //    m_robotDrive);
+   SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+     m_robotDrive::getPose, 
+     m_robotDrive::resetOdometry,
+     DriveConstants.kDriveKinematics,
+     new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
+     new PIDConstants(1.2, 0.0, 0),
+     m_robotDrive::setModuleStates,
+     AutoConstants.eventMap,
+     true,
+     m_robotDrive);
 
 
      //return autoBuilder.fullAuto(examplePath);
@@ -722,7 +725,7 @@ AutoConstants.eventMap.put("WristIntakeWithTime", new WristConsumeWithTime(m_arm
 
 
      List<PathPlannerTrajectory> auto1Paths =
-        PathPlanner.loadPathGroup("Thing", 
+        PathPlanner.loadPathGroup("LineTest", 
         AutoConstants.maxAutoSpeed, 
         AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
@@ -731,7 +734,7 @@ AutoConstants.eventMap.put("WristIntakeWithTime", new WristConsumeWithTime(m_arm
         m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
       
     
-        //return autoBuilder.fullAuto(examplePath);
+        return autoBuilder.fullAuto(auto1Paths);
      
         // Command AutoTest = 
         // new FollowPathWithEvents(
@@ -746,20 +749,22 @@ AutoConstants.eventMap.put("WristIntakeWithTime", new WristConsumeWithTime(m_arm
 
 
 
-       Command AutoTest2 = new SequentialCommandGroup(
+
+
+ //      Command AutoTest2 = new SequentialCommandGroup(
               //new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreHighWristPosition, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition),
-                 new FollowTrajectory(m_robotDrive, auto1Paths.get(0), true),
-                 new PrintCommand("HOLY GUACAMOLE"),
-                 new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ConeIntakeArmPosition, m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition)
+                //  new FollowTrajectory(m_robotDrive, auto1Paths.get(0), true),
+                //  new PrintCommand("HOLY GUACAMOLE"),
+                //  new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ConeIntakeArmPosition, m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition)
                 //  new WaitCommand(3),
                 //  new FollowTrajectory(m_robotDrive, auto1Paths.get(1), true)
 
                 
-       );
+      //  );
 
               
 
-      return AutoTest2;
+      // return AutoTest2;
 
 
 

@@ -166,7 +166,7 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kDriveControllerConstraints = new TrapezoidProfile.Constraints(
     DriveConstants.kMaxSpeedMetersPerSecond, DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
 
-    public static final double maxAutoSpeed = 4.0;
+    public static final double maxAutoSpeed = 1.2;
     public static final double maxAutoAcceleration = 2.0;
 
     public static final HashMap<String, Command> eventMap = new HashMap<>();
@@ -225,8 +225,8 @@ public final class Constants {
     public static final double ConeIntakeArmPosition = 0;
 
     //CubeIntake
-    public static final double CubeIntakeWristPosition = 0.2470;
-    public static final double CubeIntakeArmPosition = 0.01856;
+    public static final double CubeIntakeWristPosition = 0.2550;
+    public static final double CubeIntakeArmPosition = 0.0056;
 
     //StationCone
     public static final double StationConeWristPosition = 0.0380;

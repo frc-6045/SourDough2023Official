@@ -736,7 +736,7 @@ AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsy
 
      
 
-        m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
+        //m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
       
     
         return autoBuilder.fullAuto(auto1Paths);
@@ -756,20 +756,21 @@ AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsy
 
 
 
- //      Command AutoTest2 = new SequentialCommandGroup(
-              //new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreHighWristPosition, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition),
-                //  new FollowTrajectory(m_robotDrive, auto1Paths.get(0), true),
-                //  new PrintCommand("HOLY GUACAMOLE"),
-                //  new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ConeIntakeArmPosition, m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition)
-                //  new WaitCommand(3),
-                //  new FollowTrajectory(m_robotDrive, auto1Paths.get(1), true)
+      // Command AutoTest2 = new SequentialCommandGroup(
+      //         new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreHighWristPosition, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition),
+      //            new FollowTrajectory(m_robotDrive, auto1Paths.get(0), true),
+      //            new PrintCommand("HOLY GUACAMOLE"),
+      //            new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ConeIntakeArmPosition, m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition),
+      //            new WaitCommand(3),
+      //            new FollowTrajectory(m_robotDrive, auto1Paths.get(1), true)
+                 
 
                 
       //  );
 
               
 
-      // return AutoTest2;
+      //  return AutoTest2;
 
 
 

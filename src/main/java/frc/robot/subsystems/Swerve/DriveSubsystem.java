@@ -289,6 +289,11 @@ public class DriveSubsystem extends SubsystemBase {
       //    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
          return Rotation2d.fromDegrees(m_gyro.getAngle() * -1);
   }
+
+  public double getPitch()
+  {
+    return m_gyro.getPitch();
+  }
   
 
 

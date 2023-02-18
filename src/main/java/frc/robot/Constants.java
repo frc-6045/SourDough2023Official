@@ -166,6 +166,10 @@ public final class Constants {
     public static final TrapezoidProfile.Constraints kDriveControllerConstraints = new TrapezoidProfile.Constraints(
     DriveConstants.kMaxSpeedMetersPerSecond, DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
 
+    public static final TrapezoidProfile.Constraints autoBalanceConstaints = new TrapezoidProfile.Constraints(
+      0.1, 0.1);
+  
+
     public static final double maxAutoSpeed = 1.2;
     public static final double maxAutoAcceleration = 2.0;
 
@@ -255,6 +259,8 @@ public final class Constants {
     public static final ProfiledPIDController thetaController = new ProfiledPIDController(0.04, 0, 0, AutoConstants.kThetaControllerConstraints);
     public static final ProfiledPIDController m_XController = new ProfiledPIDController(0.04, 0, 0, AutoConstants.kDriveControllerConstraints);
     public static final ProfiledPIDController m_YController = new ProfiledPIDController(0.1, 0, 0, AutoConstants.kDriveControllerConstraints);
+    public static final ProfiledPIDController m_YAutoController = new ProfiledPIDController(0.001, 0, 0, AutoConstants.kDriveControllerConstraints);
+
   
 
   }

@@ -96,6 +96,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_gyro.setAngleAdjustment(-1);   
 
     zeroHeading();
+   
   
     
 
@@ -315,6 +316,26 @@ public class DriveSubsystem extends SubsystemBase {
   {
   return m_frontLeft.getEncoderCounts();
   
+  }
+
+  public double getFrontLeftRot()
+  {
+    return m_frontLeft.getEncoderCounts();
+  }
+
+  public double getFrontRightRot()
+  {
+    return m_frontRight.getEncoderCounts();
+  }
+
+  public double getBackLeftRot()
+  {
+    return m_rearLeft.getEncoderCounts();
+  }
+
+  public double getBackRightRot()
+  {
+    return m_rearRight.getEncoderCounts();
   }
 
 

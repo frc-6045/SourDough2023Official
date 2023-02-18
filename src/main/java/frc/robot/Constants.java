@@ -133,7 +133,7 @@ public final class Constants {
     public static final double kTurningP = .8; //was 1
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
-    public static final double kTurningFF = -0.01; //FIXME: changed feed forward from 0
+    public static final double kTurningFF = -0.00; //FIXME: changed feed forward from 0
     public static final double kTurningMinOutput = -1;
     public static final double kTurningMaxOutput = 1;
 

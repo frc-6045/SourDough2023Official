@@ -182,6 +182,11 @@ public class RobotContainer {
           teleOpTab.addDouble("Arm position", m_ArmSubsystem::getAbsoluteEncoderPosition);
           teleOpTab.addDouble("Gyro", m_robotDrive::getHeadingDegrees);
           teleOpTab.addDouble("Position", m_robotDrive::getAverageDistanceMeters);
+          teleOpTab.addDouble("frontLeftMotor", m_robotDrive::getFrontLeftRot);
+          teleOpTab.addDouble("frontRightMotor", m_robotDrive::getFrontRightRot);
+          teleOpTab.addDouble("backLeftMotor", m_robotDrive::getBackLeftRot);
+          teleOpTab.addDouble("backRightMotor", m_robotDrive::getBackRightRot);
+          
           
  
 

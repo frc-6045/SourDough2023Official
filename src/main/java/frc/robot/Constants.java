@@ -12,12 +12,15 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
+import pabeles.concurrency.ConcurrencyOps.NewInstance;
 
 /**
  * The Constants class provides a convenient place for teams to hold robot-wide
@@ -32,6 +35,8 @@ import edu.wpi.first.wpilibj2.command.ProfiledPIDCommand;
  * constants are needed, to reduce verbosity.
  */
 public final class Constants {
+
+  
   public static final class Wristconstants {
 
     public static final double kWristMotorP = 0.1; 
@@ -147,6 +152,7 @@ public final class Constants {
   public static final class OIConstants {
     public static final int kDriverControllerPort = 0;
     public static final int kDriverControllerPort2 = 1;
+   
   }
 
   public static final class AutoConstants {
@@ -287,7 +293,7 @@ public final class Constants {
 
   public static final class PoseConstants
   {
-    public static final Pose2d targetPose1 = new Pose2d(14, 1, null);
+    public static final Pose2d pickUpStation = new Pose2d(1, 1, Rotation2d.fromDegrees(0));
   }
 
   

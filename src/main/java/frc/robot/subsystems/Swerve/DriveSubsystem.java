@@ -20,6 +20,8 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
@@ -106,23 +108,29 @@ public class DriveSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
-    boolean colorEqualsBlue = true;
+    
+    Alliance m_Alliance = DriverStation.getAlliance();
+    double acceptableMergeDistance = 13.6;
 
-    // double xDistance = m_poseEstimator.getEstimatedPosition().getX() - LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX();
-    // double yDistance = m_poseEstimator.getEstimatedPosition().getY() - LimelightHelpers.getBotPose3d_wpiBlue("limelight").getY();
-    // double rotDistance = m_poseEstimator.getEstimatedPosition().getRotation().getDegrees() - LimelightHelpers.getBotPose3d_wpiBlue("limelight").getRotation().getHeadingDegrees() / Math.PI / 2 * 360;
-    if(LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX() > 13.6)
+    if(m_Alliance == Alliance.Blue)
     {
-      if(LimelightHelpers.getBotPose2d("limelight").getX() != 0 && colorEqualsBlue == true)
+      if(LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX() > acceptableMergeDistance)
       {
         m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiBlue("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight"));
       }
-      if(LimelightHelpers.getBotPose2d("limelight").getX() != 0 && colorEqualsBlue == false)
+    }
+    else if(m_Alliance == Alliance.Red)
+    {
+      if(LimelightHelpers.getBotPose3d_wpiRed("limelight").getX() > acceptableMergeDistance)
       {
         m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiRed("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight"));
       }
     }
-    
+    else 
+    System.out.println("Alliance not found, no limelight");
+  
+
+
 
     updateOdometry();
     //eventually figure out what each result value is
@@ -342,6 +350,8 @@ public class DriveSubsystem extends SubsystemBase {
   {
     return m_rearRight.getEncoderCounts();
   }
+
+ 
 
 
 

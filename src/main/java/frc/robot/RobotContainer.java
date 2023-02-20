@@ -13,6 +13,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
@@ -99,6 +100,10 @@ public class RobotContainer {
   ShuffleboardTab teleOpTab = Shuffleboard.getTab("TeleOp");
 
 
+  
+  
+
+
 
 
 
@@ -121,6 +126,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    
 
 
     // Configure default commands
@@ -651,6 +657,18 @@ public class RobotContainer {
 
     new JoystickButton(m_driverController, Button.kCircle.value).toggleOnTrue(new RunCommand(() -> m_robotDrive.drive(0, 0, 0, false), m_robotDrive));
 
+
+    //cancel Auto Drive I think
+    new Trigger(()->
+    {
+      if(m_OperatorController.getLeftStickButtonPressed())
+        return true;
+      else
+        return false;
+    }
+    ).onTrue(new InstantCommand(()->m_robotDrive.drive(0, 0, 0, true)));
+
+  
   }
 
   
@@ -661,6 +679,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+
 
     // String autoName = autoChooser.getSelected();
     

@@ -8,6 +8,9 @@ package frc.robot.commands.AutoCommands;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryUtil;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -26,56 +29,35 @@ import frc.robot.subsystems.Swerve.DriveSubsystem;
 import java.io.IOException;
 import java.nio.file.Path;
 
-
+import com.pathplanner.lib.PathConstraints;
+import com.pathplanner.lib.PathPlanner;
 import com.pathplanner.lib.PathPlannerTrajectory;
+import com.pathplanner.lib.PathPoint;
 import com.pathplanner.lib.auto.PIDConstants;
 import com.pathplanner.lib.auto.SwerveAutoBuilder;
 
-public class FollowTrajectory extends CommandBase {
+public class SwerveToPoseWithTrajectory extends CommandBase {
 
   private final DriveSubsystem drive;
-  private PathPlannerTrajectory trajectory;
-  private boolean toReset;
+  private final Pose2d targetPose;
   private boolean isFinished = false;
 
-  public FollowTrajectory(DriveSubsystem drive, PathPlannerTrajectory trajectory, boolean toReset) {
+  public SwerveToPoseWithTrajectory(DriveSubsystem drive, Pose2d targetPose) {
     this.drive = drive;
-    this.toReset = toReset;
-
-
-    // try {
-    //   Path trajectoryPath = Filesystem.getDeployDirectory().toPath().resolve(trajectoryFilePath);
-      this.trajectory = trajectory;
-    // } catch (IOException e) {
-    //   DriverStation.reportError("Unable to open trajectory: " + trajectoryFilePath,
-    //       e.getStackTrace());
-    // }
+    this.targetPose = targetPose;
+    
   }
 
   @Override
   public void initialize() {
-    if (toReset) {
-      drive.resetOdometry(trajectory.getInitialPose());
-    }
 
-    // final ProfiledPIDController thetaController =
-    //     new ProfiledPIDController(
-    //         AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-    // thetaController.enableContinuousInput(-Math.PI, Math.PI);
 
-    // new SwerveControllerCommand(
-    //     trajectory,
-    //     drive::getPose, // Functional interface to feed supplier
-    //     DriveConstants.kDriveKinematics,
 
-    //     // Position controllers
-    //     new PIDController(AutoConstants.kPXController, 0, 0),
-    //     new PIDController(AutoConstants.kPYController, 0, 0),
-    //     thetaController,
-    //     drive::setModuleStates,
-    //     drive).andThen(new PrintCommand("Stopped")).andThen(() -> drive.drive(0, 0, 0, true)).schedule(); // Stops the robot
-
-    
+      PathPlannerTrajectory trajectory = PathPlanner.generatePath(
+        new PathConstraints(2, 1), 
+        new PathPoint(drive.getPose().getTranslation(), Rotation2d.fromDegrees(drive.getHeadingDegrees())),
+        new PathPoint(targetPose.getTranslation(), targetPose.getRotation()));
+   
 
         SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
           drive::getPose, 

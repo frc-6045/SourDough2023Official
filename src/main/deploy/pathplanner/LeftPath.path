@@ -1,0 +1,93 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 1.9315879233262236,
+        "y": 4.409945361244107
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.016494754794021,
+        "y": 4.399899927619405
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.301351550071521,
+        "y": 4.560626865614634
+      },
+      "prevControl": {
+        "x": 7.004531903800649,
+        "y": 4.630944900987548
+      },
+      "nextControl": {
+        "x": 7.004531903800649,
+        "y": 4.630944900987548
+      },
+      "holonomicAngle": 1.4320961841647033,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.3982212325326913,
+        "y": 3.576174370393854
+      },
+      "prevControl": {
+        "x": 3.463984446765886,
+        "y": 4.142303307163011
+      },
+      "nextControl": null,
+      "holonomicAngle": -177.64670313389172,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "markers": [
+    {
+      "position": 0.0,
+      "names": [
+        "event"
+      ]
+    },
+    {
+      "position": 0.012121212121225923,
+      "names": [
+        "ScoreMid"
+      ]
+    },
+    {
+      "position": 0.7030303030303454,
+      "names": [
+        "event"
+      ]
+    }
+  ]
+}

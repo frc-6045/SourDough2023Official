@@ -35,6 +35,8 @@ import frc.robot.commands.ArmCommands.OpenLoopArm.ActuateArm;
 import frc.robot.commands.AutoCommands.AutoBalance;
 import frc.robot.commands.AutoCommands.WristConsumeWithTime;
 import frc.robot.commands.AutoCommands.WristEjectWithTime;
+import frc.robot.commands.AutoCommands.SwerveToMethods.FollowTrajectory;
+import frc.robot.commands.AutoCommands.SwerveToNearest.SwerveToNearestPole;
 import frc.robot.commands.WristCommands.WristConsume;
 import frc.robot.commands.WristCommands.WristEject;
 import frc.robot.commands.WristCommands.ClosedLoopWrist.PIDWristCommand;
@@ -221,7 +223,7 @@ public class RobotContainer {
 
     new JoystickButton(m_driverController,  XboxController.Button.kStart.value)
     .onTrue(new InstantCommand(
-      ()-> m_robotDrive.zeroHeading(),
+      ()-> m_robotDrive.resetOdometry(new Pose2d(m_robotDrive.getPose().getX(), m_robotDrive.getPose().getY(), new Rotation2d())),
        m_robotDrive));
 
 
@@ -686,7 +688,31 @@ public class RobotContainer {
 
 
   
+
+
+
+
+//swerve to nearest pole
+    new Trigger(()->
+    {
+      if(m_driverController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_OperatorController.getPOV() == 0)
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new SwerveToNearestPole(m_robotDrive));
   }
+
+
+  
 
   
 

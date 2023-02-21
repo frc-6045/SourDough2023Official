@@ -77,9 +77,9 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
           },
-          new Pose2d(13.5, 1.45, new Rotation2d(0)), //14.6, 1, new Rotation2d(0)
+          new Pose2d(0, 0, new Rotation2d(0)), //14.6, 1, new Rotation2d(0)
           VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(0)), // initiial was 0.05 for both on top and 0.5 for bottom
-          VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(720)));
+          VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(50)));
 
       LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight");
       ShuffleboardTab limeLightTab = Shuffleboard.getTab("limelight");
@@ -121,15 +121,17 @@ public class DriveSubsystem extends SubsystemBase {
     }
     else if(m_Alliance == Alliance.Red)
     {
-      if(LimelightHelpers.getBotPose3d_wpiRed("limelight").getX() > acceptableMergeDistance)
+      if(LimelightHelpers.getBotPose3d_wpiRed("limelight").getX() < acceptableMergeDistance)
       {
         m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiRed("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight"));
       }
     }
     else 
     System.out.println("Alliance not found, no limelight");
-  
 
+  // if(LimelightHelpers.getBotPose3d_wpiBlue("limelight").toPose2d() != null)
+  //       m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiBlue("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight"));
+  
 
 
     updateOdometry();

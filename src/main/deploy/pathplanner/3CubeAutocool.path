@@ -176,22 +176,22 @@
     },
     {
       "anchorPoint": {
-        "x": 6.005460550089601,
-        "y": 2.087746782011665
+        "x": 6.454185611781795,
+        "y": 2.1196255040129235
       },
       "prevControl": {
-        "x": 6.655316035487754,
-        "y": 2.112954491719263
+        "x": 5.645921329128095,
+        "y": 2.1456985453888486
       },
       "nextControl": {
-        "x": 5.398125762364063,
-        "y": 2.0641884380901216
+        "x": 5.645921329128095,
+        "y": 2.1456985453888486
       },
       "holonomicAngle": 0,
-      "isReversal": false,
+      "isReversal": true,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": true,
+      "isStopPoint": false,
       "stopEvent": {
         "names": [
           "WristEjectWithTime"
@@ -368,6 +368,12 @@
       "position": 7.927272727272671,
       "names": [
         "ScoreHigh"
+      ]
+    },
+    {
+      "position": 7.0,
+      "names": [
+        "WristEjectWithTime"
       ]
     }
   ]

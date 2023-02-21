@@ -17,7 +17,7 @@ import frc.robot.subsystems.Swerve.DriveSubsystem;
 
 public class AutoBalance extends CommandBase {
 
-  private final ProfiledPIDController m_YController;
+  private final PIDController m_YController;
   private final DriveSubsystem m_robotDrive;
 
   /** Creates a new SwerveWithPIDY. */
@@ -26,9 +26,9 @@ public class AutoBalance extends CommandBase {
   {
 
 
-    m_YController = PIDSwerveConstants.m_XController;
+    m_YController = new PIDController(0.0075, 0, 0);
 
-    m_YController.setTolerance(0.5);
+    m_YController.setTolerance(0.1);
 
 
 
@@ -43,7 +43,7 @@ public class AutoBalance extends CommandBase {
   @Override
   public void initialize() 
   {
-    
+    System.out.println("getting scheduled");
 
   }
 
@@ -51,11 +51,11 @@ public class AutoBalance extends CommandBase {
   @Override
   public void execute() 
   {
-      double y_SetPoint = 0;
-    double y_Speed = m_YController.calculate(m_robotDrive.getPitch(), y_SetPoint);
+      double y_SetPoint = -1.6;
+    double y_Speed =  m_YController.calculate(m_robotDrive.getRoll(), y_SetPoint);
     
 
-    m_robotDrive.drive(0, y_Speed, 0, true);
+    m_robotDrive.drive(y_Speed, 0, 0, true);
     System.out.println("Balance running");
 
 

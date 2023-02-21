@@ -1,0 +1,191 @@
+{
+  "waypoints": [
+    {
+      "anchorPoint": {
+        "x": 2.0,
+        "y": 4.34
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 3.0,
+        "y": 4.34
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "ScoreMid"
+        ],
+        "executionBehavior": "parallel",
+        "waitBehavior": "minimum",
+        "waitTime": 1.0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.3881757989079895,
+        "y": 4.620899467362846
+      },
+      "prevControl": {
+        "x": 2.9128157579623437,
+        "y": 4.4854724504937735
+      },
+      "nextControl": {
+        "x": 3.8635358398536366,
+        "y": 4.756326484231918
+      },
+      "holonomicAngle": -75.96375653207353,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.431942187192645,
+        "y": 4.600808600113441
+      },
+      "prevControl": {
+        "x": 5.668489231715306,
+        "y": 4.6811720691110565
+      },
+      "nextControl": {
+        "x": 5.668489231715306,
+        "y": 4.6811720691110565
+      },
+      "holonomicAngle": 0,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 4.734263904618035,
+        "y": 4.610854033738144
+      },
+      "prevControl": {
+        "x": 4.950240727549121,
+        "y": 4.912217042479199
+      },
+      "nextControl": {
+        "x": 4.518287081686946,
+        "y": 4.309491024997088
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 1.6402703482098702,
+        "y": 4.480263396617019
+      },
+      "prevControl": {
+        "x": 2.8256315159246883,
+        "y": 4.691217502735758
+      },
+      "nextControl": {
+        "x": 2.8256315159246883,
+        "y": 4.691217502735758
+      },
+      "holonomicAngle": 172.49535565768755,
+      "isReversal": true,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.4384029670314984,
+        "y": 2.682130777795392
+      },
+      "prevControl": {
+        "x": 0.856726525483127,
+        "y": 1.978950424066262
+      },
+      "nextControl": null,
+      "holonomicAngle": 0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    }
+  ],
+  "maxVelocity": 1.5,
+  "maxAcceleration": null,
+  "isReversed": null,
+  "markers": [
+    {
+      "position": 0.0,
+      "names": [
+        "WristConsumeWithTime"
+      ]
+    },
+    {
+      "position": 0.09090909090907644,
+      "names": [
+        "CubeGroundIntake"
+      ]
+    },
+    {
+      "position": 1.89,
+      "names": [
+        "WristEjectWithTime"
+      ]
+    },
+    {
+      "position": 3.1030303030303084,
+      "names": [
+        "ScoreHigh"
+      ]
+    },
+    {
+      "position": 3.98,
+      "names": [
+        "WristConsumeWithTime"
+      ]
+    },
+    {
+      "position": 4.121212121212143,
+      "names": [
+        "Home"
+      ]
+    }
+  ]
+}

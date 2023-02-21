@@ -100,6 +100,8 @@ public class RobotContainer {
   ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
   ShuffleboardTab teleOpTab = Shuffleboard.getTab("TeleOp");
 
+  
+
 
   
   
@@ -193,6 +195,9 @@ public class RobotContainer {
           teleOpTab.addDouble("frontRightMotor", m_robotDrive::getFrontRightRot);
           teleOpTab.addDouble("backLeftMotor", m_robotDrive::getBackLeftRot);
           teleOpTab.addDouble("backRightMotor", m_robotDrive::getBackRightRot);
+          teleOpTab.addDouble("pitch", m_robotDrive::getRoll);
+          SmartDashboard.putData(m_ArmSubsystem);
+          SmartDashboard.putData(m_WristSubsystem);
           
           
  
@@ -669,6 +674,18 @@ public class RobotContainer {
     }
     ).onTrue(new InstantCommand(()->m_robotDrive.drive(0, 0, 0, true)));
 
+
+
+    new Trigger(()->
+    {
+      if(m_driverController.getYButton())
+        return true;
+      else
+        return false;
+    }
+    ).onTrue(new AutoBalance(m_robotDrive));
+
+
   
 
 
@@ -751,7 +768,7 @@ AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsy
      m_robotDrive::resetOdometry,
      DriveConstants.kDriveKinematics,
      new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
-     new PIDConstants(1.2, 0.0, 0),
+     new PIDConstants(0.3, 0.0, 0),
      m_robotDrive::setModuleStates,
      AutoConstants.eventMap,
      true,
@@ -774,7 +791,7 @@ AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsy
 
 
      List<PathPlannerTrajectory> auto1Paths =
-        PathPlanner.loadPathGroup("LineTest", 
+        PathPlanner.loadPathGroup("3CubeAuto", 
         AutoConstants.maxAutoSpeed, 
         AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
@@ -783,7 +800,7 @@ AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsy
         //m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
       
     
-        return autoBuilder.fullAuto(auto1Paths);
+        return autoBuilder.fullAuto(auto1Paths).andThen(new AutoBalance(m_robotDrive));
      
         // Command AutoTest = 
         // new FollowPathWithEvents(

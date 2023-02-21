@@ -32,6 +32,7 @@ import frc.robot.commands.SetArmWithWristPosition;
 import frc.robot.commands.ArmCommands.ClosedLoopArm.PIDArmCommand;
 import frc.robot.commands.ArmCommands.ClosedLoopArm.StopArmPID;
 import frc.robot.commands.ArmCommands.OpenLoopArm.ActuateArm;
+import frc.robot.commands.AutoCommands.AutoBalance;
 import frc.robot.commands.AutoCommands.WristConsumeWithTime;
 import frc.robot.commands.AutoCommands.WristEjectWithTime;
 import frc.robot.commands.AutoCommands.SwerveToMethods.FollowTrajectory;

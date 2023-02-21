@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.AutoCommands;
+package frc.robot.commands.AutoCommands.SwerveToMethods;
 
 
 
@@ -75,7 +75,7 @@ public class FollowTrajectory extends CommandBase {
     //     drive::setModuleStates,
     //     drive).andThen(new PrintCommand("Stopped")).andThen(() -> drive.drive(0, 0, 0, true)).schedule(); // Stops the robot
 
-    
+
 
         SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
           drive::getPose, 

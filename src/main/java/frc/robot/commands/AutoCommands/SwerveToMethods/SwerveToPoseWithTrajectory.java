@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.AutoCommands;
+package frc.robot.commands.AutoCommands.SwerveToMethods;
 
 
 
@@ -64,7 +64,7 @@ public class SwerveToPoseWithTrajectory extends CommandBase {
           drive::resetOdometry,
           DriveConstants.kDriveKinematics,
           new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
-          new PIDConstants(1.2, 0.0, 0),
+          new PIDConstants(0.2, 0.0, 0),
           drive::setModuleStates,
           AutoConstants.eventMap,
           true,

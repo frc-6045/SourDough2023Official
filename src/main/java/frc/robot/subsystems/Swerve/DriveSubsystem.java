@@ -77,8 +77,8 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearLeft.getPosition(),
             m_rearRight.getPosition()
           },
-          new Pose2d(0, 0, new Rotation2d(0)), //14.6, 1, new Rotation2d(0)
-          VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(0)), // initiial was 0.05 for both on top and 0.5 for bottom
+          new Pose2d(0, 0, new Rotation2d(0)), //
+          VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(0.65)), // initiial was 0.05 for both on top and 0.5 for bottom
           VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(50)));
 
       LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight");
@@ -110,33 +110,46 @@ public class DriveSubsystem extends SubsystemBase {
     // Update the odometry in the periodic block
     
     Alliance m_Alliance = DriverStation.getAlliance();
-    double acceptableMergeDistance = 13.6;
+    double acceptableMergeDistance = 3;
 
+   
+try{
     if(m_Alliance == Alliance.Blue)
     {
-      if(LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX() > acceptableMergeDistance)
+      if(LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX() < acceptableMergeDistance && LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX() != 0)
       {
-        m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiBlue("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight"));
+        m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiBlue("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight")/1000);
+        //System.out.println(LimelightHelpers.getBotPose3d_wpiRed("limelight").getX());
+ 
       }
     }
     else if(m_Alliance == Alliance.Red)
     {
-      if(LimelightHelpers.getBotPose3d_wpiRed("limelight").getX() < acceptableMergeDistance)
+      System.out.println(LimelightHelpers.getBotPose3d_wpiRed("limelight").getX());
+      if(LimelightHelpers.getBotPose3d_wpiRed("limelight").getX() < acceptableMergeDistance && LimelightHelpers.getBotPose3d_wpiRed("limelight").getX() != 0)
       {
-        m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiRed("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight"));
+        m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiRed("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight")/1000);
+        System.out.println("more yeah");
       }
     }
     else 
-    System.out.println("Alliance not found, no limelight");
+     System.out.println("Alliance not found, no limelight");
+} catch(Exception e)
+{
+  System.out.println("yeah");
+}
+    // System.out.println(Timer.getFPGATimestamp());
+    // System.out.println(LimelightHelpers.getLatency_Pipeline("limelight"));
 
   // if(LimelightHelpers.getBotPose3d_wpiBlue("limelight").toPose2d() != null)
   //       m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiBlue("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight"));
   
+//System.out.println(LimelightHelpers.getBotPose3d_wpiBlue("limelight").toPose2d().getX());
 
 
-    updateOdometry();
     //eventually figure out what each result value is
 
+    updateOdometry();
     m_field.setRobotPose(getPose());
 
    
@@ -207,10 +220,11 @@ public class DriveSubsystem extends SubsystemBase {
     xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kMaxSpeedMetersPerSecond;
     ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kMaxSpeedMetersPerSecond;
     rot = turningLimiter.calculate(rot) * DriveConstants.kMaxAngularSpeed;
+    double m_HeadingDegrees = DriverStation.getAlliance() == Alliance.Red ? getPose().getRotation().getDegrees() + 180 : getPose().getRotation().getDegrees();
 
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(getHeadingDegrees()))
+            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_HeadingDegrees)) //TODO: changed getHeadingDegrees()
             : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
@@ -300,9 +314,9 @@ public class DriveSubsystem extends SubsystemBase {
          return Rotation2d.fromDegrees(m_gyro.getAngle() * -1);
   }
 
-  public double getPitch()
+  public double getRoll()
   {
-    return m_gyro.getPitch();
+    return m_gyro.getRoll();
   }
   
 

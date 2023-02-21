@@ -176,7 +176,7 @@ public final class Constants {
       0.1, 0.1);
   
 
-    public static final double maxAutoSpeed = 1.2;
+    public static final double maxAutoSpeed = 1.4;
     public static final double maxAutoAcceleration = 2.0;
 
     public static final HashMap<String, Command> eventMap = new HashMap<>();

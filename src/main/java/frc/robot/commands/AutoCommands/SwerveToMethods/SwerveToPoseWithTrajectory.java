@@ -54,8 +54,8 @@ public class SwerveToPoseWithTrajectory extends CommandBase {
 
 
       PathPlannerTrajectory trajectory = PathPlanner.generatePath(
-        new PathConstraints(2, 1), 
-        new PathPoint(drive.getPose().getTranslation(), Rotation2d.fromDegrees(drive.getHeadingDegrees())),
+        new PathConstraints(0.5, 1), 
+        new PathPoint(drive.getPose().getTranslation(), drive.getPose().getRotation()),
         new PathPoint(targetPose.getTranslation(), targetPose.getRotation()));
    
 
@@ -63,8 +63,8 @@ public class SwerveToPoseWithTrajectory extends CommandBase {
           drive::getPose, 
           drive::resetOdometry,
           DriveConstants.kDriveKinematics,
-          new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
-          new PIDConstants(0.2, 0.0, 0),
+          new PIDConstants(5.0, 0.0 ,0), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
+          new PIDConstants(0.5, 0.0, 0),
           drive::setModuleStates,
           AutoConstants.eventMap,
           true,
@@ -73,7 +73,7 @@ public class SwerveToPoseWithTrajectory extends CommandBase {
 
 
           //print statement to help diagnoase the issue, then ensures that the follow trajectory command finishes
-          autoBuilder.followPathWithEvents(trajectory).andThen(new PrintCommand("Screw You")).andThen(new InstantCommand(()-> finish())).schedule();
+          autoBuilder.followPath(trajectory).andThen(new PrintCommand("Screw You")).andThen(new InstantCommand(()-> finish())).schedule();
 
           
     // Reset odometry to the starting pose of the trajectory.

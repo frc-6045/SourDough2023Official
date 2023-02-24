@@ -19,8 +19,7 @@ public class SwerveToNearestPole extends InstantCommand {
   public SwerveToNearestPole(DriveSubsystem m_robotDrive) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_robotDrive = m_robotDrive;
-    yDistance = m_robotDrive.getPose().getY();
-    xDistance = m_robotDrive.getPose().getX();
+
     addRequirements(m_robotDrive);
   }
 
@@ -28,23 +27,31 @@ public class SwerveToNearestPole extends InstantCommand {
   @Override
   public void initialize() 
   {
+    yDistance = m_robotDrive.getPose().getY();
+    xDistance = m_robotDrive.getPose().getX();
+    System.out.println("SwerveToNearestPole");
+    System.out.println("xDistance: " + xDistance);
+    System.out.println("yDistance: " + yDistance);
 
-    if(yDistance > 1 && yDistance < 2)
+    if(yDistance > 4.35 && yDistance < 4.95)
     {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.firstConeHighPosition1).schedule();
+      System.out.println("one");
     }
-    if(yDistance > 2 && yDistance < 3)
+    if(yDistance > 4.01 && yDistance < 4.35)
     {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.secondConeHighPosition1).schedule();
+      System.out.println("two");
     }
-    if(yDistance > 3 && yDistance < 4)
+    if(yDistance > 3 && yDistance < 4.01)
     {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.thirdConeHighPosition1).schedule();
+      System.out.println("three");
     }
-    if(yDistance > 4 && yDistance < 5)
-    {
-      new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.fourthConeHighPosition1).schedule();
-    }
+    // if(yDistance > 4 && yDistance < 5)
+    // {
+    //   new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.fourthConeHighPosition1).schedule();
+    // }
 
 
 

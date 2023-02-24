@@ -20,7 +20,7 @@ public class PIDWristCommand extends CommandBase {
     this.m_WristSubsystem = m_WristSubsystem;
     m_WristPIDController = new PIDController(4, 0., 0.025);
     m_WristPIDController.enableContinuousInput(0, 1);
-    m_WristPIDController.setTolerance(0.0035);
+    m_WristPIDController.setTolerance(0.003); //0.0035
     this.setPoint = setPoint;
     addRequirements(m_WristSubsystem);
 
@@ -37,7 +37,7 @@ public class PIDWristCommand extends CommandBase {
   @Override
   public void execute() 
   {
-    double feedforward = 0.15;
+    double feedforward = 0.16; //0.15
     double speed = m_WristPIDController.calculate(m_WristSubsystem.getAbsoluteEncoderCounts(), setPoint);
     speed = (speed > 0) ? speed + feedforward : speed - feedforward;
     m_WristSubsystem.setSpeed(speed);

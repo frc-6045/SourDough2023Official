@@ -703,7 +703,7 @@ public class RobotContainer {
     }
     ).and(()->
     {
-      if(m_OperatorController.getPOV() == 0)
+      if(m_driverController.getPOV() == 0)
       return true;
     else
       return false;
@@ -752,7 +752,7 @@ AutoConstants.eventMap.put("ConeGroundIntake", new SetArmWithWristPosition(m_Wri
 AutoConstants.eventMap.put("WristConsumeWithTime", new WristConsumeWithTime(m_armIntake, 2));
 AutoConstants.eventMap.put("WristEjectWithTime", new WristEjectWithTime(m_armIntake, 2));
 AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreHighWristPosition, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition));
-
+AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0.15).alongWith(new PIDWristCommand(m_WristSubsystem, 0.37)));
 
   //  eventMap.put("home", new PrintCommand("entering home position"));
   //  eventMap.put("CubeGroundIntake", new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition));
@@ -792,7 +792,7 @@ AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsy
 
 
      List<PathPlannerTrajectory> auto1Paths =
-        PathPlanner.loadPathGroup("3CubeAuto", 
+        PathPlanner.loadPathGroup("3CubeAutoStuff", 
         AutoConstants.maxAutoSpeed, 
         AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
@@ -801,8 +801,13 @@ AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsy
         //m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
       
     
-        return autoBuilder.fullAuto(auto1Paths).andThen(new AutoBalance(m_robotDrive));
+      return autoBuilder.fullAuto(auto1Paths).andThen(new AutoBalance(m_robotDrive));
      
+        // Command AutoStuff = new SequentialCommandGroup(
+        //   new ParallelCommandGroup(
+        //         new SetA
+        //   )
+        // )
         // Command AutoTest = 
         // new FollowPathWithEvents(
         //       new FollowTrajectory(

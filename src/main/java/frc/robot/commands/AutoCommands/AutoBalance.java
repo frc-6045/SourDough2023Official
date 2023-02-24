@@ -28,7 +28,7 @@ public class AutoBalance extends CommandBase {
 
     m_YController = new PIDController(0.0075, 0, 0);
 
-    m_YController.setTolerance(0.1);
+    m_YController.setTolerance(0.05);
 
 
 

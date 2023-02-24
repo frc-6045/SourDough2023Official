@@ -126,12 +126,37 @@
     },
     {
       "anchorPoint": {
-        "x": 4.6739913028698234,
-        "y": 3.616356104892662
+        "x": 5.487361969984605,
+        "y": 4.445032965895316
       },
       "prevControl": {
-        "x": 1.2183621359723926,
-        "y": 2.8930848839141294
+        "x": 2.174060114855574,
+        "y": 4.693530605029995
+      },
+      "nextControl": {
+        "x": 6.247196665009444,
+        "y": 4.388045363768453
+      },
+      "holonomicAngle": -41.423665625002656,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 6.446653272453465,
+        "y": 3.362268525484918
+      },
+      "prevControl": {
+        "x": 6.218702863946013,
+        "y": 3.799173475124201
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -147,50 +172,11 @@
       }
     }
   ],
-  "maxVelocity": 1.5,
-  "maxAcceleration": null,
-  "isReversed": null,
   "markers": [
     {
       "position": 0.0,
       "names": [
-        "WristConsumeWithTime"
-      ]
-    },
-    {
-      "position": 1.212121212121287,
-      "names": [
-        "CubeGroundIntake"
-      ]
-    },
-    {
-      "position": 1.84,
-      "names": [
-        "WristEjectWithTime"
-      ]
-    },
-    {
-      "position": 2.7575757575757502,
-      "names": [
-        "ScoreHigh"
-      ]
-    },
-    {
-      "position": 3.98,
-      "names": [
-        "WristConsumeWithTime"
-      ]
-    },
-    {
-      "position": 4.121212121212143,
-      "names": [
-        "Home"
-      ]
-    },
-    {
-      "position": 0.12121212121211433,
-      "names": [
-        "Home"
+        "event"
       ]
     }
   ]

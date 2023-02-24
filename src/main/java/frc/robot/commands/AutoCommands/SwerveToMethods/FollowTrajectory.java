@@ -101,7 +101,7 @@ public class FollowTrajectory extends CommandBase {
   @Override
   public void execute() 
   {
-    System.out.println("Command Still running");
+    System.out.println("Command still running");
   }
 
   @Override

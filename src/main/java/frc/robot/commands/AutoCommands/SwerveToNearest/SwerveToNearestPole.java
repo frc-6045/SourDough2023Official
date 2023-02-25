@@ -38,16 +38,37 @@ public class SwerveToNearestPole extends InstantCommand {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.firstConeHighPosition1).schedule();
       System.out.println("one");
     }
-    if(yDistance > 4.01 && yDistance < 4.35)
+    else if(yDistance > 3.5 && yDistance < 4.37)
     {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.secondConeHighPosition1).schedule();
       System.out.println("two");
     }
-    if(yDistance > 3 && yDistance < 4.01)
+    else if(yDistance > 3.5 && yDistance < 4.37)
     {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.thirdConeHighPosition1).schedule();
-      System.out.println("three");
+      System.out.println("two");
     }
+    else if(yDistance > 3.5 && yDistance < 4.37)
+    {
+      new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.fourthConeHighPosition1).schedule();
+      System.out.println("two");
+    }
+    else if(yDistance > 3.5 && yDistance < 4.37)
+    {
+      new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.fifthConeHighPosition1).schedule();
+      System.out.println("two");
+    }
+    else if(yDistance > 3.5 && yDistance < 4.37)
+    {
+      new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.sixthConeHighPosition1).schedule();
+      System.out.println("two");
+    }
+
+    // if(yDistance > 3 && yDistance < 4.01)
+    // {
+    //   new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.thirdConeHighPosition1).schedule();
+    //   System.out.println("three");
+    // }
     // if(yDistance > 4 && yDistance < 5)
     // {
     //   new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.fourthConeHighPosition1).schedule();

@@ -35,6 +35,7 @@ import frc.robot.commands.ArmCommands.OpenLoopArm.ActuateArm;
 import frc.robot.commands.AutoCommands.AutoBalance;
 import frc.robot.commands.AutoCommands.WristConsumeWithTime;
 import frc.robot.commands.AutoCommands.WristEjectWithTime;
+import frc.robot.commands.AutoCommands.SwerveToAndAuto.SwerveWithHighCone;
 import frc.robot.commands.AutoCommands.SwerveToMethods.FollowTrajectory;
 import frc.robot.commands.AutoCommands.SwerveToNearest.SwerveToNearestPole;
 import frc.robot.commands.WristCommands.WristConsume;
@@ -197,8 +198,12 @@ public class RobotContainer {
           teleOpTab.addDouble("backLeftMotor", m_robotDrive::getBackLeftRot);
           teleOpTab.addDouble("backRightMotor", m_robotDrive::getBackRightRot);
           teleOpTab.addDouble("pitch", m_robotDrive::getRoll);
+          teleOpTab.addDouble("pose estimator pose", m_robotDrive::getPoseHeading);
+          teleOpTab.addDouble("estimated X", m_robotDrive::getEstimatedX);
+          teleOpTab.addDouble("estimated Y", m_robotDrive::getEstimatedY);
           SmartDashboard.putData(m_ArmSubsystem);
           SmartDashboard.putData(m_WristSubsystem);
+
           
           
  
@@ -216,7 +221,7 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController,  XboxController.Button.kRightBumper.value)
+    new JoystickButton(m_driverController,  XboxController.Button.kY.value)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
@@ -709,6 +714,30 @@ public class RobotContainer {
       return false;
     }
     ).onTrue(new SwerveToNearestPole(m_robotDrive));
+
+
+    new Trigger(()->
+    {
+      if(m_driverController.getRightBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_driverController.getPOV() == 0)
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new SwerveWithHighCone(m_robotDrive, m_WristSubsystem, m_armIntake, m_ArmSubsystem).alongWith(new PrintCommand("yellow")));
+
+  }
+
+  public double getPoseHeading()
+  {
+    return m_robotDrive.getPose().getRotation().getDegrees();
   }
 
 
@@ -792,7 +821,7 @@ AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0
 
 
      List<PathPlannerTrajectory> auto1Paths =
-        PathPlanner.loadPathGroup("3CubeAutoStuff", 
+        PathPlanner.loadPathGroup("3CubeAuto", 
         AutoConstants.maxAutoSpeed, 
         AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
@@ -800,8 +829,8 @@ AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0
 
         //m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
       
-    
-      return autoBuilder.fullAuto(auto1Paths).andThen(new AutoBalance(m_robotDrive));
+    return new PrintCommand("no auto");
+      //return autoBuilder.fullAuto(auto1Paths).andThen(new AutoBalance(m_robotDrive));
      
         // Command AutoStuff = new SequentialCommandGroup(
         //   new ParallelCommandGroup(
@@ -899,5 +928,10 @@ AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0
     
 
   }
+
+  // public void addVisionMeasurement()
+  // {
+  //   m_ArmSubsystem 
+  // }
 
 }

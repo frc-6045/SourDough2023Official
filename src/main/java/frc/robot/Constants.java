@@ -293,29 +293,36 @@ public final class Constants {
 
   public static final class PoseConstants
   {
-    public static final Pose2d leftPickUpStation = new Pose2d(1, 1, Rotation2d.fromDegrees(0));
-    public static final Pose2d rightPickUpStation = new Pose2d(1, 1, Rotation2d.fromDegrees(0));
+    //x is greater than 13.3, and greater than 5.48 for the y value
+    public static final Pose2d leftPickUpStation = new Pose2d(14.1, 7.37, Rotation2d.fromDegrees(-180));
+    public static final Pose2d rightPickUpStation = new Pose2d(13.97, 6.0, Rotation2d.fromDegrees(-180));
 
-    public static final Pose2d firstConeHighPosition1 = new Pose2d(2.30, 4.76, Rotation2d.fromDegrees(0));
-    public static final Pose2d firstConeHighPosition2 = new Pose2d(1.85, 4.77, Rotation2d.fromDegrees(180));
+    public static final Pose2d firstConeHighPosition1 = new Pose2d(2.23, 4.89, Rotation2d.fromDegrees(-180));
+    public static final Pose2d firstConeHighPosition2 = new Pose2d(1.85, 4.89, Rotation2d.fromDegrees(-180));
 
-    public static final Pose2d secondConeHighPosition1 = new Pose2d(2.30, 3.70, Rotation2d.fromDegrees(0));
-    public static final Pose2d secondConeHighPosition2 = new Pose2d(1.85, 3.70, Rotation2d.fromDegrees(180));
+    public static final Pose2d secondConeHighPosition1 = new Pose2d(2.23, 3.82, Rotation2d.fromDegrees(-180));
+    public static final Pose2d secondConeHighPosition2 = new Pose2d(1.85, 3.82, Rotation2d.fromDegrees(-180));
 
-    public static final Pose2d thirdConeHighPosition1 = new Pose2d(2.30, 3.165, Rotation2d.fromDegrees(0));
-    public static final Pose2d thirdConeHighPosition2 = new Pose2d(1.85, 3.165, Rotation2d.fromDegrees(180));
+    public static final Pose2d thirdConeHighPosition1 = new Pose2d(2.23, 3.27, Rotation2d.fromDegrees(-180));
+    public static final Pose2d thirdConeHighPosition2 = new Pose2d(1.85, 3.27, Rotation2d.fromDegrees(-180));
 
-    public static final Pose2d fourthConeHighPosition1 = new Pose2d(1, 1, Rotation2d.fromDegrees(0));
-    public static final Pose2d fourthConeHighPosition2 = new Pose2d(1, 1, Rotation2d.fromDegrees(0));
+    public static final Pose2d fourthConeHighPosition1 = new Pose2d(2.23, 2.13, Rotation2d.fromDegrees(-180));
+    public static final Pose2d fourthConeHighPosition2 = new Pose2d(1.85, 2.13, Rotation2d.fromDegrees(-180));
 
-    public static final Pose2d firstCubePosition1 = new Pose2d(1, 1, Rotation2d.fromDegrees(0));
-    public static final Pose2d firstCubePosition2 = new Pose2d(1, 1, Rotation2d.fromDegrees(0));
+    public static final Pose2d fifthConeHighPosition1 = new Pose2d(2.23, 1.6, Rotation2d.fromDegrees(-180));
+    public static final Pose2d fifthConeHighPosition2 = new Pose2d(1.85, 1.6, Rotation2d.fromDegrees(-180));
 
-    public static final Pose2d secondCubePosition1 = new Pose2d(1, 1, Rotation2d.fromDegrees(0));
-    public static final Pose2d secondCubePosition2 = new Pose2d(1, 1, Rotation2d.fromDegrees(0));
+    public static final Pose2d sixthConeHighPosition1 = new Pose2d(2.23, 0.52, Rotation2d.fromDegrees(-180));
+    public static final Pose2d sixthConeHighPosition2 = new Pose2d(1.85, 0.52, Rotation2d.fromDegrees(-180));
 
-    public static final Pose2d thirdCubePosition1 = new Pose2d(1, 1, Rotation2d.fromDegrees(0));
-    public static final Pose2d thirdCubePosition2 = new Pose2d(1, 1, Rotation2d.fromDegrees(0));
+    public static final Pose2d firstCubePosition1 = new Pose2d(2.3, 4.23, Rotation2d.fromDegrees(-180));
+    public static final Pose2d firstCubePosition2 = new Pose2d(1.85, 4.23, Rotation2d.fromDegrees(-180));
+
+    public static final Pose2d secondCubePosition1 = new Pose2d(1, 1, Rotation2d.fromDegrees(-180));
+    public static final Pose2d secondCubePosition2 = new Pose2d(1, 1, Rotation2d.fromDegrees(-180));
+
+    public static final Pose2d thirdCubePosition1 = new Pose2d(1, 1, Rotation2d.fromDegrees(180));
+    public static final Pose2d thirdCubePosition2 = new Pose2d(1, 1, Rotation2d.fromDegrees(180));
 
 
   }

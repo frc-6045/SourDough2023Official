@@ -28,13 +28,16 @@ public class SwerveToNearestStation extends InstantCommand {
   @Override
   public void initialize() 
   {
-    if(yDistance > 10 && yDistance < 11)
+    if(xDistance > 13.3 && yDistance > 5.48)
     {
-      new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.leftPickUpStation).schedule();
-    }
-    else if (yDistance > 11 && yDistance < 12)
-    {
-      new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.rightPickUpStation).schedule();
-    }
+      if(yDistance > 6.685)
+      {
+        new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.leftPickUpStation).schedule();
+      }
+      else
+      {
+        new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.rightPickUpStation).schedule();
+      }
+   }
   }
 }

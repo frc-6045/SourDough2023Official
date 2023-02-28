@@ -2,13 +2,13 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 2.0,
-        "y": 4.34
+        "x": 1.8781471686166127,
+        "y": 4.369049496392832
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.0,
-        "y": 4.34
+        "x": 2.8781471686166142,
+        "y": 4.369049496392832
       },
       "holonomicAngle": 180.0,
       "isReversal": false,
@@ -17,25 +17,25 @@
       "isStopPoint": false,
       "stopEvent": {
         "names": [
-          "ScoreBeginning"
+          "ScoreMid"
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "deadline",
-        "waitTime": 0.6
+        "waitTime": 0.9
       }
     },
     {
       "anchorPoint": {
-        "x": 3.3279031971597783,
-        "y": 4.771580971733373
+        "x": 3.490029696108775,
+        "y": 4.78781550155693
       },
       "prevControl": {
-        "x": 2.8525431562141326,
-        "y": 4.636153954864301
+        "x": 3.014669655163129,
+        "y": 4.652388484687858
       },
       "nextControl": {
-        "x": 3.8032632381054254,
-        "y": 4.907007988602445
+        "x": 3.965389737054422,
+        "y": 4.923242518426003
       },
       "holonomicAngle": -75.96375653207353,
       "isReversal": false,
@@ -51,16 +51,16 @@
     },
     {
       "anchorPoint": {
-        "x": 6.431942187192645,
-        "y": 4.600808600113441
+        "x": 6.441703747605026,
+        "y": 5.04
       },
       "prevControl": {
-        "x": 5.668489231715306,
-        "y": 4.6811720691110565
+        "x": 5.678250792127687,
+        "y": 5.120363468997615
       },
       "nextControl": {
-        "x": 5.668489231715306,
-        "y": 4.6811720691110565
+        "x": 5.678250792127687,
+        "y": 5.120363468997615
       },
       "holonomicAngle": 0,
       "isReversal": true,
@@ -76,18 +76,18 @@
     },
     {
       "anchorPoint": {
-        "x": 3.970810949140696,
-        "y": 4.831853573481585
+        "x": 3.935565401995002,
+        "y": 5.418991084895751
       },
       "prevControl": {
-        "x": 4.3369179979374834,
-        "y": 4.773276445674099
+        "x": 4.112505798339388,
+        "y": 5.429607508676414
       },
       "nextControl": {
-        "x": 2.715131746052967,
-        "y": 5.032762245975621
+        "x": 2.079166627469058,
+        "y": 5.307607158424195
       },
-      "holonomicAngle": 180.0,
+      "holonomicAngle": -173.3674853848614,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -101,18 +101,18 @@
     },
     {
       "anchorPoint": {
-        "x": 1.6402703482098702,
-        "y": 4.480263396617019
+        "x": 1.6800408909459794,
+        "y": 5.0477113299905625
       },
       "prevControl": {
-        "x": 2.8256315159246883,
-        "y": 4.691217502735758
+        "x": 2.8654020586607967,
+        "y": 5.258665436109301
       },
       "nextControl": {
-        "x": 2.8256315159246883,
-        "y": 4.691217502735758
+        "x": 2.8654020586607967,
+        "y": 5.258665436109301
       },
-      "holonomicAngle": 172.49535565768755,
+      "holonomicAngle": 180.0,
       "isReversal": true,
       "velOverride": null,
       "isLocked": false,
@@ -126,12 +126,12 @@
     },
     {
       "anchorPoint": {
-        "x": 4.6739913028698234,
-        "y": 3.616356104892662
+        "x": 4.0469493284665585,
+        "y": 3.9153080775297364
       },
       "prevControl": {
-        "x": 1.2183621359723926,
-        "y": 2.8930848839141294
+        "x": 1.5593749706017932,
+        "y": 3.5440283226245475
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -147,57 +147,5 @@
       }
     }
   ],
-  "maxVelocity": 1.5,
-  "maxAcceleration": null,
-  "isReversed": null,
-  "markers": [
-    {
-      "position": 0.0,
-      "names": [
-        "WristConsumeWithTime"
-      ]
-    },
-    {
-      "position": 1.212121212121287,
-      "names": [
-        "CubeGroundIntake"
-      ]
-    },
-    {
-      "position": 1.84,
-      "names": [
-        "WristEjectWithTime"
-      ]
-    },
-    {
-      "position": 2.7575757575757502,
-      "names": [
-        "ScoreHigh"
-      ]
-    },
-    {
-      "position": 3.98,
-      "names": [
-        "WristConsumeWithTime"
-      ]
-    },
-    {
-      "position": 4.121212121212143,
-      "names": [
-        "Home"
-      ]
-    },
-    {
-      "position": 0.12121212121211433,
-      "names": [
-        "Home"
-      ]
-    },
-    {
-      "position": 2.12121212121226,
-      "names": [
-        "Home"
-      ]
-    }
-  ]
+  "markers": []
 }

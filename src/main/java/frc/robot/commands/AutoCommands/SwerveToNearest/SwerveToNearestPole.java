@@ -33,32 +33,32 @@ public class SwerveToNearestPole extends InstantCommand {
     System.out.println("xDistance: " + xDistance);
     System.out.println("yDistance: " + yDistance);
 
-    if(yDistance > 4.35 && yDistance < 4.95)
+    if(yDistance > 4.325 && yDistance < 4.95)
     {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.firstConeHighPosition1).schedule();
       System.out.println("one");
     }
-    else if(yDistance > 3.5 && yDistance < 4.37)
+    else if(yDistance > 3.545 && yDistance < 4.325)
     {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.secondConeHighPosition1).schedule();
       System.out.println("two");
     }
-    else if(yDistance > 3.5 && yDistance < 4.37)
+    else if(yDistance > 2.7 && yDistance < 3.545)
     {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.thirdConeHighPosition1).schedule();
       System.out.println("two");
     }
-    else if(yDistance > 3.5 && yDistance < 4.37)
+    else if(yDistance > 1.865 && yDistance < 2.7)
     {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.fourthConeHighPosition1).schedule();
       System.out.println("two");
     }
-    else if(yDistance > 3.5 && yDistance < 4.37)
+    else if(yDistance > 1.06 && yDistance < 1.865)
     {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.fifthConeHighPosition1).schedule();
       System.out.println("two");
     }
-    else if(yDistance > 3.5 && yDistance < 4.37)
+    else if(yDistance < 1.06)
     {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.sixthConeHighPosition1).schedule();
       System.out.println("two");

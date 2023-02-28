@@ -16,6 +16,7 @@ import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import edu.wpi.first.wpilibj.event.BooleanEvent;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -184,7 +185,12 @@ public class RobotContainer {
           autoChooser.addOption("Extra", "Extra");
           autoChooser.addOption("Thing", "Thing");
           autoChooser.addOption("LinearStopLinear", "LinearStopLinear");
-      
+          autoChooser.addOption("Nothing", "Nothing");
+          autoChooser.addOption("1ConeAndBalance", "1ConeAndBalance");
+          autoChooser.addOption("1ConeMidBalance", "1ConeMidBalance");
+          autoChooser.addOption("1ConeMidFarBalance", "1ConeMidFarBalance");
+          autoChooser.addOption("Square", "Square");
+          autoChooser.addOption("2CubeBalance", "2CubeBalance");
           
 
           //SmartDashboard.putData("Autonomous routine", autoChooser);
@@ -225,11 +231,22 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
+      double resetHeading;
+      // if(DriverStation.getAlliance() == Alliance.Red)
+      // { 
+      //   resetHeading = 180;
+      // }
+      // else
+      // {
+      //   resetHeading = 0;
+      // }
+
+    
 
     new JoystickButton(m_driverController,  XboxController.Button.kStart.value)
     .onTrue(new InstantCommand(
       ()-> m_robotDrive.resetOdometry(new Pose2d(m_robotDrive.getPose().getX(), m_robotDrive.getPose().getY(), new Rotation2d())),
-       m_robotDrive));
+       m_robotDrive).alongWith(new InstantCommand( ()-> m_robotDrive.zeroHeading())));
 
 
 
@@ -716,6 +733,7 @@ public class RobotContainer {
     ).onTrue(new SwerveToNearestPole(m_robotDrive));
 
 
+
     new Trigger(()->
     {
       if(m_driverController.getRightBumper())
@@ -731,7 +749,25 @@ public class RobotContainer {
     else
       return false;
     }
-    ).onTrue(new SwerveWithHighCone(m_robotDrive, m_WristSubsystem, m_armIntake, m_ArmSubsystem).alongWith(new PrintCommand("yellow")));
+    ).onTrue(new SwerveToNearestPole(m_robotDrive));
+
+
+    // new Trigger(()->
+    // {
+    //   if(m_driverController.getRightBumper())
+    //     return true;
+    //   else
+    //     return false;
+
+    // }
+    // ).and(()->
+    // {
+    //   if(m_driverController.getPOV() == 0)
+    //   return true;
+    // else
+    //   return false;
+    // }
+    // ).onTrue(new SwerveWithHighCone(m_robotDrive, m_WristSubsystem, m_armIntake, m_ArmSubsystem).alongWith(new PrintCommand("yellow")));
 
   }
 
@@ -775,7 +811,7 @@ public class RobotContainer {
    // examplePath = PathPlanner.loadPath("Example Path", new PathConstraints(4, 3));
 
 AutoConstants.eventMap.put("Home", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.HomeWristPosition, m_ArmSubsystem, PositionConstants.HomeArmPosition));
-AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
+AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition-0.02, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition-0.001));
 AutoConstants.eventMap.put("ScoreMid", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
 AutoConstants.eventMap.put("ConeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition, m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
 AutoConstants.eventMap.put("WristConsumeWithTime", new WristConsumeWithTime(m_armIntake, 2));
@@ -816,21 +852,20 @@ AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0
 
 
 
-
+     if(autoChooser.getSelected().equals("Nothing"))
+     return new PrintCommand("no auto");
 
 
 
      List<PathPlannerTrajectory> auto1Paths =
-        PathPlanner.loadPathGroup("3CubeAuto", 
-        AutoConstants.maxAutoSpeed, 
+        PathPlanner.loadPathGroup(autoChooser.getSelected(), 
+        1.5, 
         AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
      
 
-        //m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
-      
-    return new PrintCommand("no auto");
-      //return autoBuilder.fullAuto(auto1Paths).andThen(new AutoBalance(m_robotDrive));
+        m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
+        return autoBuilder.fullAuto(auto1Paths).andThen(new AutoBalance(m_robotDrive));
      
         // Command AutoStuff = new SequentialCommandGroup(
         //   new ParallelCommandGroup(
@@ -929,9 +964,9 @@ AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0
 
   }
 
-  // public void addVisionMeasurement()
-  // {
-  //   m_ArmSubsystem 
-  // }
+  public void addVisionMeasurement()
+  {
+    m_robotDrive.addMyVisionMeasurment();
+  }
 
 }

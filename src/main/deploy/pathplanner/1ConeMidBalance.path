@@ -2,13 +2,41 @@
   "waypoints": [
     {
       "anchorPoint": {
-        "x": 1.0,
-        "y": 3.0
+        "x": 1.9541306381190968,
+        "y": 3.2577912549190033
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0,
-        "y": 3.0
+        "x": 2.058607908685012,
+        "y": 3.181807785416519
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [
+          "ScoreMid",
+          "WristEjectWithTime"
+        ],
+        "executionBehavior": "sequential",
+        "waitBehavior": "deadline",
+        "waitTime": 2.0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 2.656977731017074,
+        "y": 3.2577912549190033
+      },
+      "prevControl": {
+        "x": 2.7804508689586105,
+        "y": 3.2767871222946248
+      },
+      "nextControl": {
+        "x": 2.5335045930755373,
+        "y": 3.238795387543382
       },
       "holonomicAngle": 0,
       "isReversal": false,
@@ -24,39 +52,12 @@
     },
     {
       "anchorPoint": {
-        "x": 3.0,
-        "y": 5.0
+        "x": 3.815725640929956,
+        "y": 3.2387953875433824
       },
       "prevControl": {
-        "x": 3.0,
-        "y": 4.0
-      },
-      "nextControl": {
-        "x": 3.0,
-        "y": 4.0
-      },
-      "holonomicAngle": 0,
-      "isReversal": true,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": true,
-      "stopEvent": {
-        "names": [
-          "home"
-        ],
-        "executionBehavior": "parallel",
-        "waitBehavior": "before",
-        "waitTime": 5.0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 5.0,
-        "y": 3.0
-      },
-      "prevControl": {
-        "x": 4.0,
-        "y": 3.0
+        "x": 3.2363516859735153,
+        "y": 3.2387953875433824
       },
       "nextControl": null,
       "holonomicAngle": 0,
@@ -74,9 +75,9 @@
   ],
   "markers": [
     {
-      "position": 0.4969696969696997,
+      "position": 0.04848484848486639,
       "names": [
-        "CubeGroundIntake"
+        "Home"
       ]
     }
   ]

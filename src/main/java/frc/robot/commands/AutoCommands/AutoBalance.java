@@ -17,7 +17,7 @@ import frc.robot.subsystems.Swerve.DriveSubsystem;
 
 public class AutoBalance extends CommandBase {
 
-  private final PIDController m_YController;
+  private final PIDController m_XController;
   private final DriveSubsystem m_robotDrive;
 
   /** Creates a new SwerveWithPIDY. */
@@ -26,9 +26,9 @@ public class AutoBalance extends CommandBase {
   {
 
 
-    m_YController = new PIDController(0.0075, 0, 0);
+    m_XController = new PIDController(0.005, 0, 0);
 
-    m_YController.setTolerance(0.05);
+    m_XController.setTolerance(0.05);
 
 
 
@@ -51,11 +51,11 @@ public class AutoBalance extends CommandBase {
   @Override
   public void execute() 
   {
-      double y_SetPoint = -1.6;
-    double y_Speed =  m_YController.calculate(m_robotDrive.getRoll(), y_SetPoint);
+      double x_SetPoint = -1.6;
+    double x_Speed =  m_XController.calculate(m_robotDrive.getRoll(), x_SetPoint);
     
 
-    m_robotDrive.drive(y_Speed, 0, 0, true);
+    m_robotDrive.drive(x_Speed, 0, 0, true);
     System.out.println("Balance running");
 
 
@@ -74,7 +74,7 @@ public class AutoBalance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_YController.atSetpoint() == true )
+    if(m_XController.atSetpoint() == true )
            return true;
     return false;
   }

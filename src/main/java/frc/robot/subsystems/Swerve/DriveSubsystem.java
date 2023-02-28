@@ -78,9 +78,12 @@ public class DriveSubsystem extends SubsystemBase {
             m_rearRight.getPosition()
           },
           new Pose2d(0, 0, new Rotation2d(0)), //
-          VecBuilder.fill(1.5, 1.5, Units.degreesToRadians(0.65)), // initiial was 0.05 for both on top and 0.5 for bottom
-          VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(10))); // 0.5, 0.5, 50
+          VecBuilder.fill(0.05, 0.05, Units.degreesToRadians(0.65)), // initiial was 0.05 for both on top and 0.5 for bottom
+          VecBuilder.fill(0.5, 0.5, Units.degreesToRadians(50))); // 0.5, 0.5, 50
 
+
+          //1.5 1.5 0.65
+          //0.05, 0.05, 10
       LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight");
       ShuffleboardTab limeLightTab = Shuffleboard.getTab("limelight");
       Field2d m_field = new Field2d();
@@ -88,15 +91,18 @@ public class DriveSubsystem extends SubsystemBase {
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
-    this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
-    this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
+    this.xLimiter = new SlewRateLimiter(1.8);
+    this.yLimiter = new SlewRateLimiter(1.8);
+
+    // this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
+    // this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
     this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond);
 
     double[] botposeBlue = llresults.targetingResults.botpose_wpired;
     limeLightTab.add("limeLightBluePose", botposeBlue[0]);
     limeLightTab.add(m_field);
   
-    m_gyro.setAngleAdjustment(-1);   
+    //m_gyro.setAngleAdjustment(-1);   
 
     zeroHeading();
    
@@ -202,7 +208,7 @@ public class DriveSubsystem extends SubsystemBase {
     xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kMaxSpeedMetersPerSecond;
     ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kMaxSpeedMetersPerSecond;
     rot = turningLimiter.calculate(rot) * DriveConstants.kMaxAngularSpeed;
-    double m_HeadingDegrees = DriverStation.getAlliance() == Alliance.Red ? getPose().getRotation().getDegrees() + 180 : getPose().getRotation().getDegrees();
+    double m_HeadingDegrees = DriverStation.getAlliance() == Alliance.Red ? getPose().getRotation().getDegrees() : getPose().getRotation().getDegrees();
 
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
@@ -254,7 +260,7 @@ public class DriveSubsystem extends SubsystemBase {
   /** Zeroes the heading of the robot. */
   public void zeroHeading() {
     m_gyro.zeroYaw();
-    m_gyro.setAngleAdjustment(-1);
+    //m_gyro.setAngleAdjustment(-1);
     
   }
 
@@ -272,7 +278,8 @@ public class DriveSubsystem extends SubsystemBase {
     // FIXME Uncomment if you are using a NavX
     if (m_gyro.isMagnetometerCalibrated()) {
       //      // We will only get valid fused headings if the magnetometer is calibrated
-          return m_gyro.getFusedHeading() * -1;
+          // return m_gyro.getFusedHeading() * -1;
+          return (m_gyro.getAngle() *-1);
          }
       //
       //    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
@@ -289,7 +296,8 @@ public class DriveSubsystem extends SubsystemBase {
     // FIXME Uncomment if you are using a NavX
     if (m_gyro.isMagnetometerCalibrated()) {
       //      // We will only get valid fused headings if the magnetometer is calibrated
-          return Rotation2d.fromDegrees(m_gyro.getFusedHeading() * -1);
+          // return Rotation2d.fromDegrees(m_gyro.getFusedHeading() * -1);
+          return Rotation2d.fromDegrees(m_gyro.getAngle() * -1);
          }
       //
       //    // We have to invert the angle of the NavX so that rotating the robot counter-clockwise makes the angle increase.
@@ -362,37 +370,38 @@ public class DriveSubsystem extends SubsystemBase {
   public void addMyVisionMeasurment()
   {
 
-    Alliance m_Alliance = DriverStation.getAlliance();
-    double acceptableMergeDistance = 2.8;
+//     Alliance m_Alliance = DriverStation.getAlliance();
+//     double acceptableScoreMergeDistance = 2.8;
+//     double acceptablePickUpMergeDistance = 13.3;
 
    
-try{
-    if(m_Alliance == Alliance.Blue)
-    {
-      if(LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX() < acceptableMergeDistance && LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX() != 0)
-      {
-        m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiBlue("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight")/1000);
-        //System.out.println(LimelightHelpers.getBotPose3d_wpiRed("limelight").getX());
+// try{
+//     if(m_Alliance == Alliance.Blue)
+//     {
+//       if(LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX() < acceptableScoreMergeDistance && LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX() != 0 || LimelightHelpers.getBotPose3d_wpiBlue("limelight").getX() > acceptablePickUpMergeDistance)
+//       {
+//         m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiBlue("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight")/1000);
+//         //System.out.println(LimelightHelpers.getBotPose3d_wpiRed("limelight").getX());
  
-      }
-    }
-    else if(m_Alliance == Alliance.Red)
-    {
-      System.out.println(LimelightHelpers.getBotPose3d_wpiRed("limelight").getX());
-      if(LimelightHelpers.getBotPose3d_wpiRed("limelight").getX() < acceptableMergeDistance && LimelightHelpers.getBotPose3d_wpiRed("limelight").getX() != 0)
-      {
-        m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiRed("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight")/1000);
-        System.out.println("more yeah");
-      }
-    }
-    else 
-     System.out.println("Alliance not found, no limelight");
-} catch(Exception e)
-{
-  System.out.println("yeah");
-}
-
-  }
+//       }
+//     }
+//     else if(m_Alliance == Alliance.Red)
+//     {
+//       System.out.println(LimelightHelpers.getBotPose3d_wpiRed("limelight").getX());
+//       if(LimelightHelpers.getBotPose3d_wpiRed("limelight").getX() < acceptableScoreMergeDistance && LimelightHelpers.getBotPose3d_wpiRed("limelight").getX() != 0 || LimelightHelpers.getBotPose3d_wpiRed("limelight").getX() > acceptablePickUpMergeDistance)
+//       {
+//         m_poseEstimator.addVisionMeasurement(LimelightHelpers.getBotPose3d_wpiRed("limelight").toPose2d(), Timer.getFPGATimestamp() - LimelightHelpers.getLatency_Pipeline("limelight")/1000);
+//         System.out.println("more yeah");
+//       }
+//     }
+//     else 
+//      System.out.println("Alliance not found, no limelight data");
+// } catch(Exception e)
+// {
+//   System.out.println("yeah that an error with vision: " + e);
+// }
+System.out.println("nada");
+   }
 
  
 

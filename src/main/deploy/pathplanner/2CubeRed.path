@@ -51,16 +51,16 @@
     },
     {
       "anchorPoint": {
-        "x": 6.446653272453465,
-        "y": 4.786958578656494
+        "x": 6.441703747605026,
+        "y": 5.04
       },
       "prevControl": {
-        "x": 5.683200316976126,
-        "y": 4.867322047654109
+        "x": 5.678250792127687,
+        "y": 5.120363468997615
       },
       "nextControl": {
-        "x": 5.683200316976126,
-        "y": 4.867322047654109
+        "x": 5.678250792127687,
+        "y": 5.120363468997615
       },
       "holonomicAngle": 0,
       "isReversal": true,
@@ -101,40 +101,15 @@
     },
     {
       "anchorPoint": {
-        "x": 1.85,
-        "y": 4.796456512344305
+        "x": 1.68,
+        "y": 5.05
       },
       "prevControl": {
-        "x": 3.035361167714817,
-        "y": 5.007410618463044
-      },
-      "nextControl": {
-        "x": 3.035361167714817,
-        "y": 5.007410618463044
-      },
-      "holonomicAngle": 180.0,
-      "isReversal": true,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 4.0469493284665585,
-        "y": 3.9153080775297364
-      },
-      "prevControl": {
-        "x": 1.5593749706017932,
-        "y": 3.5440283226245475
+        "x": 2.373349159210168,
+        "y": 5.315942143258694
       },
       "nextControl": null,
-      "holonomicAngle": 0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -155,45 +130,33 @@
       ]
     },
     {
-      "position": 0.06060606060605718,
+      "position": 0.07272727272727274,
       "names": [
         "Home"
       ]
     },
     {
-      "position": 1.1212121212120936,
+      "position": 1.2121212121212754,
       "names": [
         "CubeGroundIntake"
       ]
     },
     {
-      "position": 1.8787878787880103,
+      "position": 1.8909090909091248,
       "names": [
         "WristEjectWithTime"
       ]
     },
     {
-      "position": 2.1818181818181817,
-      "names": [
-        "Home"
-      ]
-    },
-    {
-      "position": 2.969696969696955,
+      "position": 2.8606060606061483,
       "names": [
         "ScoreHigh"
       ]
     },
     {
-      "position": 3.98,
+      "position": 4.0,
       "names": [
         "WristConsumeWithTime"
-      ]
-    },
-    {
-      "position": 4.090909090909123,
-      "names": [
-        "Home"
       ]
     }
   ]

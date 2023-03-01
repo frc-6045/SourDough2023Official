@@ -101,40 +101,15 @@
     },
     {
       "anchorPoint": {
-        "x": 1.6800408909459794,
-        "y": 5.0477113299905625
+        "x": 1.68,
+        "y": 5.05
       },
       "prevControl": {
-        "x": 2.8654020586607967,
-        "y": 5.258665436109301
-      },
-      "nextControl": {
-        "x": 2.8654020586607967,
-        "y": 5.258665436109301
-      },
-      "holonomicAngle": 180.0,
-      "isReversal": true,
-      "velOverride": null,
-      "isLocked": false,
-      "isStopPoint": false,
-      "stopEvent": {
-        "names": [],
-        "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
-      }
-    },
-    {
-      "anchorPoint": {
-        "x": 4.0469493284665585,
-        "y": 3.9153080775297364
-      },
-      "prevControl": {
-        "x": 1.5593749706017932,
-        "y": 3.5440283226245475
+        "x": 2.373349159210168,
+        "y": 5.315942143258694
       },
       "nextControl": null,
-      "holonomicAngle": 0,
+      "holonomicAngle": 180.0,
       "isReversal": false,
       "velOverride": null,
       "isLocked": false,
@@ -147,5 +122,48 @@
       }
     }
   ],
-  "markers": []
+  "markers": [
+    {
+      "position": 0.0,
+      "names": [
+        "WristConsumeWithTime"
+      ]
+    },
+    {
+      "position": 0.09696969696968312,
+      "names": [
+        "Home"
+      ]
+    },
+    {
+      "position": 1.1636363636363638,
+      "names": [
+        "CubeGroundIntake"
+      ]
+    },
+    {
+      "position": 1.8666666666667227,
+      "names": [
+        "WristEjectWithTime"
+      ]
+    },
+    {
+      "position": 2.1818181818181737,
+      "names": [
+        "Home"
+      ]
+    },
+    {
+      "position": 2.909090909091002,
+      "names": [
+        "ScoreHigh"
+      ]
+    },
+    {
+      "position": 3.975757575757784,
+      "names": [
+        "WristConsumeWithTime"
+      ]
+    }
+  ]
 }

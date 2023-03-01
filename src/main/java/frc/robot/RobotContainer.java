@@ -178,19 +178,30 @@ public class RobotContainer {
           //temporary stand in to make it show up.
 
           //Add list of paths to shuffleBoard. have to do this since the file directory automation part doesn't work.
-          autoChooser.addOption("ThePath", "ThePath");
-          autoChooser.addOption("TheOG", "TheOG");
-          autoChooser.addOption("3 meters", "3 meters");
-          autoChooser.addOption("TheOGWithEvents", "TheOGWithEvents");
-          autoChooser.addOption("Extra", "Extra");
-          autoChooser.addOption("Thing", "Thing");
-          autoChooser.addOption("LinearStopLinear", "LinearStopLinear");
-          autoChooser.addOption("Nothing", "Nothing");
+          // autoChooser.addOption("ThePath", "ThePath");
+          // autoChooser.addOption("TheOG", "TheOG");
+          // autoChooser.addOption("3 meters", "3 meters");
+          // autoChooser.addOption("TheOGWithEvents", "TheOGWithEvents");
+          // autoChooser.addOption("Extra", "Extra");
+          // autoChooser.addOption("Thing", "Thing");
+          // autoChooser.addOption("LinearStopLinear", "LinearStopLinear");
+          // autoChooser.addOption("Nothing", "Nothing");
+          // autoChooser.addOption("1ConeAndBalance", "1ConeAndBalance");
+          // autoChooser.addOption("1ConeMidBalance", "1ConeMidBalance");
+          // autoChooser.addOption("1ConeMidFarBalance", "1ConeMidFarBalance");
+          // autoChooser.addOption("Square", "Square");
+          // autoChooser.addOption("2CubeBalance", "2CubeBalance");
+          autoChooser.addOption("1AndCubeBalance", "1CubeAndBalance");
           autoChooser.addOption("1ConeAndBalance", "1ConeAndBalance");
           autoChooser.addOption("1ConeMidBalance", "1ConeMidBalance");
           autoChooser.addOption("1ConeMidFarBalance", "1ConeMidFarBalance");
-          autoChooser.addOption("Square", "Square");
+          autoChooser.addOption("2Cube", "2Cube");
+          autoChooser.addOption("2CubeRed", "2CubeRed");
           autoChooser.addOption("2CubeBalance", "2CubeBalance");
+          autoChooser.addOption("2CubeBalanceRed", "2CubeBalanceRed");
+          autoChooser.addOption("HighConeMidCubeBack", "HighConeMidCubeBack");
+          autoChooser.addOption("Nothing", "Nothing");
+          
           
 
           //SmartDashboard.putData("Autonomous routine", autoChooser);
@@ -811,7 +822,7 @@ public class RobotContainer {
    // examplePath = PathPlanner.loadPath("Example Path", new PathConstraints(4, 3));
 
 AutoConstants.eventMap.put("Home", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.HomeWristPosition, m_ArmSubsystem, PositionConstants.HomeArmPosition));
-AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition-0.02, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition-0.001));
+AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition-0.001));
 AutoConstants.eventMap.put("ScoreMid", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
 AutoConstants.eventMap.put("ConeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition, m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
 AutoConstants.eventMap.put("WristConsumeWithTime", new WristConsumeWithTime(m_armIntake, 2));
@@ -834,7 +845,7 @@ AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0
      m_robotDrive::resetOdometry,
      DriveConstants.kDriveKinematics,
      new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
-     new PIDConstants(0.3, 0.0, 0),
+     new PIDConstants(1.5, 0.0, 0), //5.0, 0, 0.2
      m_robotDrive::setModuleStates,
      AutoConstants.eventMap,
      true,

@@ -36,7 +36,7 @@ public class ActuateArm extends CommandBase {
     //     m_ArmSubsystem.stop();
 
     double speed = (double)speedSupplier.get();
-    if(speed > 0.1 || speed < -0.1)
+    if(speed > 0.17 || speed < -0.17)
     {
       if(speed > 0.6)
         speed = 0.6;

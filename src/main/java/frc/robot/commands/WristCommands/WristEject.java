@@ -29,7 +29,7 @@ public class WristEject extends CommandBase {
   @Override
   public void execute() {
 
-    double speed = (double)speedSupplier.get();
+    double speed = (double)speedSupplier.get() * 0.8;
     armIntake.setMotorSpeeds(-speed);
   }
 

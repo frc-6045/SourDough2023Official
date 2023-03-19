@@ -34,6 +34,7 @@ import frc.robot.commands.ArmCommands.ClosedLoopArm.PIDArmCommand;
 import frc.robot.commands.ArmCommands.ClosedLoopArm.StopArmPID;
 import frc.robot.commands.ArmCommands.OpenLoopArm.ActuateArm;
 import frc.robot.commands.AutoCommands.AutoBalance;
+import frc.robot.commands.AutoCommands.AutoScore;
 import frc.robot.commands.AutoCommands.WristConsumeWithTime;
 import frc.robot.commands.AutoCommands.WristEjectWithTime;
 import frc.robot.commands.AutoCommands.SwerveToAndAuto.SwerveWithHighCone;
@@ -201,7 +202,8 @@ public class RobotContainer {
           autoChooser.addOption("2CubeBalanceRed", "2CubeBalanceRed");
           autoChooser.addOption("HighConeMidCubeBack", "HighConeMidCubeBack");
           autoChooser.addOption("Nothing", "Nothing");
-          
+          autoChooser.addOption("2.5CubeRed", "2.5CubeRed");
+          autoChooser.addOption("2.5Cube", "2.5Cube");
           
 
           //SmartDashboard.putData("Autonomous routine", autoChooser);
@@ -238,11 +240,11 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
-    new JoystickButton(m_driverController,  XboxController.Button.kY.value)
+    new JoystickButton(m_driverController,  XboxController.Button.kRightBumper.value)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
-      double resetHeading;
+      //double resetHeading;
       // if(DriverStation.getAlliance() == Alliance.Red)
       // { 
       //   resetHeading = 180;
@@ -743,11 +745,9 @@ public class RobotContainer {
     }
     ).onTrue(new SwerveToNearestPole(m_robotDrive));
 
-
-
     new Trigger(()->
     {
-      if(m_driverController.getRightBumper())
+      if(m_driverController.getLeftBumper())
         return true;
       else
         return false;
@@ -755,12 +755,115 @@ public class RobotContainer {
     }
     ).and(()->
     {
-      if(m_driverController.getPOV() == 0)
+      if(m_driverController.getPOV() == 90)
       return true;
     else
       return false;
     }
-    ).onTrue(new SwerveToNearestPole(m_robotDrive));
+    ).onTrue(new AutoScore(m_robotDrive, m_WristSubsystem, m_armIntake, m_ArmSubsystem));
+
+
+
+
+    //driveForward
+    // new Trigger(()->
+    // {
+    //   if(m_driverController.getLeftBumper())
+    //     return true;
+    //   else
+    //     return false;
+
+    // }
+    // ).and(()->
+    // {
+    //   if(m_driverController.getPOV() == 0)
+    //   return true;
+    // else
+    //   return false;
+    // }
+    // ).whileTrue(new RunCommand(()-> m_robotDrive.drive(0, 0.25, 0, true), m_robotDrive));
+
+
+
+
+    // //driveLeft
+    // new Trigger(()->
+    // {
+    //   if(m_driverController.getLeftBumper())
+    //     return true;
+    //   else
+    //     return false;
+
+    // }
+    // ).and(()->
+    // {
+    //   if(m_driverController.getPOV() == 0)
+    //   return true;
+    // else
+    //   return false;
+    // }
+    // ).whileTrue(new RunCommand(()-> m_robotDrive.drive(0, 0.25, 0, true), m_robotDrive));
+
+
+    // //driveRight
+    // new Trigger(()->
+    // {
+    //   if(m_driverController.getLeftBumper())
+    //     return true;
+    //   else
+    //     return false;
+
+    // }
+    // ).and(()->
+    // {
+    //   if(m_driverController.getPOV() == 0)
+    //   return true;
+    // else
+    //   return false;
+    // }
+    // ).whileTrue(new RunCommand(()-> m_robotDrive.drive(0, 0.25, 0, true), m_robotDrive));
+
+
+
+    
+    // new Trigger(()->
+    // {
+    //   if(m_driverController.getLeftBumper())
+    //     return true;
+    //   else
+    //     return false;
+
+    // }
+    // ).and(()->
+    // {
+    //   if(m_driverController.getPOV() == 0)
+    //   return true;
+    // else
+    //   return false;
+    // }
+    // ).whileTrue(new RunCommand(()-> m_robotDrive.drive(0, 0.25, 0, true), m_robotDrive));
+
+
+    
+
+
+
+    // new Trigger(()->
+    // {
+    //   if(m_driverController.getRightBumper())
+    //     return true;
+    //   else
+    //     return false;
+
+    // }
+    // ).and(()->
+    // {
+    //   if(m_driverController.getPOV() == 0)
+    //   return true;
+    // else
+    //   return false;
+    // }
+    // ).onTrue(new SwerveToNearestPole(m_robotDrive));
 
 
     // new Trigger(()->

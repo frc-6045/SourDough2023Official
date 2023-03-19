@@ -21,7 +21,7 @@
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "deadline",
-        "waitTime": 0.9
+        "waitTime": 1.1
       }
     },
     {
@@ -51,22 +51,22 @@
     },
     {
       "anchorPoint": {
-        "x": 6.441703747605026,
-        "y": 5.04
+        "x": 6.456151206141275,
+        "y": 4.8
       },
       "prevControl": {
-        "x": 5.678250792127687,
-        "y": 5.120363468997615
+        "x": 5.692698250663936,
+        "y": 4.880363468997615
       },
       "nextControl": {
-        "x": 5.678250792127687,
-        "y": 5.120363468997615
+        "x": 5.692698250663936,
+        "y": 4.880363468997615
       },
       "holonomicAngle": 0,
       "isReversal": true,
       "velOverride": null,
       "isLocked": false,
-      "isStopPoint": false,
+      "isStopPoint": true,
       "stopEvent": {
         "names": [],
         "executionBehavior": "parallel",
@@ -76,16 +76,16 @@
     },
     {
       "anchorPoint": {
-        "x": 3.935565401995002,
-        "y": 5.418991084895751
+        "x": 4.271626457944859,
+        "y": 5.2
       },
       "prevControl": {
-        "x": 4.112505798339388,
-        "y": 5.429607508676414
+        "x": 4.448627659851616,
+        "y": 5.190450820141891
       },
       "nextControl": {
-        "x": 2.079166627469058,
-        "y": 5.307607158424195
+        "x": 1.716682295923834,
+        "y": 5.337838732549503
       },
       "holonomicAngle": -173.3674853848614,
       "isReversal": false,
@@ -101,12 +101,12 @@
     },
     {
       "anchorPoint": {
-        "x": 1.68,
-        "y": 5.05
+        "x": 1.85,
+        "y": 5.15
       },
       "prevControl": {
-        "x": 2.373349159210168,
-        "y": 5.315942143258694
+        "x": 2.7717306196583014,
+        "y": 5.26529775421051
       },
       "nextControl": null,
       "holonomicAngle": 180.0,
@@ -115,48 +115,44 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [],
+        "names": [
+          "WristConsumeWithTime"
+        ],
         "executionBehavior": "parallel",
-        "waitBehavior": "none",
-        "waitTime": 0
+        "waitBehavior": "deadline",
+        "waitTime": 0.9
       }
     }
   ],
   "markers": [
     {
-      "position": 0.0,
-      "names": [
-        "WristConsumeWithTime"
-      ]
-    },
-    {
-      "position": 0.07272727272727274,
+      "position": 0.04848484848486223,
       "names": [
         "Home"
       ]
     },
     {
-      "position": 1.2121212121212754,
+      "position": 1.1151515151514841,
       "names": [
         "CubeGroundIntake"
       ]
     },
     {
-      "position": 1.8909090909091248,
+      "position": 1.818181818181827,
       "names": [
         "WristEjectWithTime"
       ]
     },
     {
-      "position": 2.8606060606061483,
+      "position": 2.15,
       "names": [
-        "ScoreHigh"
+        "Home"
       ]
     },
     {
-      "position": 4.0,
+      "position": 2.8848484848485914,
       "names": [
-        "WristConsumeWithTime"
+        "ScoreHigh"
       ]
     }
   ]

@@ -21,17 +21,42 @@
         ],
         "executionBehavior": "parallel",
         "waitBehavior": "deadline",
-        "waitTime": 0.6
+        "waitTime": 0.9
       }
     },
     {
       "anchorPoint": {
-        "x": 3.5782772987346925,
-        "y": 2.6879152336503727
+        "x": 2.8944260732123364,
+        "y": 2.7259069684016146
       },
       "prevControl": {
-        "x": 2.5782772987346925,
-        "y": 2.6879152336503727
+        "x": 1.8944260732123364,
+        "y": 2.7259069684016146
+      },
+      "nextControl": {
+        "x": 3.8944260732123324,
+        "y": 2.7259069684016146
+      },
+      "holonomicAngle": 180.0,
+      "isReversal": false,
+      "velOverride": null,
+      "isLocked": false,
+      "isStopPoint": false,
+      "stopEvent": {
+        "names": [],
+        "executionBehavior": "parallel",
+        "waitBehavior": "none",
+        "waitTime": 0
+      }
+    },
+    {
+      "anchorPoint": {
+        "x": 3.6637587019249866,
+        "y": 2.7069111010259936
+      },
+      "prevControl": {
+        "x": 2.9704095427148203,
+        "y": 2.725906968401616
       },
       "nextControl": null,
       "holonomicAngle": 180.0,
@@ -52,6 +77,18 @@
       "position": 0.09090909090907665,
       "names": [
         "Home"
+      ]
+    },
+    {
+      "position": 0.0,
+      "names": [
+        "event"
+      ]
+    },
+    {
+      "position": 0.0,
+      "names": [
+        "WristConsumeWithTime"
       ]
     }
   ]

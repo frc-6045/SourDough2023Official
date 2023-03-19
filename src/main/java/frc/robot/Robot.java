@@ -74,7 +74,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledPeriodic() {
     m_robotContainer.addVisionMeasurement();
-    System.out.println("adding vision measurment!");
+
    
     
   }

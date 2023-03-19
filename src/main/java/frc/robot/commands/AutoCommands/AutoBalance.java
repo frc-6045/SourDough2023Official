@@ -26,7 +26,7 @@ public class AutoBalance extends CommandBase {
   {
 
 
-    m_XController = new PIDController(0.005, 0, 0);
+    m_XController = new PIDController(0.004, 0, 0); // was 0.005
 
     m_XController.setTolerance(0.05);
 
@@ -44,7 +44,7 @@ public class AutoBalance extends CommandBase {
   public void initialize() 
   {
     System.out.println("getting scheduled");
-
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.

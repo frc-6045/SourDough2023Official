@@ -238,8 +238,12 @@ public final class Constants {
     public static final double HomeWristPosition = 0.4467;
     public static final double HomeArmPosition = 0;
 
+    //ActuallySoloPickUp
+    // public static final double HomeWristPosition = 0.3567;
+    // public static final double HomeArmPosition = 0;
+
     //ConeIntake
-    public static final double ConeIntakeWristPosition = 0.2732;
+    public static final double ConeIntakeWristPosition = 0.2652; // 0.2732
     public static final double ConeIntakeArmPosition = 0;
 
     //CubeIntake
@@ -308,8 +312,10 @@ public final class Constants {
     public static final Pose2d firstConeHighPosition1 = new Pose2d(2.23, 4.89, Rotation2d.fromDegrees(-180));
     public static final Pose2d firstConeHighPosition2 = new Pose2d(1.85, 4.89, Rotation2d.fromDegrees(-180));
 
-    public static final Pose2d secondConeHighPosition1 = new Pose2d(2.23, 3.82, Rotation2d.fromDegrees(-180));
-    public static final Pose2d secondConeHighPosition2 = new Pose2d(1.85, 3.82, Rotation2d.fromDegrees(-180));
+
+    //changed y because robot spun a tiny bit to the side consistently
+    public static final Pose2d secondConeHighPosition1 = new Pose2d(2.1, 3.92, Rotation2d.fromDegrees(-180));
+    public static final Pose2d secondConeHighPosition2 = new Pose2d(1.68, 3.94, Rotation2d.fromDegrees(-180));
 
     public static final Pose2d thirdConeHighPosition1 = new Pose2d(2.23, 3.27, Rotation2d.fromDegrees(-180));
     public static final Pose2d thirdConeHighPosition2 = new Pose2d(1.85, 3.27, Rotation2d.fromDegrees(-180));

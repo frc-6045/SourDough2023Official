@@ -6,7 +6,7 @@ package frc.robot.commands.AutoCommands;
 
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.WristCommands.WristEject;
+import frc.robot.commands.ArmAndWrist.WristCommands.WristEject;
 import frc.robot.subsystems.Wrist.WristIntake;
 
 // NOTE:  Consider using this command inline, rather than writing a subclass.  For more

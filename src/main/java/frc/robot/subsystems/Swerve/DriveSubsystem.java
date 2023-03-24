@@ -9,6 +9,7 @@ import java.util.function.DoubleSupplier;
 import com.kauailabs.navx.frc.AHRS;
 
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -56,6 +57,10 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kRearRightTurningCanId,
       DriveConstants.kBackRightChassisAngularOffset);
 
+
+  private final PIDController m_VisionLockController = new PIDController(0.015, 0, 0);
+  
+
   // The gyro sensor
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
 
@@ -89,6 +94,7 @@ public class DriveSubsystem extends SubsystemBase {
       LimelightHelpers.LimelightResults llresults = LimelightHelpers.getLatestResults("limelight");
       ShuffleboardTab limeLightTab = Shuffleboard.getTab("limelight");
       Field2d m_field = new Field2d();
+      boolean limelightToggledOn = true;
       
 
 
@@ -100,6 +106,8 @@ public class DriveSubsystem extends SubsystemBase {
     // this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
     // this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
     this.turningLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAngularSpeedRadiansPerSecond);
+    m_VisionLockController.setSetpoint(0);
+
 
     double[] botposeBlue = llresults.targetingResults.botpose_wpired;
        limeLightTab.add(m_field);
@@ -108,6 +116,7 @@ public class DriveSubsystem extends SubsystemBase {
      m_gyro.setAngleAdjustment(-1);   
 
     zeroHeading();
+   
    
   
     
@@ -211,6 +220,38 @@ public class DriveSubsystem extends SubsystemBase {
     xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kMaxSpeedMetersPerSecond;
     ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kMaxSpeedMetersPerSecond;
     rot = turningLimiter.calculate(rot) * DriveConstants.kMaxAngularSpeed;
+    double m_HeadingDegrees = getPose().getRotation().getDegrees();
+
+    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
+        fieldRelative
+            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_HeadingDegrees)) //TODO: changed getHeadingDegrees()
+            : new ChassisSpeeds(xSpeed, ySpeed, rot));
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+    m_frontLeft.setDesiredState(swerveModuleStates[0]);
+    m_frontRight.setDesiredState(swerveModuleStates[1]);
+    m_rearLeft.setDesiredState(swerveModuleStates[2]);
+    m_rearRight.setDesiredState(swerveModuleStates[3]);
+    
+  }
+
+
+
+
+  public void DriveWithVisionLockOn(double xSpeed, double ySpeed, double armPosition, boolean fieldRelative)
+  {
+
+    double rot;
+    if(armPosition > 0.15)
+          rot = m_VisionLockController.calculate(LimelightHelpers.getTX("limelight-bottom"));
+    else
+          rot = m_VisionLockController.calculate(LimelightHelpers.getTX("limelight"));
+
+
+
+    xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kMaxSpeedMetersPerSecond;
+    ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kMaxSpeedMetersPerSecond;
+    rot = turningLimiter.calculate(rot) * DriveConstants.kMaxAngularSpeed;
     double m_HeadingDegrees = DriverStation.getAlliance() == Alliance.Red ? getPose().getRotation().getDegrees() : getPose().getRotation().getDegrees();
 
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
@@ -223,6 +264,7 @@ public class DriveSubsystem extends SubsystemBase {
     m_frontRight.setDesiredState(swerveModuleStates[1]);
     m_rearLeft.setDesiredState(swerveModuleStates[2]);
     m_rearRight.setDesiredState(swerveModuleStates[3]);
+    //System.out.println("debugging in your mom -()-()-");
     
   }
 
@@ -406,7 +448,24 @@ public class DriveSubsystem extends SubsystemBase {
 
    }
 
- 
+   public void toggleLimelight()
+   {
+    if(limelightToggledOn)
+    {
+    LimelightHelpers.setLEDMode_ForceOn("limelight");
+    LimelightHelpers.setLEDMode_ForceOn("limelight-bottom");
+    limelightToggledOn = false;
+    }
+    else if(!limelightToggledOn)
+    {
+      LimelightHelpers.setLEDMode_ForceOff("limelight");
+      LimelightHelpers.setLEDMode_ForceOff("limelight-bottom");
+      limelightToggledOn = true;
+    }
+
+   }
+
+
 
 
 

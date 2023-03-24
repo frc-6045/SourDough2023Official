@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.PoseConstants;
 import frc.robot.Constants.PositionConstants;
-import frc.robot.commands.SetArmWithWristPosition;
+import frc.robot.commands.ArmAndWrist.SetArmWithWristPosition;
 import frc.robot.commands.AutoCommands.WristConsumeWithTime;
 import frc.robot.commands.AutoCommands.SwerveToMethods.SwerveToPoseWithTrajectory;
 import frc.robot.subsystems.Arm.ArmSubsystem;

@@ -64,7 +64,7 @@ public class SwerveToPoseWithTrajectory extends CommandBase {
           drive::resetOdometry,
           DriveConstants.kDriveKinematics,
           new PIDConstants(0.3, 0.0 ,0), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
-          new PIDConstants(0.3, 0.0, 0),
+          new PIDConstants(0.6, 0.0, 0),
           drive::setModuleStates,
           AutoConstants.eventMap,
           true,

@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj2.command.ParallelCommandGroup;
 import edu.wpi.first.wpilibj2.command.ParallelRaceGroup;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import frc.robot.commands.WristCommands.WristConsume;
+import frc.robot.commands.ArmAndWrist.WristCommands.WristConsume;
 import frc.robot.subsystems.Wrist.WristIntake;
 import frc.robot.subsystems.Wrist.WristSubsystem;
 

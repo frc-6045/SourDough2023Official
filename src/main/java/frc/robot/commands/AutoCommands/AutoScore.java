@@ -6,7 +6,7 @@ package frc.robot.commands.AutoCommands;
 
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import frc.robot.Constants.PositionConstants;
-import frc.robot.commands.SetArmWithWristPosition;
+import frc.robot.commands.ArmAndWrist.SetArmWithWristPosition;
 import frc.robot.commands.AutoCommands.SwerveToMethods.SwerveToPoseWithTrajectory;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Swerve.DriveSubsystem;
@@ -44,7 +44,7 @@ private final ArmSubsystem m_ArmSubsystem;
     addCommands
     (
       new SetArmWithWristPosition(m_WristSubsytem, PositionConstants.ScoreHighWristPosition, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition),
-      new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.secondConeHighPosition2));
-
+      //new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.secondConeHighPosition2));
+      new DriveStraight(m_robotDrive, PoseConstants.secondConeHighPosition2));
   }
 }

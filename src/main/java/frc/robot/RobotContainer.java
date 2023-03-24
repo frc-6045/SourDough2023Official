@@ -29,10 +29,15 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PositionConstants;
-import frc.robot.commands.SetArmWithWristPosition;
-import frc.robot.commands.ArmCommands.ClosedLoopArm.PIDArmCommand;
-import frc.robot.commands.ArmCommands.ClosedLoopArm.StopArmPID;
-import frc.robot.commands.ArmCommands.OpenLoopArm.ActuateArm;
+import frc.robot.commands.ArmAndWrist.SetArmWithWristPosition;
+import frc.robot.commands.ArmAndWrist.ArmCommands.ClosedLoopArm.PIDArmCommand;
+import frc.robot.commands.ArmAndWrist.ArmCommands.ClosedLoopArm.StopArmPID;
+import frc.robot.commands.ArmAndWrist.ArmCommands.OpenLoopArm.ActuateArm;
+import frc.robot.commands.ArmAndWrist.WristCommands.WristConsume;
+import frc.robot.commands.ArmAndWrist.WristCommands.WristEject;
+import frc.robot.commands.ArmAndWrist.WristCommands.ClosedLoopWrist.PIDWristCommand;
+import frc.robot.commands.ArmAndWrist.WristCommands.ClosedLoopWrist.StopWristPID;
+import frc.robot.commands.ArmAndWrist.WristCommands.OpenLoopWrist.ActuateWrist;
 import frc.robot.commands.AutoCommands.AutoBalance;
 import frc.robot.commands.AutoCommands.AutoScore;
 import frc.robot.commands.AutoCommands.WristConsumeWithTime;
@@ -40,11 +45,6 @@ import frc.robot.commands.AutoCommands.WristEjectWithTime;
 import frc.robot.commands.AutoCommands.SwerveToAndAuto.SwerveWithHighCone;
 import frc.robot.commands.AutoCommands.SwerveToMethods.FollowTrajectory;
 import frc.robot.commands.AutoCommands.SwerveToNearest.SwerveToNearestPole;
-import frc.robot.commands.WristCommands.WristConsume;
-import frc.robot.commands.WristCommands.WristEject;
-import frc.robot.commands.WristCommands.ClosedLoopWrist.PIDWristCommand;
-import frc.robot.commands.WristCommands.ClosedLoopWrist.StopWristPID;
-import frc.robot.commands.WristCommands.OpenLoopWrist.ActuateWrist;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.Swerve.DriveSubsystem;
 import frc.robot.subsystems.Wrist.WristIntake;
@@ -697,9 +697,6 @@ public class RobotContainer {
     .onTrue(new StopArmPID(m_ArmSubsystem));
 
 
-    new JoystickButton(m_driverController, Button.kCircle.value).toggleOnTrue(new RunCommand(() -> m_robotDrive.drive(0, 0, 0, false), m_robotDrive));
-
-
     //cancel Auto Drive I think
     new Trigger(()->
     {
@@ -712,14 +709,14 @@ public class RobotContainer {
 
 
 
-    new Trigger(()->
-    {
-      if(m_driverController.getYButton())
-        return true;
-      else
-        return false;
-    }
-    ).onTrue(new AutoBalance(m_robotDrive));
+    // new Trigger(()->
+    // {
+    //   if(m_driverController.getYButton())
+    //     return true;
+    //   else
+    //     return false;
+    // }
+    // ).onTrue(new AutoBalance(m_robotDrive));
 
 
   
@@ -728,44 +725,6 @@ public class RobotContainer {
 
 
 //swerve to nearest pole
-    new Trigger(()->
-    {
-      if(m_driverController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_driverController.getPOV() == 0)
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new SwerveToNearestPole(m_robotDrive));
-
-    new Trigger(()->
-    {
-      if(m_driverController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_driverController.getPOV() == 90)
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new AutoScore(m_robotDrive, m_WristSubsystem, m_armIntake, m_ArmSubsystem));
-
-
-
-
-    //driveForward
     // new Trigger(()->
     // {
     //   if(m_driverController.getLeftBumper())
@@ -781,10 +740,76 @@ public class RobotContainer {
     // else
     //   return false;
     // }
-    // ).whileTrue(new RunCommand(()-> m_robotDrive.drive(0, 0.25, 0, true), m_robotDrive));
+    // ).onTrue(new SwerveToNearestPole(m_robotDrive));
+
+    // new Trigger(()->
+    // {
+    //   if(m_driverController.getLeftBumper())
+    //     return true;
+    //   else
+    //     return false;
+
+    // }
+    // ).and(()->
+    // {
+    //   if(m_driverController.getPOV() == 90)
+    //   return true;
+    // else
+    //   return false;
+    // }
+    // ).onTrue(new AutoScore(m_robotDrive, m_WristSubsystem, m_armIntake, m_ArmSubsystem));
 
 
+    new Trigger(()->
+    {
+      if(m_driverController.getAButton())
+        return true;
+      else
+        return false;
 
+    }).whileTrue(
+      new RunCommand(
+        ()-> m_robotDrive.DriveWithVisionLockOn(
+          MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.15),
+          MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.15), 
+          m_ArmSubsystem.getAbsoluteEncoderPosition(), 
+          true), 
+        m_robotDrive));
+
+
+    // .whileTrue(new RunCommand(
+    //   () -> m_robotDrive.setX(),
+    //   m_robotDrive));
+
+
+    //driveForward
+    new Trigger(()->
+    {
+      if(m_driverController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_driverController.getPOV() == 0)
+      return true;
+    else
+      return false;
+    }
+    ).whileTrue(new RunCommand(()-> m_robotDrive.drive(0.15, 0, 0, false), m_robotDrive));
+
+
+    //toggle limelight
+    new Trigger(()->
+    {
+      if(m_driverController.getPOV() == 90)
+        return true;
+      else
+        return false;
+
+    }).onTrue(new InstantCommand(()-> m_robotDrive.toggleLimelight(), m_robotDrive));
 
     // //driveLeft
     // new Trigger(()->
@@ -882,6 +907,135 @@ public class RobotContainer {
     //   return false;
     // }
     // ).onTrue(new SwerveWithHighCone(m_robotDrive, m_WristSubsystem, m_armIntake, m_ArmSubsystem).alongWith(new PrintCommand("yellow")));
+
+//Everyone is gone binds
+    //
+
+
+    //coneIntake
+    new Trigger(() ->
+    {
+      if(m_driverController.getLeftTriggerAxis() > 0 || m_driverController.getLeftTriggerAxis() < 0)
+        return true;
+      else
+      {
+        return false;
+      }
+    } ).whileTrue(new WristConsume(m_armIntake, m_driverController::getLeftTriggerAxis));
+
+    //cubeIntake
+    new Trigger(() ->
+    {
+      if(m_driverController.getRightTriggerAxis() > 0 || m_driverController.getRightTriggerAxis() < 0)
+        return true;
+      else
+      {
+        return false;
+      }
+    } 
+    ).whileTrue(new WristEject(m_armIntake, m_driverController::getRightTriggerAxis));
+
+
+    //midScore
+    new Trigger(()->
+    {
+      if(m_driverController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_driverController.getXButton())
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreMidWristPosition))
+    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+
+
+
+    //cancel commands
+    new Trigger(()->
+    {
+      if(m_driverController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_driverController.getRightStickButton())
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new StopWristPID(m_WristSubsystem))
+    .onTrue(new StopArmPID(m_ArmSubsystem));
+
+
+    //score high wrist
+    new Trigger(()->
+    {
+      if(m_driverController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_driverController.getYButton())
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreHighWristPosition))
+    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreHighArmPosition));
+
+
+        //CubeIntake
+
+        new Trigger(()->
+        {
+          if(m_driverController.getLeftBumper())
+            return true;
+          else
+            return false;
+    
+        }
+        ).and(()->
+        {
+          if(m_driverController.getAButton())
+          return true;
+        else
+          return false;
+        }
+        ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition))
+        .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
+    
+
+            //Hold
+    new Trigger(()->
+    {
+      if(m_driverController.getLeftBumper())
+        return true;
+      else
+        return false;
+
+    }
+    ).and(()->
+    {
+      if(m_driverController.getBButton())
+      return true;
+    else
+      return false;
+    }
+    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HoldWristPosition))
+    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HoldArmPostion));
 
   }
 

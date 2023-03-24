@@ -2,7 +2,7 @@
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
 
-package frc.robot.commands.ArmCommands.ClosedLoopArm;
+package frc.robot.commands.ArmAndWrist.ArmCommands.ClosedLoopArm;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
@@ -41,11 +41,12 @@ public class PIDArmCommand extends CommandBase {
   @Override
   public void execute() 
   {
-    double feedforward = 0.1;
+    double feedforward = 0.08; //0.1
     double speed = -m_ArmPIDController.calculate(m_ArmSubsystem.getAbsoluteEncoderPosition(), setPoint);
     speed = (speed > 0) ? speed + feedforward : speed - feedforward; 
     m_ArmSubsystem.setSpeed(speed);
     SmartDashboard.putNumber("PIDArm output: ", speed);
+    SmartDashboard.putNumber("set point: ", m_ArmPIDController.getSetpoint());
     
   }
 

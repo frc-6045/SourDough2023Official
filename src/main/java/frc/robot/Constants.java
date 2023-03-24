@@ -67,9 +67,9 @@ public final class Constants {
 
 
     // Chassis configuration
-    public static final double kTrackWidth = Units.inchesToMeters(22.5);
+    public static final double kTrackWidth = Units.inchesToMeters(22.5); //22.5
     // Distance between centers of right and left wheels on robot
-    public static final double kWheelBase = Units.inchesToMeters(26.7);
+    public static final double kWheelBase = Units.inchesToMeters(26.7); // 26.7
     // Distance between front and back wheels on robot
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
@@ -244,7 +244,7 @@ public final class Constants {
     // public static final double HomeArmPosition = 0;
 
     //ConeIntake
-    public static final double ConeIntakeWristPosition = 0.2652; // 0.2732
+    public static final double ConeIntakeWristPosition = 0.2859; // 0.2652
     public static final double ConeIntakeArmPosition = 0;
 
     //CubeIntake
@@ -316,7 +316,7 @@ public final class Constants {
 
     //changed y because robot spun a tiny bit to the side consistently
     public static final Pose2d secondConeHighPosition1 = new Pose2d(2.1, 3.92, Rotation2d.fromDegrees(-180));
-    public static final Pose2d secondConeHighPosition2 = new Pose2d(1.68, 3.94, Rotation2d.fromDegrees(-180));
+    public static final Pose2d secondConeHighPosition2 = new Pose2d(1.54, 3.94, Rotation2d.fromDegrees(-180));
 
     public static final Pose2d thirdConeHighPosition1 = new Pose2d(2.23, 3.27, Rotation2d.fromDegrees(-180));
     public static final Pose2d thirdConeHighPosition2 = new Pose2d(1.85, 3.27, Rotation2d.fromDegrees(-180));

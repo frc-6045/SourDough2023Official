@@ -20,7 +20,11 @@ import edu.wpi.first.math.kinematics.SwerveDriveOdometry;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.util.datalog.StringLogEntry;
 import edu.wpi.first.wpilibj.ADIS16470_IMU;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation;
@@ -31,6 +35,7 @@ import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.LimelightHelpers;
 import frc.robot.Constants.DriveConstants;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DriveSubsystem extends SubsystemBase {
@@ -40,29 +45,42 @@ public class DriveSubsystem extends SubsystemBase {
   private final MAXSwerveModule m_frontLeft = new MAXSwerveModule(
       DriveConstants.kFrontLeftDrivingCanId,
       DriveConstants.kFrontLeftTurningCanId,
-      DriveConstants.kFrontLeftChassisAngularOffset);
+      DriveConstants.kFrontLeftChassisAngularOffset,
+      "m_frontLeft");
 
   private final MAXSwerveModule m_frontRight = new MAXSwerveModule(
       DriveConstants.kFrontRightDrivingCanId,
       DriveConstants.kFrontRightTurningCanId,
-      DriveConstants.kFrontRightChassisAngularOffset);
+      DriveConstants.kFrontRightChassisAngularOffset,
+      "m_frontRight");
 
   private final MAXSwerveModule m_rearLeft = new MAXSwerveModule(
       DriveConstants.kRearLeftDrivingCanId,
       DriveConstants.kRearLeftTurningCanId,
-      DriveConstants.kBackLeftChassisAngularOffset);
+      DriveConstants.kBackLeftChassisAngularOffset,
+      "m_rearLeft");
 
   private final MAXSwerveModule m_rearRight = new MAXSwerveModule(
       DriveConstants.kRearRightDrivingCanId,
       DriveConstants.kRearRightTurningCanId,
-      DriveConstants.kBackRightChassisAngularOffset);
+      DriveConstants.kBackRightChassisAngularOffset,
+      "m_rearLeft");
 
 
   private final PIDController m_VisionLockController = new PIDController(0.014, 0, 0);
   
+  private final DataLog m_log;
+  
 
   // The gyro sensor
   private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
+
+  private final DoubleLogEntry m_navYawLog;
+  private final DoubleLogEntry m_navPitchLog;
+  private final DoubleLogEntry m_navRollLog;
+  private final DoubleLogEntry m_calculatedPitch;
+  private final StringLogEntry m_currentCommandLog;
+
 
 
   // Odometry class for tracking robot pose
@@ -119,16 +137,23 @@ public class DriveSubsystem extends SubsystemBase {
    
    
   
+    m_log = DataLogManager.getLog();
     
 
+    m_navYawLog = new DoubleLogEntry(m_log, "swerve/pigeon/yaw");
+    m_navPitchLog = new DoubleLogEntry(m_log, "swerve/pigeon/pitch");
+    m_navRollLog = new DoubleLogEntry(m_log, "swerve/pigeon/roll");
+    m_calculatedPitch = new DoubleLogEntry(m_log, "swerve/pigeon/calculated_pitch");
+    m_currentCommandLog = new StringLogEntry(m_log, "/swerve/command");
 
+    logData();
   }
 
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
     
-
+    logData();
     // System.out.println(Timer.getFPGATimestamp());
     // System.out.println(LimelightHelpers.getLatency_Pipeline("limelight"));
 
@@ -274,6 +299,23 @@ public class DriveSubsystem extends SubsystemBase {
     //System.out.println("debugging in your mom -()-()-");
     
   }
+
+  public void setModuleDriveVoltage(double voltage) {
+    m_frontLeft.setDriveVoltage(voltage);
+    m_frontRight.setDriveVoltage(voltage);
+    m_rearLeft.setDriveVoltage(voltage);
+    m_rearRight.setDriveVoltage(voltage);
+    
+}
+
+public void setModuleTurnVoltage(double voltage) {
+  m_frontLeft.setTurnVoltage(voltage);
+  m_frontRight.setTurnVoltage(voltage);
+  m_rearLeft.setTurnVoltage(voltage);
+  m_rearRight.setTurnVoltage(voltage);
+  
+}
+
 
   /**
    * Sets the wheels into an X formation to prevent movement.
@@ -471,6 +513,19 @@ public class DriveSubsystem extends SubsystemBase {
     }
 
    }
+
+   private void logData() {
+    long timeStamp = (long) (Timer.getFPGATimestamp() * 1e6);
+    m_navYawLog.append(m_gyro.getYaw(), timeStamp);
+    m_navPitchLog.append(m_gyro.getPitch(), timeStamp);
+    m_navRollLog.append(m_gyro.getRoll(), timeStamp);
+    m_calculatedPitch.append(getHeadingDegrees(), timeStamp);
+
+    Command currentCommand = getCurrentCommand();
+    m_currentCommandLog.append(currentCommand != null ? currentCommand.getName() : "None", timeStamp);
+}
+
+
 
 
 

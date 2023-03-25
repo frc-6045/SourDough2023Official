@@ -58,7 +58,7 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kBackRightChassisAngularOffset);
 
 
-  private final PIDController m_VisionLockController = new PIDController(0.015, 0, 0);
+  private final PIDController m_VisionLockController = new PIDController(0.014, 0, 0);
   
 
   // The gyro sensor
@@ -242,11 +242,18 @@ public class DriveSubsystem extends SubsystemBase {
   {
 
     double rot;
-    if(armPosition > 0.15)
-          rot = m_VisionLockController.calculate(LimelightHelpers.getTX("limelight-bottom"));
-    else
-          rot = m_VisionLockController.calculate(LimelightHelpers.getTX("limelight"));
+    if(armPosition > 0.15 && LimelightHelpers.getCurrentPipelineIndex("limelight-bottom") == 1)
+    {
+      LimelightHelpers.setPipelineIndex("limelight-bottom", 0);
+    }
+    else if(armPosition < 0.15 && LimelightHelpers.getCurrentPipelineIndex("limelight-bottom") == 0 )
+    {
+      LimelightHelpers.setPipelineIndex("limelight-bottom", 1);
+    }
+          
+      rot = m_VisionLockController.calculate(LimelightHelpers.getTX("limelight-bottom"));
 
+ 
 
 
     xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kMaxSpeedMetersPerSecond;

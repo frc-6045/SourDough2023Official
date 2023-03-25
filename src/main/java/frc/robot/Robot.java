@@ -9,6 +9,9 @@ package frc.robot;
 
 import com.pathplanner.lib.server.PathPlannerServer;
 
+import edu.wpi.first.util.datalog.DataLog;
+import edu.wpi.first.util.datalog.DoubleLogEntry;
+import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.event.EventLoop;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -31,6 +34,8 @@ public class Robot extends TimedRobot {
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
    */
+
+   DoubleLogEntry myDoubleLog;
   @Override
   public void robotInit() {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
@@ -38,6 +43,9 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     PathPlannerServer.startServer(5811); 
+    DataLogManager.start();
+    DataLog log = DataLogManager.getLog();
+    myDoubleLog = new DoubleLogEntry(log, "/my/double");
   }
 
   /**
@@ -51,12 +59,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    // MAXSwerveModule[] maxArray = m_robotContainer.getDriveSubsystem().getMaxSwerveModules();
-    // SmartDashboard.putNumber("frontLeftAbsolute: ", maxArray[0].getAbsoluteEncoderZeroOffset());
-    // SmartDashboard.putNumber("frontRightAbsolute: ", maxArray[0].getAbsoluteEncoderZeroOffset());
-    // SmartDashboard.putNumber("backLeftAbsolute: ", maxArray[0].getAbsoluteEncoderZeroOffset());
-    // SmartDashboard.putNumber("backRightAbsolute: ", maxArray[0].getAbsoluteEncoderZeroOffset());
-
+    myDoubleLog.append(3.5);
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic

@@ -179,19 +179,6 @@ public class RobotContainer {
           //temporary stand in to make it show up.
 
           //Add list of paths to shuffleBoard. have to do this since the file directory automation part doesn't work.
-          // autoChooser.addOption("ThePath", "ThePath");
-          // autoChooser.addOption("TheOG", "TheOG");
-          // autoChooser.addOption("3 meters", "3 meters");
-          // autoChooser.addOption("TheOGWithEvents", "TheOGWithEvents");
-          // autoChooser.addOption("Extra", "Extra");
-          // autoChooser.addOption("Thing", "Thing");
-          // autoChooser.addOption("LinearStopLinear", "LinearStopLinear");
-          // autoChooser.addOption("Nothing", "Nothing");
-          // autoChooser.addOption("1ConeAndBalance", "1ConeAndBalance");
-          // autoChooser.addOption("1ConeMidBalance", "1ConeMidBalance");
-          // autoChooser.addOption("1ConeMidFarBalance", "1ConeMidFarBalance");
-          // autoChooser.addOption("Square", "Square");
-          // autoChooser.addOption("2CubeBalance", "2CubeBalance");
           autoChooser.addOption("1AndCubeBalance", "1CubeAndBalance");
           autoChooser.addOption("1ConeAndBalance", "1ConeAndBalance");
           autoChooser.addOption("1ConeMidBalance", "1ConeMidBalance");
@@ -239,23 +226,17 @@ public class RobotContainer {
    * passing it to a
    * {@link JoystickButton}.
    */
+
+   
   private void configureButtonBindings() {
+    //set X mode
     new JoystickButton(m_driverController,  XboxController.Button.kRightBumper.value)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
-      //double resetHeading;
-      // if(DriverStation.getAlliance() == Alliance.Red)
-      // { 
-      //   resetHeading = 180;
-      // }
-      // else
-      // {
-      //   resetHeading = 0;
-      // }
 
-    
 
+    //reset heading
     new JoystickButton(m_driverController,  XboxController.Button.kStart.value)
     .onTrue(new InstantCommand(
       ()-> m_robotDrive.resetOdometry(new Pose2d(m_robotDrive.getPose().getX(), m_robotDrive.getPose().getY(), new Rotation2d())),
@@ -275,6 +256,7 @@ public class RobotContainer {
       }
     } ).whileTrue(new WristConsume(m_armIntake, m_OperatorController::getLeftTriggerAxis));
 
+
     //cubeConsume
     new Trigger(() ->
     {
@@ -286,13 +268,6 @@ public class RobotContainer {
       }
     } 
     ).whileTrue(new WristEject(m_armIntake, m_OperatorController::getRightTriggerAxis));
-
-
-
-    //working example
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kA.value)
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, 0.1))
-    // .onTrue(new PIDWristCommand(m_WristSubsystem, 0));
 
     //HomePosition
     new Trigger(()->
@@ -316,7 +291,6 @@ public class RobotContainer {
 
 
     //ConeIntake
-
     new Trigger(()->
     {
       if(m_OperatorController.getLeftBumper())
@@ -383,7 +357,6 @@ public class RobotContainer {
 
 
     //StationCube
-
     new Trigger(()->
     {
       if(m_OperatorController.getLeftBumper())
@@ -401,10 +374,6 @@ public class RobotContainer {
     }
     ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationCubeWristPosition))
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationCubeArmPosition));
-    // new JoystickButton(m_OperatorController, XboxController.Button.kLeftBumper.value & XboxController.Button.kX.value)
-    // .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationCubeWristPosition))
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationCubeArmPosition));
-
 
 
     //ScoreHigh
@@ -707,59 +676,36 @@ public class RobotContainer {
     }
     ).onTrue(new InstantCommand(()->m_robotDrive.drive(0, 0, 0, true)));
 
+        //driveForward
+        new Trigger(()->
+        {
+          if(m_driverController.getLeftBumper())
+            return true;
+          else
+            return false;
+    
+        }
+        ).and(()->
+        {
+          if(m_driverController.getPOV() == 0)
+          return true;
+        else
+          return false;
+        }
+        ).whileTrue(new RunCommand(()-> m_robotDrive.drive(0.15, 0, 0, false), m_robotDrive));
+    
+    
+        //toggle limelight
+        new Trigger(()->
+        {
+          if(m_driverController.getPOV() == 90)
+            return true;
+          else
+            return false;
+    
+        }).onTrue(new InstantCommand(()-> m_robotDrive.toggleLimelight(), m_robotDrive));
 
-
-    // new Trigger(()->
-    // {
-    //   if(m_driverController.getYButton())
-    //     return true;
-    //   else
-    //     return false;
-    // }
-    // ).onTrue(new AutoBalance(m_robotDrive));
-
-
-  
-
-
-
-
-//swerve to nearest pole
-    // new Trigger(()->
-    // {
-    //   if(m_driverController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_driverController.getPOV() == 0)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new SwerveToNearestPole(m_robotDrive));
-
-    // new Trigger(()->
-    // {
-    //   if(m_driverController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_driverController.getPOV() == 90)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new AutoScore(m_robotDrive, m_WristSubsystem, m_armIntake, m_ArmSubsystem));
-
-
+//lock heading
     new Trigger(()->
     {
       if(m_driverController.getAButton())
@@ -777,105 +723,20 @@ public class RobotContainer {
         m_robotDrive));
 
 
-    // .whileTrue(new RunCommand(
-    //   () -> m_robotDrive.setX(),
-    //   m_robotDrive));
-
-
-    //driveForward
-    new Trigger(()->
-    {
-      if(m_driverController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_driverController.getPOV() == 0)
-      return true;
-    else
-      return false;
-    }
-    ).whileTrue(new RunCommand(()-> m_robotDrive.drive(0.15, 0, 0, false), m_robotDrive));
-
-
-    //toggle limelight
-    new Trigger(()->
-    {
-      if(m_driverController.getPOV() == 90)
-        return true;
-      else
-        return false;
-
-    }).onTrue(new InstantCommand(()-> m_robotDrive.toggleLimelight(), m_robotDrive));
-
-    // //driveLeft
+//autoBalance for debugging
     // new Trigger(()->
     // {
-    //   if(m_driverController.getLeftBumper())
+    //   if(m_driverController.getYButton())
     //     return true;
     //   else
     //     return false;
-
     // }
-    // ).and(()->
-    // {
-    //   if(m_driverController.getPOV() == 0)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).whileTrue(new RunCommand(()-> m_robotDrive.drive(0, 0.25, 0, true), m_robotDrive));
+    // ).onTrue(new AutoBalance(m_robotDrive));
 
-
-    // //driveRight
+//swerve to nearest pole debugging
     // new Trigger(()->
     // {
     //   if(m_driverController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_driverController.getPOV() == 0)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).whileTrue(new RunCommand(()-> m_robotDrive.drive(0, 0.25, 0, true), m_robotDrive));
-
-
-
-    
-    // new Trigger(()->
-    // {
-    //   if(m_driverController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_driverController.getPOV() == 0)
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).whileTrue(new RunCommand(()-> m_robotDrive.drive(0, 0.25, 0, true), m_robotDrive));
-
-
-    
-
-
-
-    // new Trigger(()->
-    // {
-    //   if(m_driverController.getRightBumper())
     //     return true;
     //   else
     //     return false;
@@ -890,27 +751,25 @@ public class RobotContainer {
     // }
     // ).onTrue(new SwerveToNearestPole(m_robotDrive));
 
-
+    //autoScore debugging
     // new Trigger(()->
     // {
-    //   if(m_driverController.getRightBumper())
+    //   if(m_driverController.getLeftBumper())
     //     return true;
     //   else
     //     return false;
-
     // }
     // ).and(()->
     // {
-    //   if(m_driverController.getPOV() == 0)
+    //   if(m_driverController.getPOV() == 90)
     //   return true;
     // else
     //   return false;
     // }
-    // ).onTrue(new SwerveWithHighCone(m_robotDrive, m_WristSubsystem, m_armIntake, m_ArmSubsystem).alongWith(new PrintCommand("yellow")));
+    // ).onTrue(new AutoScore(m_robotDrive, m_WristSubsystem, m_armIntake, m_ArmSubsystem));
+
 
 //Everyone is gone binds
-    //
-
 
     //coneIntake
     new Trigger(() ->

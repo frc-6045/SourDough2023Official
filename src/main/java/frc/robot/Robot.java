@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
     PathPlannerServer.startServer(5811); 
     DataLogManager.start();
     DataLog log = DataLogManager.getLog();
-    myDoubleLog = new DoubleLogEntry(log, "/my/double");
+    
   }
 
   /**

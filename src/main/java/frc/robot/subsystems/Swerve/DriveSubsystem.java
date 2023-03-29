@@ -82,7 +82,6 @@ public class DriveSubsystem extends SubsystemBase {
   private final StringLogEntry m_currentCommandLog;
 
 
-
   // Odometry class for tracking robot pose
 
   //gyro.getHeadingDegrees();
@@ -465,7 +464,7 @@ public void setModuleTurnVoltage(double voltage) {
   {
 
         Alliance m_Alliance = DriverStation.getAlliance();
-        double acceptableScoreMergeDistance = 3.5; //2.8
+        double acceptableScoreMergeDistance = 3.2; //2.8
         double acceptablePickUpMergeDistance = 13.4;
 
       

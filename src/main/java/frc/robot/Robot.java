@@ -43,7 +43,7 @@ public class Robot extends TimedRobot {
     m_robotContainer = new RobotContainer();
 
     PathPlannerServer.startServer(5811); 
-    DataLogManager.start();
+   //DataLogManager.start();
     DataLog log = DataLogManager.getLog();
     
   }
@@ -59,7 +59,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
 
-    myDoubleLog.append(3.5);
+    //myDoubleLog.append(3.5);
     // Runs the Scheduler.  This is responsible for polling buttons, adding newly-scheduled
     // commands, running already-scheduled commands, removing finished or interrupted commands,
     // and running subsystem periodic() methods.  This must be called from the robot's periodic

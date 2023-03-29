@@ -191,6 +191,9 @@ public class RobotContainer {
           autoChooser.addOption("Nothing", "Nothing");
           autoChooser.addOption("2.5CubeRed", "2.5CubeRed");
           autoChooser.addOption("2.5Cube", "2.5Cube");
+          autoChooser.addOption("OverAndBack", "OverAndBack");
+          autoChooser.addOption("3Piece", "3Piece");
+
           
 
           //SmartDashboard.putData("Autonomous routine", autoChooser);
@@ -769,6 +772,7 @@ public class RobotContainer {
     // ).onTrue(new AutoScore(m_robotDrive, m_WristSubsystem, m_armIntake, m_ArmSubsystem));
 
 
+    
 //Everyone is gone binds
 
     //coneIntake
@@ -938,7 +942,7 @@ public class RobotContainer {
    // examplePath = PathPlanner.loadPath("Example Path", new PathConstraints(4, 3));
 
 AutoConstants.eventMap.put("Home", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.HomeWristPosition, m_ArmSubsystem, PositionConstants.HomeArmPosition));
-AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition-0.001));
+AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
 AutoConstants.eventMap.put("ScoreMid", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
 AutoConstants.eventMap.put("ConeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition, m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
 AutoConstants.eventMap.put("WristConsumeWithTime", new WristConsumeWithTime(m_armIntake, 2));
@@ -986,14 +990,15 @@ AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0
 
      List<PathPlannerTrajectory> auto1Paths =
         PathPlanner.loadPathGroup(autoChooser.getSelected(), 
-        1.5, 
+        2.5, 
         AutoConstants.kMaxAccelerationMetersPerSecondSquared);
 
      
 
         m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
-        return autoBuilder.fullAuto(auto1Paths).andThen(new AutoBalance(m_robotDrive));
+        return autoBuilder.fullAuto(auto1Paths); //.andThen(new AutoBalance(m_robotDrive));
      
+
         // Command AutoStuff = new SequentialCommandGroup(
         //   new ParallelCommandGroup(
         //         new SetA

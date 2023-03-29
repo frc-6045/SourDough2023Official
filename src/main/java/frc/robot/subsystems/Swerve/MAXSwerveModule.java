@@ -126,6 +126,7 @@ public class MAXSwerveModule {
 
     // Set the PID gains for the turning motor. Note these are example gains, and you
     // may need to tune them for your own robot!
+    //TODO: maybe making our turning feed forward negative? probably break something but its worth a shot
     m_turningPIDController.setP(ModuleConstants.kTurningP);
     m_turningPIDController.setI(ModuleConstants.kTurningI);
     m_turningPIDController.setD(ModuleConstants.kTurningD);

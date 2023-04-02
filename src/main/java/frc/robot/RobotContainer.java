@@ -193,6 +193,7 @@ public class RobotContainer {
           autoChooser.addOption("2.5Cube", "2.5Cube");
           autoChooser.addOption("OverAndBack", "OverAndBack");
           autoChooser.addOption("3Piece", "3Piece");
+          autoChooser.addOption("3PieceCable", "3PieceCable");
 
           
 

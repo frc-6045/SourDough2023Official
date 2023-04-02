@@ -164,7 +164,7 @@ public class DriveSubsystem extends SubsystemBase {
 
     //eventually figure out what each result value is
 
-    addMyVisionMeasurment();
+   //TODO: addMyVisionMeasurment();
     updateOdometry();
     m_field.setRobotPose(getPose());
 

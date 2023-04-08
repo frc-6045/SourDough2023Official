@@ -192,8 +192,10 @@ public class RobotContainer {
           autoChooser.addOption("2.5CubeRed", "2.5CubeRed");
           autoChooser.addOption("2.5Cube", "2.5Cube");
           autoChooser.addOption("OverAndBack", "OverAndBack");
-          autoChooser.addOption("3Piece", "3Piece");
-          autoChooser.addOption("3PieceCable", "3PieceCable");
+          autoChooser.addOption("3Piece", "3PieceBLUE");
+          autoChooser.addOption("3PieceRED", "3PieceRED");
+          autoChooser.addOption("3PieceCableRED", "3PieceCableRED");
+         // autoChooser.addOption("3PieceCable", "3PieceCable");
 
           
 
@@ -944,14 +946,20 @@ public class RobotContainer {
 
 AutoConstants.eventMap.put("Home", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.HomeWristPosition, m_ArmSubsystem, PositionConstants.HomeArmPosition));
 AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
-AutoConstants.eventMap.put("ScoreMid", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+//AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
+
+AutoConstants.eventMap.put("ScoreMid", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition + 0.06, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
 AutoConstants.eventMap.put("ConeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition, m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
-AutoConstants.eventMap.put("WristConsumeWithTime", new WristConsumeWithTime(m_armIntake, 2));
-AutoConstants.eventMap.put("WristEjectWithTime", new WristEjectWithTime(m_armIntake, 2));
-AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreHighWristPosition, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition));
+AutoConstants.eventMap.put("WristConsumeWithTime", new WristConsumeWithTime(m_armIntake, 2, AutoConstants.slowIntakeSpeed));
+AutoConstants.eventMap.put("WristEjectWithTime", new WristEjectWithTime(m_armIntake, 2, AutoConstants.slowIntakeSpeed));
+AutoConstants.eventMap.put("WristConsumeWithTimeFast", new WristConsumeWithTime(m_armIntake, 2, AutoConstants.fastIntakeSpeed));
+AutoConstants.eventMap.put("WristEjectWithTimeFast", new WristEjectWithTime(m_armIntake, 2, AutoConstants.fastIntakeSpeed));
+
+AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreHighWristPosition, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition + 0.01));
 AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0.15).alongWith(new PIDWristCommand(m_WristSubsystem, 0.37)));
 
-  //  eventMap.put("home", new PrintCommand("entering home position"));
+  
+//  eventMap.put("home", new PrintCommand("entering home position"));
   //  eventMap.put("CubeGroundIntake", new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition));
   //  eventMap.put("Thing", new PrintCommand("Thing"));
   //  eventMap.put("CubeIntake", new PrintCommand("intaking cube")); 

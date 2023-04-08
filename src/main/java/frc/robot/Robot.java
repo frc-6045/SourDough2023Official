@@ -71,7 +71,7 @@ public class Robot extends TimedRobot {
   @Override
   public void disabledInit()
   {
-    LimelightHelpers.setPipelineIndex("limelight", 1);
+    //LimelightHelpers.setPipelineIndex("limelight", 1);
 
 
   }

@@ -17,13 +17,13 @@ import frc.robot.subsystems.Wrist.WristSubsystem;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class WristConsumeWithTime extends ParallelRaceGroup {
   /** Creates a new WristIntakeWithTime. */
-  public WristConsumeWithTime(WristIntake m_WristSubsystem, double time) {
+  public WristConsumeWithTime(WristIntake m_WristSubsystem, double time, double speed) {
       
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
 
     addCommands(
-      new WristConsume(m_WristSubsystem, () -> 0.5),
+      new WristConsume(m_WristSubsystem, () -> speed),
       new WaitCommand(time)
     );
   }

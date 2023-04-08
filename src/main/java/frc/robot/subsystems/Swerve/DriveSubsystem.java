@@ -28,6 +28,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -73,7 +74,11 @@ public class DriveSubsystem extends SubsystemBase {
   
 
   // The gyro sensor
-  private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
+private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
+// private final AHRS m_gyro = new AHRS(I2C.Port.kOnboard, (byte) 200);
+
+ //private final AHRS m_gyro = new 
+  
 
   private final DoubleLogEntry m_navYawLog;
   private final DoubleLogEntry m_navPitchLog;

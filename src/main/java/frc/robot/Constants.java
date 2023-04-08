@@ -190,6 +190,11 @@ public final class Constants {
 
     public static final HashMap<String, Command> eventMap = new HashMap<>();
 
+    public static final double slowIntakeSpeed = 0.5;
+    public static final double fastIntakeSpeed = 1;
+
+
+
 
   }
 

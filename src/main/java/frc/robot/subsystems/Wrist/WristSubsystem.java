@@ -12,6 +12,11 @@ import com.revrobotics.SparkMaxAbsoluteEncoder.Type;
 
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.WristConstants;
+import edu.wpi.first.wpilibj.PWM;
+import edu.wpi.first.wpilibj.Relay;
+import edu.wpi.first.wpilibj.Relay.Direction;
+import edu.wpi.first.wpilibj.Relay.Value;
+import edu.wpi.first.wpilibj.motorcontrol.Spark;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -19,6 +24,9 @@ public class WristSubsystem extends SubsystemBase {
   /** Creates a new WristSubsystem. */
   private final CANSparkMax wristMotor;
  private final AbsoluteEncoder m_AbsoluteEncoder;
+ private Relay m_Lights = new Relay(0, Direction.kBoth); // 0 is the RIO PWM port this is connected to
+
+
   public WristSubsystem() 
   {
     wristMotor = new CANSparkMax(WristConstants.kWristCANID, MotorType.kBrushless);
@@ -52,5 +60,21 @@ public class WristSubsystem extends SubsystemBase {
   {
     return m_AbsoluteEncoder.getPosition();
   }
+
+  public void runLights()
+  {
+
+    m_Lights.setDirection(Direction.kReverse);
+    m_Lights.set(Value.kOn);
+     
+ 
+  }
+
+  public void disableLights()
+  {
+   m_Lights.setDirection(Direction.kForward);
+   m_Lights.set(Value.kOff);
+  }
+  
 
 }

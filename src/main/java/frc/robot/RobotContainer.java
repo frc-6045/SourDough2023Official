@@ -728,6 +728,27 @@ public class RobotContainer {
           true), 
         m_robotDrive));
 
+  //RunLights
+  new Trigger(()->
+  {
+    if(m_OperatorController.getRightBumper())
+      return true;
+    else
+      return false;
+
+  }).toggleOnTrue(
+    new InstantCommand(
+      ()-> {m_WristSubsystem.runLights();
+            System.out.println("yadayadayada");}, 
+      m_WristSubsystem)).
+      toggleOnFalse(
+        new InstantCommand(
+          () -> {m_WristSubsystem.disableLights();
+                 System.out.println("nadandada");
+          }, 
+
+          m_WristSubsystem));
+
 
 //autoBalance for debugging
     // new Trigger(()->
@@ -948,7 +969,10 @@ AutoConstants.eventMap.put("Home", new SetArmWithWristPosition(m_WristSubsystem,
 AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
 //AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
 
-AutoConstants.eventMap.put("ScoreMid", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition + 0.06, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+AutoConstants.eventMap.put("ScoreMidAuto", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition + 0.06, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+AutoConstants.eventMap.put("ScoreMid", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+
+
 AutoConstants.eventMap.put("ConeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition, m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
 AutoConstants.eventMap.put("WristConsumeWithTime", new WristConsumeWithTime(m_armIntake, 2, AutoConstants.slowIntakeSpeed));
 AutoConstants.eventMap.put("WristEjectWithTime", new WristEjectWithTime(m_armIntake, 2, AutoConstants.slowIntakeSpeed));

@@ -4,8 +4,10 @@
 
 package frc.robot.subsystems;
 
-// import com.revrobotics.Rev2mDistanceSensor;
-// import com.revrobotics.Rev2mDistanceSensor.Port;
+import com.revrobotics.Rev2mDistanceSensor;
+import com.revrobotics.Rev2mDistanceSensor.Port;
+import com.revrobotics.Rev2mDistanceSensor.RangeProfile;
+import com.revrobotics.Rev2mDistanceSensor.Unit;
 
 import edu.wpi.first.wpilibj.AddressableLED;
 import edu.wpi.first.wpilibj.AddressableLEDBuffer;
@@ -14,20 +16,17 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class LEDS extends SubsystemBase {
   /** Creates a new LEDS. */
-//  private Rev2mDistanceSensor distanceSensor = new Rev2mDistanceSensor(Port.kOnboard);
+  private Rev2mDistanceSensor distanceSensor = new Rev2mDistanceSensor(Port.kOnboard, Unit.kInches, RangeProfile.kDefault);
   private AddressableLED m_LED = new AddressableLED(1);
   private AddressableLEDBuffer m_LEDBuffer = new AddressableLEDBuffer(38);
-  private static int m_rainbowFirstPixelHue = 0;
+
 
   public LEDS() 
   {
-   // distanceSensor.setAutomaticMode(true);
+    distanceSensor.setAutomaticMode(true);
     m_LED.setLength(m_LEDBuffer.getLength());
     m_LED.setData(m_LEDBuffer);
-    m_LED.start();
   
-    
-
   }
 
   @Override
@@ -35,7 +34,12 @@ public class LEDS extends SubsystemBase {
     // This method will be called once per scheduler run
     
   }
-
+  public void startLEDS(){
+    m_LED.start();
+  }
+  public double getSensorDistance(){
+    return distanceSensor.GetRange();
+  }
   // public void defaultLEDs()
   // {
   //     // For every pixel

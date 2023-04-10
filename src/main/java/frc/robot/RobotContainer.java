@@ -97,7 +97,7 @@ public class RobotContainer {
   private final WristIntake m_armIntake = new WristIntake();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final WristSubsystem m_WristSubsystem = new WristSubsystem();
-  // private final LEDS m_LEDs = new LEDS();
+  private final LEDS m_LEDs = new LEDS();
   // private final LEDSubsystem m_NewLEDs = new LEDSubsystem();
   // private final OtherPIDWrist m_OtherWrist = new OtherPIDWrist();
   
@@ -754,29 +754,28 @@ public class RobotContainer {
 
           m_WristSubsystem));
   //CUBE LEDS
-  // new Trigger(()->
-  // {
-  //   if(m_OperatorController.getAButton())
-  //     return true;
-  //   else
-  //     return false;
+   new Trigger(()->
+   {
+     if(m_OperatorController.getPOV() == 0)
+      return true;
+    else
+       return false;
 
-  // }).onTrue(
-  //   new InstantCommand(() -> m_NewLEDs.setMode(Mode.HAS_CUBE))
-  // );
+   }).onTrue(
+     new InstantCommand(() -> m_LEDs.SetLEDsPurple())
+   );
 
-  // new Trigger(()->
-  // {
-  //   if(m_OperatorController.getBButton())
-  //     return true;
-  //   else
-  //     return false;
+  new Trigger(()->
+   {
+    if(m_OperatorController.getPOV() == 180)
+      return true;
+    else
+      return false;
+  }).onTrue(
+     new InstantCommand(() -> m_LEDs.SetLEDsRed())
+   );
 
-  // }).onTrue(
-  //   new InstantCommand(() -> m_LEDs.SetLEDsRed())
-  // );
-
-
+///////////////////////////
 //autoBalance for debugging
     // new Trigger(()->
     // {

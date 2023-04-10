@@ -7,9 +7,6 @@ package frc.robot.subsystems.Swerve;
 import java.util.function.DoubleSupplier;
 
 import com.kauailabs.navx.frc.AHRS;
-import com.revrobotics.Rev2mDistanceSensor;
-import com.revrobotics.Rev2mDistanceSensor.Port;
-
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;

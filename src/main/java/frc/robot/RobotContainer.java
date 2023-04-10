@@ -45,7 +45,10 @@ import frc.robot.commands.AutoCommands.WristEjectWithTime;
 import frc.robot.commands.AutoCommands.SwerveToAndAuto.SwerveWithHighCone;
 import frc.robot.commands.AutoCommands.SwerveToMethods.FollowTrajectory;
 import frc.robot.commands.AutoCommands.SwerveToNearest.SwerveToNearestPole;
+import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.Arm.ArmSubsystem;
+import frc.robot.subsystems.LEDSubsystem.Mode;
 import frc.robot.subsystems.Swerve.DriveSubsystem;
 import frc.robot.subsystems.Wrist.WristIntake;
 import frc.robot.subsystems.Wrist.WristSubsystem;
@@ -94,6 +97,8 @@ public class RobotContainer {
   private final WristIntake m_armIntake = new WristIntake();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final WristSubsystem m_WristSubsystem = new WristSubsystem();
+  private final LEDS m_LEDs = new LEDS();
+  private final LEDSubsystem m_NewLEDs = new LEDSubsystem();
   // private final OtherPIDWrist m_OtherWrist = new OtherPIDWrist();
   
   
@@ -728,7 +733,7 @@ public class RobotContainer {
           true), 
         m_robotDrive));
 
-  //RunLights
+  //RunScoringLights
   new Trigger(()->
   {
     if(m_OperatorController.getRightBumper())
@@ -748,6 +753,28 @@ public class RobotContainer {
           }, 
 
           m_WristSubsystem));
+  //CUBE LEDS
+  new Trigger(()->
+  {
+    if(m_OperatorController.getAButton())
+      return true;
+    else
+      return false;
+
+  }).onTrue(
+    new InstantCommand(() -> m_NewLEDs.setMode(Mode.HAS_CUBE))
+  );
+
+  new Trigger(()->
+  {
+    if(m_OperatorController.getBButton())
+      return true;
+    else
+      return false;
+
+  }).onTrue(
+    new InstantCommand(() -> m_LEDs.SetLEDsRed())
+  );
 
 
 //autoBalance for debugging

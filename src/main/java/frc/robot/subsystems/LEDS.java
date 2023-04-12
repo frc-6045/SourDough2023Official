@@ -17,7 +17,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 public class LEDS extends SubsystemBase {
   /** Creates a new LEDS. */
   private Rev2mDistanceSensor distanceSensor = new Rev2mDistanceSensor(Port.kOnboard, Unit.kInches, RangeProfile.kDefault);
-  private AddressableLED m_LED = new AddressableLED(1);
+  private AddressableLED m_LED = new AddressableLED(0);
   private AddressableLEDBuffer m_LEDBuffer = new AddressableLEDBuffer(38);
 
 
@@ -26,16 +26,20 @@ public class LEDS extends SubsystemBase {
     distanceSensor.setAutomaticMode(true);
     m_LED.setLength(m_LEDBuffer.getLength());
     m_LED.setData(m_LEDBuffer);
-  
+    m_LED.start();
   }
 
   @Override
   public void periodic() {
     // This method will be called once per scheduler run
     
+
   }
   public void startLEDS(){
     m_LED.start();
+  }
+  public void endLEDS(){
+    m_LED.stop();
   }
   public double getSensorDistance(){
     return distanceSensor.GetRange();
@@ -59,6 +63,7 @@ public class LEDS extends SubsystemBase {
 
   public void SetLEDsPurple()
   { 
+    System.out.println("setting to purple");
     for(int i = 0; i < m_LEDBuffer.getLength(); i++)
     {
       m_LEDBuffer.setLED(i, Color.kPurple);
@@ -70,14 +75,15 @@ public class LEDS extends SubsystemBase {
 
   public void SetLEDsRed()
   {
+    System.out.println("setting to red");
     for(int i = 0; i < m_LEDBuffer.getLength(); i++)
     {
       m_LEDBuffer.setRGB(i, 255, 0, 0);
     }
   }
 
-  // public double getDistanceSensorMeasurement()
-  // {
-  //   return distanceSensor.GetRange();
-  // }
+ public double getDistanceSensorMeasurement()
+   {
+     return distanceSensor.GetRange();
+   }
 }

@@ -1101,7 +1101,7 @@ AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0
      List<PathPlannerTrajectory> auto1Paths =
         PathPlanner.loadPathGroup(autoChooser.getSelected(), 
         3,  //3
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared + 1); // + 1
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared + 0.5); // + 1
 
      
 

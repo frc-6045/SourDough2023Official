@@ -273,8 +273,8 @@ public final class Constants {
     public static final double ScoreMidArmPosition = 0.123;
 
     //Hold
-    public static final double HoldWristPosition = 0.40776;
-    public static final double HoldArmPostion = 0.0029;
+    public static final double HoldWristPosition = 0.420; //0.40776
+    public static final double HoldArmPostion = 0.0021; //0.0029
 
   }
 

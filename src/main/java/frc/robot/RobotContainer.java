@@ -139,7 +139,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    //m_LEDs.SetLEDsPurple();
+    m_LEDs.SetLEDsPurple();
 
     //m_LEDs.setDefaultCommand(new RunCommand(()-> System.out.println("Distance: " + m_LEDs.getDistanceSensorMeasurement()), m_LEDs));
     // Configure default commands
@@ -741,7 +741,7 @@ public class RobotContainer {
   //RunScoringLights
   new Trigger(()->
   {
-    if(m_OperatorController.getRightBumper())
+    if(m_OperatorController.getRightBumperPressed())
       return true;
     else
       return false;
@@ -750,14 +750,24 @@ public class RobotContainer {
     new InstantCommand(
       ()-> {m_WristSubsystem.runLights();
             System.out.println("yadayadayada");}, 
-      m_WristSubsystem)).
-      toggleOnFalse(
-        new InstantCommand(
-          () -> {m_WristSubsystem.disableLights();
-                 System.out.println("nadandada");
-          }, 
+      m_WristSubsystem));
 
-          m_WristSubsystem));
+
+      //DisableScoringLights
+    // new Trigger(()->
+    // {
+    //   if(m_OperatorController.getRightBumperReleased())
+    //     return true;
+    //   else
+    //     return false;
+  
+    // }).toggleOnTrue(
+    //   new InstantCommand(
+    //     ()-> {m_WristSubsystem.disableLights();
+    //           System.out.println("yadayadayada");}, 
+    //     m_WristSubsystem));
+
+        
   //CUBE LEDS
    new Trigger(()->
    {
@@ -1100,8 +1110,8 @@ AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0
 
      List<PathPlannerTrajectory> auto1Paths =
         PathPlanner.loadPathGroup(autoChooser.getSelected(), 
-        3,  //3
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared + 0.5); // + 1
+        2.5,  //3
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared); // + 1
 
      
 

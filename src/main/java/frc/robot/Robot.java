@@ -46,7 +46,7 @@ public class Robot extends TimedRobot {
 
     PathPlannerServer.startServer(5811); 
    //DataLogManager.start();
-    DataLog log = DataLogManager.getLog();
+    //DataLog log = DataLogManager.getLog();
     
   }
 

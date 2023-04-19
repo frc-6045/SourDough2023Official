@@ -746,7 +746,7 @@ public class RobotContainer {
     else
       return false;
 
-  }).toggleOnTrue(
+  }).onTrue(
     new InstantCommand(
       ()-> {m_WristSubsystem.runLights();
             System.out.println("yadayadayada");}, 

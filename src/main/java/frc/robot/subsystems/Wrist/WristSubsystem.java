@@ -23,6 +23,7 @@ public class WristSubsystem extends SubsystemBase {
   private final CANSparkMax wristMotor;
  private final AbsoluteEncoder m_AbsoluteEncoder;
  private Relay m_Lights = new Relay(0); 
+ private boolean LightsOn = false;
 
 
   public WristSubsystem() 
@@ -58,14 +59,19 @@ public class WristSubsystem extends SubsystemBase {
 
   public void runLights()
   {
-    m_Lights.set(Value.kReverse);
-    System.out.println("cool");
+    if(LightsOn)
+    {
+      m_Lights.set(Value.kReverse);
+      LightsOn = false;
+    }
+    else
+    {
+      m_Lights.set(Value.kForward);
+      LightsOn = true;
+    }
   }
 
-  public void disableLights()
-  {
-   m_Lights.set(Value.kForward);
-  }
+
   
 
 }

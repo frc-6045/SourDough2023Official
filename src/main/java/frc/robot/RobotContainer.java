@@ -45,7 +45,10 @@ import frc.robot.commands.AutoCommands.WristEjectWithTime;
 import frc.robot.commands.AutoCommands.SwerveToAndAuto.SwerveWithHighCone;
 import frc.robot.commands.AutoCommands.SwerveToMethods.FollowTrajectory;
 import frc.robot.commands.AutoCommands.SwerveToNearest.SwerveToNearestPole;
+import frc.robot.subsystems.LEDS;
+import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.Arm.ArmSubsystem;
+import frc.robot.subsystems.LEDSubsystem.Mode;
 import frc.robot.subsystems.Swerve.DriveSubsystem;
 import frc.robot.subsystems.Wrist.WristIntake;
 import frc.robot.subsystems.Wrist.WristSubsystem;
@@ -94,6 +97,9 @@ public class RobotContainer {
   private final WristIntake m_armIntake = new WristIntake();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final WristSubsystem m_WristSubsystem = new WristSubsystem();
+  private final LEDS m_LEDs = new LEDS();
+  
+  // private final LEDSubsystem m_NewLEDs = new LEDSubsystem();
   // private final OtherPIDWrist m_OtherWrist = new OtherPIDWrist();
   
   
@@ -133,9 +139,9 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    
+    m_LEDs.SetLEDsPurple();
 
-
+    //m_LEDs.setDefaultCommand(new RunCommand(()-> System.out.println("Distance: " + m_LEDs.getDistanceSensorMeasurement()), m_LEDs));
     // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
@@ -192,8 +198,14 @@ public class RobotContainer {
           autoChooser.addOption("2.5CubeRed", "2.5CubeRed");
           autoChooser.addOption("2.5Cube", "2.5Cube");
           autoChooser.addOption("OverAndBack", "OverAndBack");
-          autoChooser.addOption("3Piece", "3Piece");
-          autoChooser.addOption("3PieceCable", "3PieceCable");
+          autoChooser.addOption("3Piece", "3PieceBLUE");
+          autoChooser.addOption("3PieceRED", "3PieceRED");
+          autoChooser.addOption("3PieceCableRED", "3PieceCableRED");
+          autoChooser.addOption("3PieceREDNew", "3PieceREDNew");  
+          autoChooser.addOption("3PieceBLUENew", "3PieceBLUENew"); 
+          autoChooser.addOption("3PieceCableBLUENew", "3PieceCableBLUENew"); 
+
+         // autoChooser.addOption("3PieceCable", "3PieceCable");
 
           
 
@@ -252,26 +264,26 @@ public class RobotContainer {
     //ConeConsume
     new Trigger(() ->
     {
-      if(m_OperatorController.getLeftTriggerAxis() > 0 || m_OperatorController.getLeftTriggerAxis() < 0)
+      if(m_driverController.getLeftTriggerAxis() > 0 || m_driverController.getLeftTriggerAxis() < 0)
         return true;
       else
       {
         return false;
       }
-    } ).whileTrue(new WristConsume(m_armIntake, m_OperatorController::getLeftTriggerAxis));
+    } ).whileTrue(new WristConsume(m_armIntake, m_driverController::getLeftTriggerAxis));
 
 
     //cubeConsume
     new Trigger(() ->
     {
-      if(m_OperatorController.getRightTriggerAxis() > 0 || m_OperatorController.getRightTriggerAxis() < 0)
+      if(m_driverController.getRightTriggerAxis() > 0 || m_driverController.getRightTriggerAxis() < 0)
         return true;
       else
       {
         return false;
       }
     } 
-    ).whileTrue(new WristEject(m_armIntake, m_OperatorController::getRightTriggerAxis));
+    ).whileTrue(new WristEject(m_armIntake, m_driverController::getRightTriggerAxis));
 
     //HomePosition
     new Trigger(()->
@@ -726,7 +738,105 @@ public class RobotContainer {
           true), 
         m_robotDrive));
 
+  //RunScoringLights
+  new Trigger(()->
+  {
+    if(m_OperatorController.getRightBumperPressed())
+      return true;
+    else
+      return false;
 
+  }).onTrue(
+    new InstantCommand(
+      ()-> {m_WristSubsystem.runLights();
+            System.out.println("yadayadayada");}, 
+      m_WristSubsystem));
+
+
+      //DisableScoringLights
+    // new Trigger(()->
+    // {
+    //   if(m_OperatorController.getRightBumperReleased())
+    //     return true;
+    //   else
+    //     return false;
+  
+    // }).toggleOnTrue(
+    //   new InstantCommand(
+    //     ()-> {m_WristSubsystem.disableLights();
+    //           System.out.println("yadayadayada");}, 
+    //     m_WristSubsystem));
+
+        
+  //CUBE LEDS
+   new Trigger(()->
+   {
+     if(m_driverController.getPOV() == 0)
+      return true;
+    else
+       return false;
+
+   }).onTrue(
+     new InstantCommand(() -> m_LEDs.SetLEDsPurple())
+   );
+
+  new Trigger(()->
+   {
+    if(m_driverController.getPOV() == 180)
+      return true;
+    else
+      return false;
+  }).onTrue(
+     new InstantCommand(() -> m_LEDs.SetLEDsRed())
+   );
+
+   new Trigger(()->
+   {
+    if(m_driverController.getPOV() == 270)
+      return true;
+    else
+      return false;
+   }).onTrue(
+    new InstantCommand(() -> m_LEDs.startLEDS())
+   );
+
+
+
+   new Trigger(()->
+   {
+    if(m_driverController.getLeftBumper())
+      return true;
+    else
+      return false;
+   }).whileTrue(
+      new RunCommand(
+        ()-> m_robotDrive.Kachow(
+          MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.15), 
+          MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.15), 
+          MathUtil.applyDeadband(-m_driverController.getRightX(), 0.2),
+          true), 
+          m_robotDrive));
+
+   
+
+   //.whileTrue(new RunCommand(()-> m_robotDrive.Kachow(m_driverController.getLeftX(), m_driverController.getLeftY(), m_driverController.getRightX(), true)), m_robotDrive);
+
+   
+   //new Trigger(()->{
+    //if(m_DriverController.getPOV() == 90)
+    //  return true;
+    //else
+    //  return false;
+//}.onTrue(
+  //  new InstantCommand(() -> m_LEDs.stopLEDS());
+  // ))
+
+
+
+
+
+  
+///////////////////////////
 //autoBalance for debugging
     // new Trigger(()->
     // {
@@ -776,132 +886,132 @@ public class RobotContainer {
     
 //Everyone is gone binds
 
-    //coneIntake
-    // new Trigger(() ->
-    // {
-    //   if(m_driverController.getLeftTriggerAxis() > 0 || m_driverController.getLeftTriggerAxis() < 0)
-    //     return true;
-    //   else
-    //   {
-    //     return false;
-    //   }
-    // } ).whileTrue(new WristConsume(m_armIntake, m_driverController::getLeftTriggerAxis));
+  //   //coneIntake
+  //   new Trigger(() ->
+  //   {
+  //     if(m_driverController.getLeftTriggerAxis() > 0 || m_driverController.getLeftTriggerAxis() < 0)
+  //       return true;
+  //     else
+  //     {
+  //       return false;
+  //     }
+  //   } ).whileTrue(new WristConsume(m_armIntake, m_driverController::getLeftTriggerAxis));
 
-    // //cubeIntake
-    // new Trigger(() ->
-    // {
-    //   if(m_driverController.getRightTriggerAxis() > 0 || m_driverController.getRightTriggerAxis() < 0)
-    //     return true;
-    //   else
-    //   {
-    //     return false;
-    //   }
-    // } 
-    // ).whileTrue(new WristEject(m_armIntake, m_driverController::getRightTriggerAxis));
-
-
-    // //midScore
-    // new Trigger(()->
-    // {
-    //   if(m_driverController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_driverController.getXButton())
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreMidWristPosition))
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+  //   //cubeIntake
+  //   new Trigger(() ->
+  //   {
+  //     if(m_driverController.getRightTriggerAxis() > 0 || m_driverController.getRightTriggerAxis() < 0)
+  //       return true;
+  //     else
+  //     {
+  //       return false;
+  //     }
+  //   } 
+  //   ).whileTrue(new WristEject(m_armIntake, m_driverController::getRightTriggerAxis));
 
 
+  //   //midScore
+  //   new Trigger(()->
+  //   {
+  //     if(m_driverController.getLeftBumper())
+  //       return true;
+  //     else
+  //       return false;
 
-    // //cancel commands
-    // new Trigger(()->
-    // {
-    //   if(m_driverController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_driverController.getRightStickButton())
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new StopWristPID(m_WristSubsystem))
-    // .onTrue(new StopArmPID(m_ArmSubsystem));
-
-
-    // //score high wrist
-    // new Trigger(()->
-    // {
-    //   if(m_driverController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
-
-    // }
-    // ).and(()->
-    // {
-    //   if(m_driverController.getYButton())
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreHighWristPosition))
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreHighArmPosition));
+  //   }
+  //   ).and(()->
+  //   {
+  //     if(m_driverController.getXButton())
+  //     return true;
+  //   else
+  //     return false;
+  //   }
+  //   ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreMidWristPosition))
+  //   .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
 
 
-    //     //CubeIntake
 
-    //     new Trigger(()->
-    //     {
-    //       if(m_driverController.getLeftBumper())
-    //         return true;
-    //       else
-    //         return false;
+  //   //cancel commands
+  //   new Trigger(()->
+  //   {
+  //     if(m_driverController.getLeftBumper())
+  //       return true;
+  //     else
+  //       return false;
+
+  //   }
+  //   ).and(()->
+  //   {
+  //     if(m_driverController.getRightStickButton())
+  //     return true;
+  //   else
+  //     return false;
+  //   }
+  //   ).onTrue(new StopWristPID(m_WristSubsystem))
+  //   .onTrue(new StopArmPID(m_ArmSubsystem));
+
+
+  //   //score high wrist
+  //   new Trigger(()->
+  //   {
+  //     if(m_driverController.getLeftBumper())
+  //       return true;
+  //     else
+  //       return false;
+
+  //   }
+  //   ).and(()->
+  //   {
+  //     if(m_driverController.getYButton())
+  //     return true;
+  //   else
+  //     return false;
+  //   }
+  //   ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreHighWristPosition))
+  //   .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreHighArmPosition));
+
+
+  //       //CubeIntake
+
+  //       new Trigger(()->
+  //       {
+  //         if(m_driverController.getLeftBumper())
+  //           return true;
+  //         else
+  //           return false;
     
-    //     }
-    //     ).and(()->
-    //     {
-    //       if(m_driverController.getAButton())
-    //       return true;
-    //     else
-    //       return false;
-    //     }
-    //     ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition))
-    //     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
+  //       }
+  //       ).and(()->
+  //       {
+  //         if(m_driverController.getAButton())
+  //         return true;
+  //       else
+  //         return false;
+  //       }
+  //       ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition))
+  //       .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
     
 
-    //         //Hold
-    // new Trigger(()->
-    // {
-    //   if(m_driverController.getLeftBumper())
-    //     return true;
-    //   else
-    //     return false;
+  //           //Hold
+  //   new Trigger(()->
+  //   {
+  //     if(m_driverController.getLeftBumper())
+  //       return true;
+  //     else
+  //       return false;
 
-    // }
-    // ).and(()->
-    // {
-    //   if(m_driverController.getBButton())
-    //   return true;
-    // else
-    //   return false;
-    // }
-    // ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HoldWristPosition))
-    // .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HoldArmPostion));
+  //   }
+  //   ).and(()->
+  //   {
+  //     if(m_driverController.getBButton())
+  //     return true;
+  //   else
+  //     return false;
+  //   }
+  //   ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HoldWristPosition))
+  //   .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HoldArmPostion));
 
-  }
+   }
 
   public double getPoseHeading()
   {
@@ -944,14 +1054,23 @@ public class RobotContainer {
 
 AutoConstants.eventMap.put("Home", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.HomeWristPosition, m_ArmSubsystem, PositionConstants.HomeArmPosition));
 AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
+//AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
+
+AutoConstants.eventMap.put("ScoreMidAuto", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition + 0.06, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
 AutoConstants.eventMap.put("ScoreMid", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+
+
 AutoConstants.eventMap.put("ConeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition, m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
-AutoConstants.eventMap.put("WristConsumeWithTime", new WristConsumeWithTime(m_armIntake, 2));
-AutoConstants.eventMap.put("WristEjectWithTime", new WristEjectWithTime(m_armIntake, 2));
-AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreHighWristPosition, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition));
+AutoConstants.eventMap.put("WristConsumeWithTime", new WristConsumeWithTime(m_armIntake, 2, AutoConstants.slowIntakeSpeed));
+AutoConstants.eventMap.put("WristEjectWithTime", new WristEjectWithTime(m_armIntake, 2, AutoConstants.slowIntakeSpeed));
+AutoConstants.eventMap.put("WristConsumeWithTimeFast", new WristConsumeWithTime(m_armIntake, 2, AutoConstants.fastIntakeSpeed));
+AutoConstants.eventMap.put("WristEjectWithTimeFast", new WristEjectWithTime(m_armIntake, 2, AutoConstants.fastIntakeSpeed));
+
+AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreHighWristPosition + 0.02, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition + 0.015));
 AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0.15).alongWith(new PIDWristCommand(m_WristSubsystem, 0.37)));
 
-  //  eventMap.put("home", new PrintCommand("entering home position"));
+  
+//  eventMap.put("home", new PrintCommand("entering home position"));
   //  eventMap.put("CubeGroundIntake", new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition));
   //  eventMap.put("Thing", new PrintCommand("Thing"));
   //  eventMap.put("CubeIntake", new PrintCommand("intaking cube")); 
@@ -991,8 +1110,8 @@ AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0
 
      List<PathPlannerTrajectory> auto1Paths =
         PathPlanner.loadPathGroup(autoChooser.getSelected(), 
-        2.5, 
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared);
+        2.5,  //3
+        AutoConstants.kMaxAccelerationMetersPerSecondSquared); // + 1
 
      
 

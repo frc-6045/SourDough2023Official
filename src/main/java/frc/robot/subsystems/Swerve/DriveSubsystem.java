@@ -7,7 +7,6 @@ package frc.robot.subsystems.Swerve;
 import java.util.function.DoubleSupplier;
 
 import com.kauailabs.navx.frc.AHRS;
-
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -28,6 +27,7 @@ import edu.wpi.first.wpilibj.DataLogManager;
 import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
@@ -66,6 +66,7 @@ public class DriveSubsystem extends SubsystemBase {
       DriveConstants.kBackRightChassisAngularOffset,
       "m_rearLeft");
 
+  
 
   private final PIDController m_VisionLockController = new PIDController(0.014, 0, 0);
   
@@ -73,7 +74,11 @@ public class DriveSubsystem extends SubsystemBase {
   
 
   // The gyro sensor
-  private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
+private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
+// private final AHRS m_gyro = new AHRS(I2C.Port.kOnboard, (byte) 200);
+
+ //private final AHRS m_gyro = new 
+  
 
   private final DoubleLogEntry m_navYawLog;
   private final DoubleLogEntry m_navPitchLog;
@@ -239,6 +244,34 @@ public class DriveSubsystem extends SubsystemBase {
     // xSpeed *= 0.5;
     // ySpeed *= 0.5;
     rot *= 0.3;
+
+
+    xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kMaxSpeedMetersPerSecond;
+    ySpeed = yLimiter.calculate(ySpeed) * DriveConstants.kMaxSpeedMetersPerSecond;
+    rot = turningLimiter.calculate(rot) * DriveConstants.kMaxAngularSpeed;
+    double m_HeadingDegrees = getPose().getRotation().getDegrees();
+
+    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
+        fieldRelative
+            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_HeadingDegrees)) //TODO: changed getHeadingDegrees()
+            : new ChassisSpeeds(xSpeed, ySpeed, rot));
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+        swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+    m_frontLeft.setDesiredState(swerveModuleStates[0]);
+    m_frontRight.setDesiredState(swerveModuleStates[1]);
+    m_rearLeft.setDesiredState(swerveModuleStates[2]);
+    m_rearRight.setDesiredState(swerveModuleStates[3]);
+    
+  }
+
+
+  //Turbo Spin
+  public void Kachow(double xSpeed, double ySpeed, double rot, boolean fieldRelative) 
+  {
+    // Adjust input based on max speed
+    // xSpeed *= 0.5;
+    // ySpeed *= 0.5;
+    rot *= 0.8;
 
 
     xSpeed = xLimiter.calculate(xSpeed) * DriveConstants.kMaxSpeedMetersPerSecond;

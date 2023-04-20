@@ -49,21 +49,21 @@ public class SwerveWithMidCone extends InstantCommand {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.firstCubePosition1).andThen(
         new SetArmWithWristPosition(m_WristSubsytem, PositionConstants.ScoreHighWristPosition, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition)).andThen
         (new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.firstCubePosition2)).andThen(
-          new WristConsumeWithTime(m_WristIntake, 2)).schedule();
+          new WristConsumeWithTime(m_WristIntake, 2, 0.5)).schedule();
     }
     if(yDistance > 2 && yDistance < 3)
     {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.secondCubePosition1).andThen(
         new SetArmWithWristPosition(m_WristSubsytem, PositionConstants.ScoreHighWristPosition, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition)).andThen
         (new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.secondCubePosition2)).andThen(
-          new WristConsumeWithTime(m_WristIntake, 2)).schedule();    
+          new WristConsumeWithTime(m_WristIntake, 2, 0.5)).schedule();    
     }
     if(yDistance > 3 && yDistance < 4)
     {
       new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.thirdCubePosition1).andThen(
         new SetArmWithWristPosition(m_WristSubsytem, PositionConstants.ScoreHighWristPosition, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition)).andThen
         (new SwerveToPoseWithTrajectory(m_robotDrive, PoseConstants.thirdCubePosition2)).andThen(
-          new WristConsumeWithTime(m_WristIntake, 2)).schedule();
+          new WristConsumeWithTime(m_WristIntake, 2, 0.5)).schedule();
     }
   }
 }

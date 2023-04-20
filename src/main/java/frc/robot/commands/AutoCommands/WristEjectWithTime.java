@@ -14,11 +14,11 @@ import frc.robot.subsystems.Wrist.WristIntake;
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class WristEjectWithTime extends ParallelRaceGroup {
   /** Creates a new WristEjectWithTime. */
-  public WristEjectWithTime(WristIntake m_WristIntake, double time) {
+  public WristEjectWithTime(WristIntake m_WristIntake, double time, double speed) {
     // Add your commands in the addCommands() call, e.g.
     // addCommands(new FooCommand(), new BarCommand());
     addCommands(
-      new WristEject(m_WristIntake, () -> 0.5),
+      new WristEject(m_WristIntake, () -> speed),
       new WaitCommand(time)
     );
   }

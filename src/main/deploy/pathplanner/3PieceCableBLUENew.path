@@ -77,15 +77,15 @@
     {
       "anchorPoint": {
         "x": 7.3,
-        "y": 4.03
+        "y": 4.2
       },
       "prevControl": {
         "x": 6.494142940892518,
-        "y": 3.984613552070706
+        "y": 4.154613552070706
       },
       "nextControl": {
         "x": 6.494142940892518,
-        "y": 3.984613552070706
+        "y": 4.154613552070706
       },
       "holonomicAngle": 0,
       "isReversal": true,
@@ -227,15 +227,15 @@
     {
       "anchorPoint": {
         "x": 7.140002431663633,
-        "y": 4.815452379719925
+        "y": 4.89
       },
       "prevControl": {
         "x": 6.5966365519714625,
-        "y": 4.810503580327506
+        "y": 4.88505120060758
       },
       "nextControl": {
         "x": 8.182851956225242,
-        "y": 4.8249503134077365
+        "y": 4.899497933687811
       },
       "holonomicAngle": 10.0,
       "isReversal": false,
@@ -335,9 +335,9 @@
       ]
     },
     {
-      "position": 5.97,
+      "position": 5.77,
       "names": [
-        "WristConsumeWithTimeFast"
+        "WristConsumeWithTime"
       ]
     },
     {

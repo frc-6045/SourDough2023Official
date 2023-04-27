@@ -77,15 +77,15 @@
     {
       "anchorPoint": {
         "x": 7.3,
-        "y": 4.12
+        "y": 4.2
       },
       "prevControl": {
         "x": 6.494142940892518,
-        "y": 4.074613552070706
+        "y": 4.154613552070706
       },
       "nextControl": {
         "x": 6.494142940892518,
-        "y": 4.074613552070706
+        "y": 4.154613552070706
       },
       "holonomicAngle": 0,
       "isReversal": true,
@@ -226,16 +226,16 @@
     },
     {
       "anchorPoint": {
-        "x": 7.17,
-        "y": 4.625493705963716
+        "x": 7.14,
+        "y": 4.82
       },
       "prevControl": {
-        "x": 6.62663412030783,
-        "y": 4.620544906571296
+        "x": 6.596634120307829,
+        "y": 4.815051200607581
       },
       "nextControl": {
-        "x": 8.212849524561609,
-        "y": 4.634991639651527
+        "x": 8.182849524561608,
+        "y": 4.829497933687811
       },
       "holonomicAngle": 10.0,
       "isReversal": false,
@@ -311,19 +311,19 @@
       ]
     },
     {
-      "position": 1.7333333333333487,
+      "position": 1.5,
       "names": [
         "CubeGroundIntake"
       ]
     },
     {
-      "position": 2.8666666666667866,
+      "position": 2.8,
       "names": [
         "WristEjectWithTime"
       ]
     },
     {
-      "position": 3.2,
+      "position": 3.4,
       "names": [
         "Home"
       ]
@@ -335,13 +335,13 @@
       ]
     },
     {
-      "position": 5.97,
+      "position": 5.77,
       "names": [
-        "WristConsumeWithTimeFast"
+        "WristConsumeWithTime"
       ]
     },
     {
-      "position": 6.40000000000046,
+      "position": 6.47,
       "names": [
         "Home"
       ]
@@ -359,19 +359,19 @@
       ]
     },
     {
-      "position": 9.533333333334086,
+      "position": 9.5,
       "names": [
         "Home"
       ]
     },
     {
-      "position": 10.1,
+      "position": 10.07,
       "names": [
         "ScoreHigh"
       ]
     },
     {
-      "position": 10.45,
+      "position": 10.53,
       "names": [
         "WristConsumeWithTimeFast"
       ]

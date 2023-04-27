@@ -19,6 +19,7 @@ public class AutoBalance extends CommandBase {
 
   private final PIDController m_XController;
   private final DriveSubsystem m_robotDrive;
+  private double x_SetPoint = -1.6;
 
   /** Creates a new SwerveWithPIDY. */
 
@@ -26,7 +27,7 @@ public class AutoBalance extends CommandBase {
   {
 
 
-    m_XController = new PIDController(0.004, 0, 0); // was 0.005
+    m_XController = new PIDController(0.005, 0, 0); // was 0.005
 
     m_XController.setTolerance(0.05);
 
@@ -45,13 +46,14 @@ public class AutoBalance extends CommandBase {
   {
     System.out.println("getting scheduled");
     
+    
   }
 
   // Called every time the scheduler runs while the command is scheduled.
   @Override
   public void execute() 
   {
-      double x_SetPoint = -1.6;
+      
     double x_Speed =  m_XController.calculate(m_robotDrive.getRoll(), x_SetPoint);
     
 

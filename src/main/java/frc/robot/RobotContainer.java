@@ -97,7 +97,7 @@ public class RobotContainer {
   private final WristIntake m_armIntake = new WristIntake();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final WristSubsystem m_WristSubsystem = new WristSubsystem();
-  private final LEDS m_LEDs = new LEDS();
+  //private final LEDS m_LEDs = new LEDS();
   
   // private final LEDSubsystem m_NewLEDs = new LEDSubsystem();
   // private final OtherPIDWrist m_OtherWrist = new OtherPIDWrist();
@@ -139,7 +139,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
-    m_LEDs.SetLEDsPurple();
+    //m_LEDs.SetLEDsPurple();
 
     //m_LEDs.setDefaultCommand(new RunCommand(()-> System.out.println("Distance: " + m_LEDs.getDistanceSensorMeasurement()), m_LEDs));
     // Configure default commands
@@ -204,6 +204,8 @@ public class RobotContainer {
           autoChooser.addOption("3PieceREDNew", "3PieceREDNew");  
           autoChooser.addOption("3PieceBLUENew", "3PieceBLUENew"); 
           autoChooser.addOption("3PieceCableBLUENew", "3PieceCableBLUENew"); 
+          autoChooser.addOption("OneMobility", "OneMobility"); 
+          
 
          // autoChooser.addOption("3PieceCable", "3PieceCable");
 
@@ -768,37 +770,37 @@ public class RobotContainer {
     //     m_WristSubsystem));
 
         
-  //CUBE LEDS
-   new Trigger(()->
-   {
-     if(m_driverController.getPOV() == 0)
-      return true;
-    else
-       return false;
+  // //CUBE LEDS
+  //  new Trigger(()->
+  //  {
+  //    if(m_driverController.getPOV() == 0)
+  //     return true;
+  //   else
+  //      return false;
 
-   }).onTrue(
-     new InstantCommand(() -> m_LEDs.SetLEDsPurple())
-   );
+  //  }).onTrue(
+  //    new InstantCommand(() -> m_LEDs.SetLEDsPurple())
+  //  );
 
-  new Trigger(()->
-   {
-    if(m_driverController.getPOV() == 180)
-      return true;
-    else
-      return false;
-  }).onTrue(
-     new InstantCommand(() -> m_LEDs.SetLEDsRed())
-   );
+  // new Trigger(()->
+  //  {
+  //   if(m_driverController.getPOV() == 180)
+  //     return true;
+  //   else
+  //     return false;
+  // }).onTrue(
+  //    new InstantCommand(() -> m_LEDs.SetLEDsRed())
+  //  );
 
-   new Trigger(()->
-   {
-    if(m_driverController.getPOV() == 270)
-      return true;
-    else
-      return false;
-   }).onTrue(
-    new InstantCommand(() -> m_LEDs.startLEDS())
-   );
+  //  new Trigger(()->
+  //  {
+  //   if(m_driverController.getPOV() == 270)
+  //     return true;
+  //   else
+  //     return false;
+  //  }).onTrue(
+  //   new InstantCommand(() -> m_LEDs.startLEDS())
+  //  );
 
 
 
@@ -1116,6 +1118,10 @@ AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0
      
 
         m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
+        if(autoChooser.getSelected().equals("OneMobility"))
+        {
+          return autoBuilder.fullAuto(auto1Paths).andThen(new AutoBalance(m_robotDrive));
+        }
         return autoBuilder.fullAuto(auto1Paths); //.andThen(new AutoBalance(m_robotDrive));
      
 

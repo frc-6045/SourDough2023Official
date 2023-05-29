@@ -303,7 +303,7 @@ private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
     {
       LimelightHelpers.setPipelineIndex("limelight-bottom", 0);
     }
-    else if(armPosition < 0.15 && LimelightHelpers.getCsurrentPipelineIndex("limelight-bottom") == 0 )
+    else if(armPosition < 0.15 && LimelightHelpers.getCurrentPipelineIndex("limelight-bottom") == 0 )
     {
       LimelightHelpers.setPipelineIndex("limelight-bottom", 1);
     }

@@ -45,6 +45,7 @@ import frc.robot.commands.AutoCommands.WristEjectWithTime;
 import frc.robot.commands.AutoCommands.SwerveToAndAuto.SwerveWithHighCone;
 import frc.robot.commands.AutoCommands.SwerveToMethods.FollowTrajectory;
 import frc.robot.commands.AutoCommands.SwerveToNearest.SwerveToNearestPole;
+import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.LEDSubsystem;
 import frc.robot.subsystems.Arm.ArmSubsystem;
@@ -97,6 +98,7 @@ public class RobotContainer {
   private final WristIntake m_armIntake = new WristIntake();
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final WristSubsystem m_WristSubsystem = new WristSubsystem();
+  private Autos m_autos;
   //private final LEDS m_LEDs = new LEDS();
   
   // private final LEDSubsystem m_NewLEDs = new LEDSubsystem();
@@ -107,7 +109,7 @@ public class RobotContainer {
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_OperatorController = new XboxController(OIConstants.kDriverControllerPort2);
-  ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
+  //ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
   ShuffleboardTab teleOpTab = Shuffleboard.getTab("TeleOp");
 
   
@@ -139,6 +141,7 @@ public class RobotContainer {
   public RobotContainer() {
     // Configure the button bindings
     configureButtonBindings();
+    m_autos = new Autos(m_robotDrive, m_WristSubsystem, m_ArmSubsystem, m_armIntake);
     //m_LEDs.SetLEDsPurple();
 
     //m_LEDs.setDefaultCommand(new RunCommand(()-> System.out.println("Distance: " + m_LEDs.getDistanceSensorMeasurement()), m_LEDs));
@@ -212,7 +215,7 @@ public class RobotContainer {
           
 
           //SmartDashboard.putData("Autonomous routine", autoChooser);
-          autoTab.add(autoChooser);
+          //autoTab.add(autoChooser);
           teleOpTab.addDouble("Wrist Position", m_WristSubsystem::getAbsoluteEncoderCounts);
           teleOpTab.addDouble("Arm position", m_ArmSubsystem::getAbsoluteEncoderPosition);
           teleOpTab.addDouble("Gyro", m_robotDrive::getHeadingDegrees);
@@ -1031,8 +1034,10 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
+    
 
-
+    return m_autos.getAutonomousCommand();
+    
     // String autoName = autoChooser.getSelected();
     
     // PathPlannerTrajectory examplePath;
@@ -1054,24 +1059,24 @@ public class RobotContainer {
 
    // examplePath = PathPlanner.loadPath("Example Path", new PathConstraints(4, 3));
 
-AutoConstants.eventMap.put("Home", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.HomeWristPosition, m_ArmSubsystem, PositionConstants.HomeArmPosition));
-AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
-//AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
+                      // AutoConstants.eventMap.put("Home", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.HomeWristPosition, m_ArmSubsystem, PositionConstants.HomeArmPosition));
+                      // AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
+                      // //AutoConstants.eventMap.put("CubeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition, m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
 
-AutoConstants.eventMap.put("ScoreMidAuto", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition + 0.06, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
-AutoConstants.eventMap.put("ScoreMid", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+                      // AutoConstants.eventMap.put("ScoreMidAuto", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition + 0.06, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+                      // AutoConstants.eventMap.put("ScoreMid", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreMidWristPosition, m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
 
 
-AutoConstants.eventMap.put("ConeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition, m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
-AutoConstants.eventMap.put("WristConsumeWithTime", new WristConsumeWithTime(m_armIntake, 2, AutoConstants.slowIntakeSpeed));
-AutoConstants.eventMap.put("WristEjectWithTime", new WristEjectWithTime(m_armIntake, 2, AutoConstants.slowIntakeSpeed));
-AutoConstants.eventMap.put("WristConsumeWithTimeFast", new WristConsumeWithTime(m_armIntake, 2, AutoConstants.fastIntakeSpeed));
-AutoConstants.eventMap.put("WristEjectWithTimeFast", new WristEjectWithTime(m_armIntake, 2, AutoConstants.fastIntakeSpeed));
+                      // AutoConstants.eventMap.put("ConeGroundIntake", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition, m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
+                      // AutoConstants.eventMap.put("WristConsumeWithTime", new WristConsumeWithTime(m_armIntake, 2, AutoConstants.slowIntakeSpeed));
+                      // AutoConstants.eventMap.put("WristEjectWithTime", new WristEjectWithTime(m_armIntake, 2, AutoConstants.slowIntakeSpeed));
+                      // AutoConstants.eventMap.put("WristConsumeWithTimeFast", new WristConsumeWithTime(m_armIntake, 2, AutoConstants.fastIntakeSpeed));
+                      // AutoConstants.eventMap.put("WristEjectWithTimeFast", new WristEjectWithTime(m_armIntake, 2, AutoConstants.fastIntakeSpeed));
 
-AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreHighWristPosition + 0.02, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition + 0.015));
-AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0.15).alongWith(new PIDWristCommand(m_WristSubsystem, 0.37)));
+                      // AutoConstants.eventMap.put("ScoreHigh", new SetArmWithWristPosition(m_WristSubsystem, PositionConstants.ScoreHighWristPosition + 0.02, m_ArmSubsystem, PositionConstants.ScoreHighArmPosition + 0.015));
+                      // AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0.15).alongWith(new PIDWristCommand(m_WristSubsystem, 0.37)));
 
-  
+                        
 //  eventMap.put("home", new PrintCommand("entering home position"));
   //  eventMap.put("CubeGroundIntake", new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition));
   //  eventMap.put("Thing", new PrintCommand("Thing"));
@@ -1082,16 +1087,16 @@ AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0
 
  
 
-   SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
-     m_robotDrive::getPose, 
-     m_robotDrive::resetOdometry,
-     DriveConstants.kDriveKinematics,
-     new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
-     new PIDConstants(1.5, 0.0, 0), //5.0, 0, 0.2
-     m_robotDrive::setModuleStates,
-     AutoConstants.eventMap,
-     true,
-     m_robotDrive);
+                    // SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
+                    //   m_robotDrive::getPose, 
+                    //   m_robotDrive::resetOdometry,
+                    //   DriveConstants.kDriveKinematics,
+                    //   new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
+                    //   new PIDConstants(1.5, 0.0, 0), //5.0, 0, 0.2
+                    //   m_robotDrive::setModuleStates,
+                    //   AutoConstants.eventMap,
+                    //   true,
+                    //   m_robotDrive);
 
 
      //return autoBuilder.fullAuto(examplePath);
@@ -1105,24 +1110,24 @@ AutoConstants.eventMap.put("ScoreBeginning", new PIDArmCommand(m_ArmSubsystem, 0
 
 
 
-     if(autoChooser.getSelected().equals("Nothing"))
-     return new PrintCommand("no auto");
+                                      // if(autoChooser.getSelected().equals("Nothing"))
+                                      // return new PrintCommand("no auto");
 
 
 
-     List<PathPlannerTrajectory> auto1Paths =
-        PathPlanner.loadPathGroup(autoChooser.getSelected(), 
-        2.5,  //3
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared); // + 1
+                                      // List<PathPlannerTrajectory> auto1Paths =
+                                      //     PathPlanner.loadPathGroup(autoChooser.getSelected(), 
+                                      //     2.5,  //3
+                                      //     AutoConstants.kMaxAccelerationMetersPerSecondSquared); // + 1
 
-     
+                                      
 
-        m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
-        if(autoChooser.getSelected().equals("OneMobility"))
-        {
-          return autoBuilder.fullAuto(auto1Paths).andThen(new AutoBalance(m_robotDrive));
-        }
-        return autoBuilder.fullAuto(auto1Paths); //.andThen(new AutoBalance(m_robotDrive));
+                                      //     m_robotDrive.resetOdometry(auto1Paths.get(0).getInitialPose());
+                                      //     if(autoChooser.getSelected().equals("OneMobility"))
+                                      //     {
+                                      //       return autoBuilder.fullAuto(auto1Paths).andThen(new AutoBalance(m_robotDrive));
+                                      //     }
+                                      //     return autoBuilder.fullAuto(auto1Paths); //.andThen(new AutoBalance(m_robotDrive));
      
 
         // Command AutoStuff = new SequentialCommandGroup(

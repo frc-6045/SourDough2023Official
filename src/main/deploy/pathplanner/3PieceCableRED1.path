@@ -226,16 +226,16 @@
     },
     {
       "anchorPoint": {
-        "x": 7.140002431663633,
-        "y": 4.64
+        "x": 7.14,
+        "y": 4.82
       },
       "prevControl": {
-        "x": 6.5966365519714625,
-        "y": 4.63505120060758
+        "x": 6.596634120307829,
+        "y": 4.815051200607581
       },
       "nextControl": {
-        "x": 8.182851956225242,
-        "y": 4.649497933687811
+        "x": 8.182849524561608,
+        "y": 4.829497933687811
       },
       "holonomicAngle": 10.0,
       "isReversal": false,
@@ -276,12 +276,12 @@
     },
     {
       "anchorPoint": {
-        "x": 2.25,
-        "y": 3.6
+        "x": 2.4,
+        "y": 3.324276790733677
       },
       "prevControl": {
-        "x": 3.3019157416513876,
-        "y": 2.967832581162793
+        "x": 3.451915741651388,
+        "y": 2.69210937189647
       },
       "nextControl": null,
       "holonomicAngle": 180.0,
@@ -290,9 +290,7 @@
       "isLocked": false,
       "isStopPoint": false,
       "stopEvent": {
-        "names": [
-          "WristConsumeWithTimeFast1"
-        ],
+        "names": [],
         "executionBehavior": "parallel",
         "waitBehavior": "none",
         "waitTime": 0
@@ -307,7 +305,7 @@
       ]
     },
     {
-      "position": 0.06666666666669689,
+      "position": 0.06666666666667434,
       "names": [
         "Home"
       ]
@@ -319,43 +317,43 @@
       ]
     },
     {
-      "position": 2.800000000000158,
+      "position": 2.8,
       "names": [
         "WristEjectWithTime"
       ]
     },
     {
-      "position": 3.4000000000001807,
+      "position": 3.4,
       "names": [
         "Home"
       ]
     },
     {
-      "position": 4.200000000000228,
+      "position": 4.200000000000342,
       "names": [
         "ScoreMidAuto"
       ]
     },
     {
-      "position": 5.93,
+      "position": 5.85,
       "names": [
         "WristConsumeWithTime"
       ]
     },
     {
-      "position": 6.46666666666709,
+      "position": 6.47,
       "names": [
         "Home"
       ]
     },
     {
-      "position": 7.400000000000438,
+      "position": 7.400000000000575,
       "names": [
         "CubeGroundIntake"
       ]
     },
     {
-      "position": 8.733333333333993,
+      "position": 8.733333333334041,
       "names": [
         "WristEjectWithTime"
       ]
@@ -367,15 +365,15 @@
       ]
     },
     {
-      "position": 10.066666666667368,
+      "position": 10.07,
       "names": [
         "ScoreHigh"
       ]
     },
     {
-      "position": 10.533333333333463,
+      "position": 10.53,
       "names": [
-        "WristConsumeWithTimeFast1"
+        "WristConsumeWithTimeFast"
       ]
     }
   ]

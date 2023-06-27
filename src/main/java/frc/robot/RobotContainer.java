@@ -648,23 +648,15 @@ public class RobotContainer {
 
 
     //Hold
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getPOV() == 90)
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HoldWristPosition))
+    new Trigger(()-> m_OperatorController.getLeftBumper())
+    .and(()-> m_OperatorController.getPOV() == 90).
+    onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HoldWristPosition))
     .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HoldArmPostion));
+
+
+
+
+
 
 
     //Cancel active PID Commands

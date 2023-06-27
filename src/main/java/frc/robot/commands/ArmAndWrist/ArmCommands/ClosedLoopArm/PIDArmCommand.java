@@ -21,7 +21,7 @@ public class PIDArmCommand extends CommandBase {
     this.m_ArmSubsystem = m_ArmSubsystem;
     m_ArmPIDController = new PIDController(5, 0, 0); //0.15
     m_ArmPIDController.enableContinuousInput(0, 1);
-    m_ArmPIDController.setTolerance(0.0038);
+    m_ArmPIDController.setTolerance(0.0038); //038
     this.setPoint = setPoint;
     addRequirements(m_ArmSubsystem);
     

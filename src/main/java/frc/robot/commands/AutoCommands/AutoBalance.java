@@ -8,6 +8,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import frc.robot.LimelightHelpers;
@@ -20,6 +21,9 @@ public class AutoBalance extends CommandBase {
   private final PIDController m_XController;
   private final DriveSubsystem m_robotDrive;
   private double x_SetPoint = -1.6;
+  private boolean pastTimer;
+  private Timer timer;
+  private double time;
 
   /** Creates a new SwerveWithPIDY. */
 
@@ -60,6 +64,19 @@ public class AutoBalance extends CommandBase {
     m_robotDrive.drive(x_Speed, 0, 0, true);
     System.out.println("Balance running");
 
+    if(time == 0 && m_XController.atSetpoint())
+    {
+      timer.start();
+    }
+    else if(m_XController.atSetpoint() == false)
+    {
+      timer.stop();
+      timer.reset();
+    }
+
+    
+
+
 
     
     
@@ -68,6 +85,7 @@ public class AutoBalance extends CommandBase {
 
   // Called once the command ends or is interrupted.
   @Override
+
   public void end(boolean interrupted) 
   {
     m_robotDrive.setX();
@@ -76,8 +94,7 @@ public class AutoBalance extends CommandBase {
   // Returns true when the command should end.
   @Override
   public boolean isFinished() {
-    if(m_XController.atSetpoint() == true )
-           return true;
-    return false;
+  return (m_XController.atSetpoint() && (timer.get() > 0.25));
   }
 }
+ 

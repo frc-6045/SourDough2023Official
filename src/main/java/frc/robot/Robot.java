@@ -28,7 +28,7 @@ import frc.robot.subsystems.Swerve.MAXSwerveModule;
  */
 public class Robot extends TimedRobot {
   private Command m_autonomousCommand;
-
+  private Command m_testingCommand;
   private RobotContainer m_robotContainer;
   
 
@@ -127,6 +127,10 @@ public class Robot extends TimedRobot {
   public void testInit() {
     // Cancels all running commands at the start of test mode.
     CommandScheduler.getInstance().cancelAll();
+    m_testingCommand = m_robotContainer.getTestingCommand();
+    if(m_testingCommand != null){  
+      m_testingCommand.schedule();
+    }
   }
 
   /** This function is called periodically during test mode. */

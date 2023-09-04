@@ -48,6 +48,7 @@ import frc.robot.commands.AutoCommands.SwerveToNearest.SwerveToNearestPole;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.LEDSubsystem;
+import frc.robot.subsystems.Tests;
 import frc.robot.subsystems.Arm.ArmSubsystem;
 import frc.robot.subsystems.LEDSubsystem.Mode;
 import frc.robot.subsystems.Swerve.DriveSubsystem;
@@ -99,6 +100,7 @@ public class RobotContainer {
   private final ArmSubsystem m_ArmSubsystem = new ArmSubsystem();
   private final WristSubsystem m_WristSubsystem = new WristSubsystem();
   private Autos m_autos;
+  private Tests m_tests;
   //private final LEDS m_LEDs = new LEDS();
   
   // private final LEDSubsystem m_NewLEDs = new LEDSubsystem();
@@ -142,6 +144,7 @@ public class RobotContainer {
     // Configure the button bindings
     configureButtonBindings();
     m_autos = new Autos(m_robotDrive, m_WristSubsystem, m_ArmSubsystem, m_armIntake);
+    m_tests = new Tests(m_robotDrive, m_WristSubsystem, m_ArmSubsystem, m_armIntake);
     //m_LEDs.SetLEDsPurple();
 
     //m_LEDs.setDefaultCommand(new RunCommand(()-> System.out.println("Distance: " + m_LEDs.getDistanceSensorMeasurement()), m_LEDs));
@@ -248,6 +251,9 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
 
+  public Command getTestingCommand(){
+    return m_tests.getPitTesting();
+  }
    
   private void configureButtonBindings() {
     //set X mode

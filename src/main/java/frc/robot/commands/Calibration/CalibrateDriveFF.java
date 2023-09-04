@@ -1,8 +1,11 @@
-package frc.robot.commands;
 
+package frc.robot.commands.Calibration;
+
+import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj2.command.CommandBase;
 import frc.robot.subsystems.Swerve.DriveSubsystem;
+
 /**
  * Implements a command to collect data to calibrate the swerve drive motor feed-forwards.
  *
@@ -10,20 +13,22 @@ import frc.robot.subsystems.Swerve.DriveSubsystem;
  * {@link frc.robot.Calibrations.SwerveCalibrations#Drive_FF_KV_GAIN}
  * {@link frc.robot.Calibrations.SwerveCalibrations#Drive_FF_KA_GAIN}
  */
-public class CalibrateTurnFF extends CommandBase {
+public class CalibrateDriveFF extends CommandBase {
 
     private enum State {
         RampPositive,
         RampNegative,
         StepPositive,
-        StepNegative
+        StepNegative, 
+        EndDelay
     }
 
     private DriveSubsystem m_drivetrainSubsystem;
     /** Divide by 50 because there are 50 loops per 1 second with a 20ms control loop. */
     private static final double m_rampRateVpl = 0.25 / 50;
-    private static final double m_maxRampVoltage = 3.0;
-    private static final double m_stepVoltage = 3.0;
+    private static final double m_maxRampVoltage = 4.0;
+    private static final double m_stepVoltage = 9.0;
+    private static final int m_delay = 100;
     private boolean m_isFinished;
     private State m_state;
     private double m_voltage;
@@ -35,7 +40,7 @@ public class CalibrateTurnFF extends CommandBase {
      *
      * @param drivetrainSubsystem uses the drivetrain subsystem
      */
-    public CalibrateTurnFF(DriveSubsystem drivetrainSubsystem) {
+    public CalibrateDriveFF(DriveSubsystem drivetrainSubsystem) {
         m_drivetrainSubsystem = drivetrainSubsystem;
         addRequirements(m_drivetrainSubsystem);
     }
@@ -49,10 +54,18 @@ public class CalibrateTurnFF extends CommandBase {
     public void initialize() {
         m_isFinished = false;
         m_voltage = 0.0;
-        m_offVoltageCounter = 150;
+        m_offVoltageCounter = m_delay;
         m_onVoltageCounter = 100;
         m_state = State.RampPositive;
         DriverStation.reportWarning("Starting the turning motors feed-forward calibration", false);
+
+        SwerveModuleState[] swerveModuleStates = new SwerveModuleState[4];
+
+        for (int i = 0; i < swerveModuleStates.length; i++) {
+            swerveModuleStates[i] = new SwerveModuleState();
+        }
+
+        m_drivetrainSubsystem.setModuleStates(swerveModuleStates);
     }
 
     /**
@@ -67,7 +80,7 @@ public class CalibrateTurnFF extends CommandBase {
                     if (m_voltage >= m_maxRampVoltage) {
                         m_state = State.RampNegative;
                         m_voltage = 0.0;
-                        m_offVoltageCounter = 150;
+                        m_offVoltageCounter = m_delay;
                     }
                 } else {
                     --m_offVoltageCounter;
@@ -80,7 +93,7 @@ public class CalibrateTurnFF extends CommandBase {
                     if (m_voltage <= -m_maxRampVoltage) {
                         m_state = State.StepPositive;
                         m_voltage = 0.0;
-                        m_offVoltageCounter = 150;
+                        m_offVoltageCounter = m_delay;
                     }
                 } else {
                     --m_offVoltageCounter;
@@ -94,7 +107,7 @@ public class CalibrateTurnFF extends CommandBase {
                         m_state = State.StepNegative;
                         m_voltage = 0.0;
                         m_onVoltageCounter = 100;
-                        m_offVoltageCounter = 150;
+                        m_offVoltageCounter = m_delay;
                     } else {
                         --m_onVoltageCounter;
                     }
@@ -107,11 +120,20 @@ public class CalibrateTurnFF extends CommandBase {
                 if (m_offVoltageCounter == 0) {
                     m_voltage = -m_stepVoltage;
                     if (m_onVoltageCounter == 0) {
-                        m_voltage = 0;
-                        m_isFinished = true;
+                        m_state = State.EndDelay;
+                        m_voltage = 0.0;
+                        m_offVoltageCounter = m_delay;
                     } else {
                         --m_onVoltageCounter;
                     }
+                } else {
+                    --m_offVoltageCounter;
+                }
+                break;
+            
+            case EndDelay:
+                if (m_offVoltageCounter == 0) {
+                    m_isFinished = true;
                 } else {
                     --m_offVoltageCounter;
                 }
@@ -123,7 +145,7 @@ public class CalibrateTurnFF extends CommandBase {
                 break;
         }
 
-        m_drivetrainSubsystem.setModuleTurnVoltage(m_voltage);
+        m_drivetrainSubsystem.setModuleDriveVoltage(m_voltage);
 
     }
 
@@ -142,5 +164,5 @@ public class CalibrateTurnFF extends CommandBase {
     public void end(boolean interrupted) {
         DriverStation.reportWarning("Stopping the turning motors feed-forward calibration", false);
     }
-
+    
 }

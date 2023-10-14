@@ -118,12 +118,14 @@ private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
       Field2d m_field = new Field2d();
       boolean limelightToggledOn = true;
       
+      
 
 
   /** Creates a new DriveSubsystem. */
   public DriveSubsystem() {
     this.xLimiter = new SlewRateLimiter(1.8);
     this.yLimiter = new SlewRateLimiter(1.8);
+    
 
     // this.xLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
     // this.yLimiter = new SlewRateLimiter(DriveConstants.kTeleDriveMaxAccelerationUnitsPerSecond);
@@ -150,14 +152,14 @@ private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
     m_calculatedPitch = new DoubleLogEntry(m_log, "swerve/pigeon/calculated_pitch");
     m_currentCommandLog = new StringLogEntry(m_log, "/swerve/command");
 
-    logData();
+
   }
 
   @Override
   public void periodic() {
     // Update the odometry in the periodic block
     
-    logData();
+  
     // System.out.println(Timer.getFPGATimestamp());
     // System.out.println(LimelightHelpers.getLatency_Pipeline("limelight"));
 
@@ -171,6 +173,7 @@ private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
 
    //TODO: addMyVisionMeasurment();
     updateOdometry();
+
     m_field.setRobotPose(getPose());
 
    
@@ -500,6 +503,8 @@ public void setModuleTurnVoltage(double voltage) {
         double acceptableScoreMergeDistance = 3.2; //2.8
         double acceptablePickUpMergeDistance = 13.4;
 
+       
+
       
     try{
         if(m_Alliance == Alliance.Blue)
@@ -524,7 +529,7 @@ public void setModuleTurnVoltage(double voltage) {
         System.out.println("Alliance not found, no limelight data");
     } catch(Exception e)
     {
-      System.out.println("yeah that an error with vision: " + e);
+      System.out.println("yeah thats an error with vision: " + e);
     }
 
    }
@@ -546,16 +551,6 @@ public void setModuleTurnVoltage(double voltage) {
 
    }
 
-   private void logData() {
-    long timeStamp = (long) (Timer.getFPGATimestamp() * 1e6);
-    m_navYawLog.append(m_gyro.getYaw(), timeStamp);
-    m_navPitchLog.append(m_gyro.getPitch(), timeStamp);
-    m_navRollLog.append(m_gyro.getRoll(), timeStamp);
-    m_calculatedPitch.append(getHeadingDegrees(), timeStamp);
-
-    Command currentCommand = getCurrentCommand();
-    m_currentCommandLog.append(currentCommand != null ? currentCommand.getName() : "None", timeStamp);
-}
 
 
 

@@ -4,17 +4,12 @@
 
 package frc.robot.subsystems.Wrist;
 
-import java.net.CacheRequest;
-import java.util.function.Supplier;
-
 import com.revrobotics.CANSparkMax;
-import com.revrobotics.RelativeEncoder;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
-import frc.robot.Constants;
-import frc.robot.Constants.ArmIntakeConstants;
+import frc.robot.Constants.IntakeConstants;
 
 public class WristIntake extends SubsystemBase {
   private final CANSparkMax intakeMotor1;
@@ -26,8 +21,8 @@ public class WristIntake extends SubsystemBase {
 
   public WristIntake()
   {
-    intakeMotor1 = new CANSparkMax(ArmIntakeConstants.leftIntakeMotorCanId, MotorType.kBrushless);
-    intakeMotor2 = new CANSparkMax(ArmIntakeConstants.rightIntakeMotorCanId, MotorType.kBrushless);
+    intakeMotor1 = new CANSparkMax(IntakeConstants.leftIntakeMotorCanId, MotorType.kBrushless);
+    intakeMotor2 = new CANSparkMax(IntakeConstants.rightIntakeMotorCanId, MotorType.kBrushless);
 
     intakeMotor1.restoreFactoryDefaults();
     intakeMotor2.restoreFactoryDefaults();

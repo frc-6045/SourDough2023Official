@@ -4,7 +4,6 @@
 
 package frc.robot.commands.ArmAndWrist.ArmCommands.OpenLoopArm;
 
-import java.util.function.Consumer;
 import java.util.function.Supplier;
 
 import edu.wpi.first.wpilibj2.command.CommandBase;

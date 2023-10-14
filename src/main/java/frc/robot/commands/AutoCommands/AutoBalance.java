@@ -4,15 +4,9 @@
 
 package frc.robot.commands.AutoCommands;
 
-import java.util.function.Supplier;
-
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
-import frc.robot.LimelightHelpers;
-import frc.robot.Constants.PIDSwerveConstants;
 import frc.robot.subsystems.Swerve.DriveSubsystem;
 
 public class AutoBalance extends CommandBase {
@@ -20,7 +14,6 @@ public class AutoBalance extends CommandBase {
   private final PIDController m_XController;
   private final DriveSubsystem m_robotDrive;
   private double x_SetPoint = -1.6;
-  private boolean pastTimer;
   private Timer timer;
   private double time;
 

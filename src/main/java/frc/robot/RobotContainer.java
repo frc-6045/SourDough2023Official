@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.XboxController;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants.OIConstants;
 import frc.robot.Constants.PositionConstants;
@@ -34,9 +33,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
-import java.io.File;
-
-
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
  * "declarative" paradigm, very little robot logic should actually be handled in the {@link Robot}
@@ -55,95 +51,49 @@ public class RobotContainer {
   // The driver's controller
   XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
   XboxController m_OperatorController = new XboxController(OIConstants.kDriverControllerPort2);
+
+  //ShuffleBoard output
   ShuffleboardTab teleOpTab = Shuffleboard.getTab("TeleOp");
-
-  
-
-
-  
-  
-
-
-
-
-
-
-  SendableChooser<String> autoChooser = new SendableChooser<>();
-
 
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
-  public RobotContainer() {
+  public RobotContainer() 
+  {
     // Configure the button bindings
     configureButtonBindings();
     m_autos = new Autos(m_robotDrive, m_WristSubsystem, m_ArmSubsystem, m_armIntake);
     m_tests = new Tests(m_robotDrive, m_WristSubsystem, m_ArmSubsystem, m_armIntake);
- // Configure default commands
+  // Configure default commands
     m_robotDrive.setDefaultCommand(
         // The left stick controls translation of the robot.
         // Turning is controlled by the X axis of the right stick.
         
-        new RunCommand(
-            () -> m_robotDrive.drive(
-                MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.15),
-                MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.15),
-                MathUtil.applyDeadband(-m_driverController.getRightX(), 0.20),
-                true),
-            m_robotDrive));
+    new RunCommand(
+        () -> m_robotDrive.drive(
+            MathUtil.applyDeadband(-m_driverController.getLeftY(), 0.15),
+            MathUtil.applyDeadband(-m_driverController.getLeftX(), 0.15),
+            MathUtil.applyDeadband(-m_driverController.getRightX(), 0.20),
+            true),
+        m_robotDrive));
+
     m_ArmSubsystem.setDefaultCommand(new ActuateArm(m_ArmSubsystem, m_OperatorController::getLeftY));
     m_WristSubsystem.setDefaultCommand(new ActuateWrist(m_WristSubsystem, m_OperatorController::getRightY));
 
-
-            autoChooser.setDefaultOption("Drive Forwards", "Drive Forwards");
-
-          //temporary stand in to make it show up.
-
-          //Add list of paths to shuffleBoard. have to do this since the file directory automation part doesn't work.
-          autoChooser.addOption("1AndCubeBalance", "1CubeAndBalance");
-          autoChooser.addOption("1ConeAndBalance", "1ConeAndBalance");
-          autoChooser.addOption("1ConeMidBalance", "1ConeMidBalance");
-          autoChooser.addOption("1ConeMidFarBalance", "1ConeMidFarBalance");
-          autoChooser.addOption("2Cube", "2Cube");
-          autoChooser.addOption("2CubeRed", "2CubeRed");
-          autoChooser.addOption("2CubeBalance", "2CubeBalance");
-          autoChooser.addOption("2CubeBalanceRed", "2CubeBalanceRed");
-          autoChooser.addOption("HighConeMidCubeBack", "HighConeMidCubeBack");
-          autoChooser.addOption("Nothing", "Nothing");
-          autoChooser.addOption("2.5CubeRed", "2.5CubeRed");
-          autoChooser.addOption("2.5Cube", "2.5Cube");
-          autoChooser.addOption("OverAndBack", "OverAndBack");
-          autoChooser.addOption("3Piece", "3PieceBLUE");
-          autoChooser.addOption("3PieceRED", "3PieceRED");
-          autoChooser.addOption("3PieceCableRED", "3PieceCableRED");
-          autoChooser.addOption("3PieceREDNew", "3PieceREDNew");  
-          autoChooser.addOption("3PieceBLUENew", "3PieceBLUENew"); 
-          autoChooser.addOption("3PieceCableBLUENew", "3PieceCableBLUENew"); 
-          autoChooser.addOption("OneMobility", "OneMobility"); 
-          
-
-          //SmartDashboard.putData("Autonomous routine", autoChooser);
-          //autoTab.add(autoChooser);
-          teleOpTab.addDouble("Wrist Position", m_WristSubsystem::getAbsoluteEncoderCounts);
-          teleOpTab.addDouble("Arm position", m_ArmSubsystem::getAbsoluteEncoderPosition);
-          teleOpTab.addDouble("Gyro", m_robotDrive::getHeadingDegrees);
-          teleOpTab.addDouble("Position", m_robotDrive::getAverageDistanceMeters);
-          teleOpTab.addDouble("frontLeftMotor", m_robotDrive::getFrontLeftRot);
-          teleOpTab.addDouble("frontRightMotor", m_robotDrive::getFrontRightRot);
-          teleOpTab.addDouble("backLeftMotor", m_robotDrive::getBackLeftRot);
-          teleOpTab.addDouble("backRightMotor", m_robotDrive::getBackRightRot);
-          teleOpTab.addDouble("pitch", m_robotDrive::getRoll);
-          teleOpTab.addDouble("pose estimator pose", m_robotDrive::getPoseHeading);
-          teleOpTab.addDouble("estimated X", m_robotDrive::getEstimatedX);
-          teleOpTab.addDouble("estimated Y", m_robotDrive::getEstimatedY);
-          SmartDashboard.putData(m_ArmSubsystem);
-          SmartDashboard.putData(m_WristSubsystem);
-
-          
-          
+    teleOpTab.addDouble("Wrist Position", m_WristSubsystem::getAbsoluteEncoderCounts);
+    teleOpTab.addDouble("Arm position", m_ArmSubsystem::getAbsoluteEncoderPosition);
+    teleOpTab.addDouble("Gyro", m_robotDrive::getHeadingDegrees);
+    teleOpTab.addDouble("frontLeftMotor", m_robotDrive::getFrontLeftRot);
+    teleOpTab.addDouble("frontRightMotor", m_robotDrive::getFrontRightRot);
+    teleOpTab.addDouble("backLeftMotor", m_robotDrive::getBackLeftRot);
+    teleOpTab.addDouble("backRightMotor", m_robotDrive::getBackRightRot);
+    teleOpTab.addDouble("pitch", m_robotDrive::getRoll);
+    teleOpTab.addDouble("pose estimator pose", m_robotDrive::getPoseHeading);
+    teleOpTab.addDouble("estimated X", m_robotDrive::getEstimatedX);
+    teleOpTab.addDouble("estimated Y", m_robotDrive::getEstimatedY);
+    SmartDashboard.putData(m_ArmSubsystem);
+    SmartDashboard.putData(m_WristSubsystem);
  
-
-         
   }
 
   /**
@@ -156,287 +106,45 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
 
-  public Command getTestingCommand(){
+  public Command getTestingCommand()
+  {
     return m_tests.getPitTesting();
   }
    
-  private void configureButtonBindings() {
+  private void configureButtonBindings() 
+  {
     //set X mode
     new JoystickButton(m_driverController,  XboxController.Button.kRightBumper.value)
-        .whileTrue(new RunCommand(
-            () -> m_robotDrive.setX(),
-            m_robotDrive));
+          .whileTrue(new RunCommand(
+                () -> m_robotDrive.setX(),
+                m_robotDrive));
 
 
     //reset heading
     new JoystickButton(m_driverController,  XboxController.Button.kStart.value)
-    .onTrue(new InstantCommand(
-      ()-> m_robotDrive.resetOdometry(new Pose2d(m_robotDrive.getPose().getX(), m_robotDrive.getPose().getY(), new Rotation2d())),
-       m_robotDrive).alongWith(new InstantCommand( ()-> m_robotDrive.zeroHeading())));
+            .onTrue(new InstantCommand(()-> m_robotDrive.resetOdometry(
+                  new Pose2d(m_robotDrive.getPose().getX(), 
+                  m_robotDrive.getPose().getY(), 
+                  new Rotation2d())),
+                  m_robotDrive)
+            .alongWith(new InstantCommand( ()-> m_robotDrive.zeroHeading())));
 
 
 
-    //Triggers Begin
     //ConeConsume
-    new Trigger(() ->
-    {
-      if(m_driverController.getLeftTriggerAxis() > 0 || m_driverController.getLeftTriggerAxis() < 0)
-        return true;
-      else
-      {
-        return false;
-      }
-    } ).whileTrue(new WristConsume(m_armIntake, m_driverController::getLeftTriggerAxis));
+    new Trigger(() ->m_OperatorController.getLeftTriggerAxis() > 0 || m_OperatorController.getLeftTriggerAxis() < 0)
+          .whileTrue(new WristConsume(m_armIntake, m_OperatorController::getLeftTriggerAxis));
 
-
-    //cubeConsume
-    new Trigger(() ->
-    {
-      if(m_driverController.getRightTriggerAxis() > 0 || m_driverController.getRightTriggerAxis() < 0)
-        return true;
-      else
-      {
-        return false;
-      }
-    } 
-    ).whileTrue(new WristEject(m_armIntake, m_driverController::getRightTriggerAxis));
-
-    //HomePosition
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getPOV() == 180)
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HomeWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HomeArmPosition));
-
-
-
-    //ConeIntake
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getBButton())
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ConeIntakeWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
-
-
-
-
-    //CubeIntake
-
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getAButton())
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
-
-
-
-    //StationCone
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getYButton())
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationConeWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationConeArmPosition));
-
-
-
-
-    //StationCube
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getXButton())
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationCubeWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationCubeArmPosition));
-
-
-    //ScoreHigh
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getPOV() == 0)
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreHighWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreHighArmPosition));
-
-
-
-
-
-
-
-
-    //ScoreMid
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getPOV() == 270)
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreMidWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
-
-
-
-    //Hold
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getPOV() == 90)
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HoldWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HoldArmPostion));
-
-
-    //Cancel active PID Commands
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getStartButton())
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new StopWristPID(m_WristSubsystem))
-    .onTrue(new StopArmPID(m_ArmSubsystem));
-
-
-    //coneIntake
-    new Trigger(() ->
-    {
-      if(m_OperatorController.getLeftTriggerAxis() > 0 || m_OperatorController.getLeftTriggerAxis() < 0)
-        return true;
-      else
-      {
-        return false;
-      }
-    } ).whileTrue(new WristConsume(m_armIntake, m_OperatorController::getLeftTriggerAxis));
-
-    //cubeIntake
-    new Trigger(() ->
-    {
-      if(m_OperatorController.getRightTriggerAxis() > 0 || m_OperatorController.getRightTriggerAxis() < 0)
-        return true;
-      else
-      {
-        return false;
-      }
-    } 
-    ).whileTrue(new WristEject(m_armIntake, m_OperatorController::getRightTriggerAxis));
+    //CubeEject
+    new Trigger(() ->m_OperatorController.getRightTriggerAxis() > 0 || m_OperatorController.getRightTriggerAxis() < 0)
+          .whileTrue(new WristEject(m_armIntake, m_OperatorController::getRightTriggerAxis));
 
 
     //HomePosition
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getPOV() == 180)
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HomeWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HomeArmPosition));
+    new Trigger(()->m_OperatorController.getLeftBumper())
+          .and(()->m_OperatorController.getPOV() == 180)
+                .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HomeWristPosition))
+                .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HomeArmPosition));
 
     //ConeIntake
 
@@ -446,96 +154,37 @@ public class RobotContainer {
               .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ConeIntakeArmPosition));
 
     //CubeIntake
-
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getAButton())
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
+    new Trigger(()->m_OperatorController.getLeftBumper()) 
+          .and(()->m_OperatorController.getAButton())
+                .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.CubeIntakeWristPosition))
+                .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.CubeIntakeArmPosition));
 
     //StationCone
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getYButton())
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationConeWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationConeArmPosition));
+    new Trigger(()->m_OperatorController.getLeftBumper())
+          .and(()->m_OperatorController.getYButton())
+                .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationConeWristPosition))
+                .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationConeArmPosition));
 
     //StationCube
 
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getXButton())
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationCubeWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationCubeArmPosition));
+    new Trigger(()->m_OperatorController.getLeftBumper())
+          .and(()->m_OperatorController.getXButton())
+                .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.StationCubeWristPosition))
+                .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.StationCubeArmPosition));
 
 
     //ScoreHigh
-    new Trigger(()->
-    {
-      if(m_OperatorController.getLeftBumper())
-        return true;
-      else
-        return false;
-
-    }
-    ).and(()->
-    {
-      if(m_OperatorController.getPOV() == 0)
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreHighWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreHighArmPosition));
+    new Trigger(()-> m_OperatorController.getLeftBumper())
+          .and(()->m_OperatorController.getPOV() == 0)
+                .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreHighWristPosition))
+                .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreHighArmPosition));
 
 
     //ScoreMid
     new Trigger(()-> m_OperatorController.getLeftBumper())
-      .and(()->
-    {
-      if(m_OperatorController.getPOV() == 270)
-      return true;
-    else
-      return false;
-    }
-    ).onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreMidWristPosition))
-    .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
+          .and(()->m_OperatorController.getPOV() == 270)
+                .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.ScoreMidWristPosition))
+                .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.ScoreMidArmPosition));
 
 
     //Hold
@@ -543,6 +192,7 @@ public class RobotContainer {
           .and(()-> m_OperatorController.getPOV() == 90)
                 .onTrue(new PIDWristCommand(m_WristSubsystem, PositionConstants.HoldWristPosition))
                 .onTrue(new PIDArmCommand(m_ArmSubsystem, PositionConstants.HoldArmPostion));
+
 
     //Cancel active PID Commands
     new Trigger(()-> m_OperatorController.getLeftBumper())
@@ -579,9 +229,5 @@ public class RobotContainer {
     return m_autos.getAutonomousCommand(); 
   }
 
-  public void addVisionMeasurement()
-  {
-    m_robotDrive.addMyVisionMeasurment();
-  }
 
 }

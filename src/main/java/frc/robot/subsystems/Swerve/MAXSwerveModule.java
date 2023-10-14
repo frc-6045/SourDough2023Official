@@ -8,12 +8,6 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.util.datalog.DataLog;
-import edu.wpi.first.util.datalog.DoubleLogEntry;
-import edu.wpi.first.util.datalog.IntegerLogEntry;
-import edu.wpi.first.wpilibj.DataLogManager;
-import edu.wpi.first.wpilibj.Preferences;
-import edu.wpi.first.wpilibj.Timer;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
@@ -38,34 +32,6 @@ public class MAXSwerveModule {
   private double m_chassisAngularOffset = 0;
   private SwerveModuleState m_desiredState = new SwerveModuleState(0.0, new Rotation2d());
 
-
-  private final DoubleLogEntry m_driveMotorOutputLog;
-  private final IntegerLogEntry m_driveMotorFaultsLog;
-  private final DoubleLogEntry m_driveMotorSetpointLog;
-  private final DoubleLogEntry m_driveMotorPositionLog;
-  private final DoubleLogEntry m_driveMotorVelocityLog;
-  private final DoubleLogEntry m_driveMotorCurrentLog;
-  private final DoubleLogEntry m_driveMotorVoltageLog;
-  private final DoubleLogEntry m_driveMotorTempLog;
-  private final DoubleLogEntry m_driveCommandedVoltageLog;
-
-  private final DoubleLogEntry m_turningMotorOutputLog;
-  private final IntegerLogEntry m_turningMotorFaultsLog;
-  private final DoubleLogEntry m_turningMotorSetpointLog;
-  private final DoubleLogEntry m_turningMotorPositionLog;
-  private final DoubleLogEntry m_turningMotorVelocityLog;
-  private final DoubleLogEntry m_turningMotorCurrentLog;
-  private final DoubleLogEntry m_turningMotorVoltageLog;
-  private final DoubleLogEntry m_turningMotorTempLog;
-  private final DoubleLogEntry m_turningCommandedVoltageLog;
-  private final DoubleLogEntry m_turningMotorAbsoluteEncoderLog;
-
-
-
-  private String m_label;
-  private final DataLog m_log;
-  private final DoubleLogEntry m_homeLog;
-  private double m_home;
 
 
   /**
@@ -126,7 +92,6 @@ public class MAXSwerveModule {
 
     // Set the PID gains for the turning motor. Note these are example gains, and you
     // may need to tune them for your own robot!
-    //TODO: maybe making our turning feed forward negative? probably break something but its worth a shot
     m_turningPIDController.setP(ModuleConstants.kTurningP);
     m_turningPIDController.setI(ModuleConstants.kTurningI);
     m_turningPIDController.setD(ModuleConstants.kTurningD);
@@ -150,38 +115,6 @@ public class MAXSwerveModule {
 
     m_SimpleMotorFeedforward = new SimpleMotorFeedforward(0.16168, 2.5);
 
-
-
-    m_label = label;
-    m_log = DataLogManager.getLog();
-    m_home = Preferences.getDouble(m_label + ":home", 0.0);
-
-    m_driveMotorOutputLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/drive/output", m_label));
-    m_driveMotorFaultsLog = new IntegerLogEntry(m_log, String.format("/swerve/%s/drive/faults", m_label));
-    m_driveMotorSetpointLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/drive/setpoint", m_label));
-    m_driveMotorPositionLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/drive/position", m_label));
-    m_driveMotorVelocityLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/drive/velocity", m_label));
-    m_driveMotorCurrentLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/drive/current", m_label));
-    m_driveMotorVoltageLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/drive/voltage", m_label));
-    m_driveMotorTempLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/drive/temp", m_label));
-    m_driveCommandedVoltageLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/drive/commandedVoltage", m_label));
-
-    m_turningMotorOutputLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/turn/output", m_label));
-    m_turningMotorFaultsLog = new IntegerLogEntry(m_log, String.format("/swerve/%s/turn/faults", m_label));
-    m_turningMotorSetpointLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/turn/setpoint", m_label));
-    m_turningMotorPositionLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/turn/position", m_label));
-    m_turningMotorVelocityLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/turn/velocity", m_label));
-    m_turningMotorCurrentLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/turn/current", m_label));
-    m_turningMotorVoltageLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/turn/voltage", m_label));
-    m_turningMotorTempLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/turn/temp", m_label));
-    m_turningCommandedVoltageLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/turn/commandedVoltage", m_label));
-    m_turningMotorAbsoluteEncoderLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/turn/absolute", m_label));
-   
-   
-    m_homeLog = new DoubleLogEntry(m_log, String.format("/swerve/%s/home", m_label));
-
-    logData();
-    m_homeLog.append(m_home);
   }
 
   /**
@@ -256,27 +189,6 @@ public class MAXSwerveModule {
     m_turningSparkMax.setVoltage(voltage);
   }
 
-  private void logData() {
-    long timeStamp = (long) (Timer.getFPGATimestamp() * 1e6);
-    
-    m_driveMotorOutputLog.append(m_drivingSparkMax.getAppliedOutput(), timeStamp);
-    m_driveMotorFaultsLog.append(m_drivingSparkMax.getFaults(), timeStamp);
-    m_driveMotorPositionLog.append(m_drivingEncoder.getPosition(), timeStamp);
-    m_driveMotorVelocityLog.append(m_drivingEncoder.getVelocity(), timeStamp);
-    m_driveMotorCurrentLog.append(m_drivingSparkMax.getOutputCurrent(), timeStamp);
-    m_driveMotorVoltageLog.append(m_drivingSparkMax.getBusVoltage(), timeStamp);
-    m_driveMotorTempLog.append(m_drivingSparkMax.getMotorTemperature(), timeStamp);
-
-
-    m_turningMotorOutputLog.append(m_turningSparkMax.getAppliedOutput(), timeStamp);
-    m_turningMotorFaultsLog.append(m_turningSparkMax.getFaults(), timeStamp);
-    m_turningMotorPositionLog.append(m_turningEncoder.getPosition(), timeStamp);
-    m_turningMotorVelocityLog.append(m_turningEncoder.getVelocity(), timeStamp);
-    m_turningMotorCurrentLog.append(m_turningSparkMax.getOutputCurrent(), timeStamp);
-    m_turningMotorVoltageLog.append(m_turningSparkMax.getBusVoltage(), timeStamp);
-    m_turningMotorTempLog.append(m_turningSparkMax.getMotorTemperature(), timeStamp);
-   
-}
 
 
 }

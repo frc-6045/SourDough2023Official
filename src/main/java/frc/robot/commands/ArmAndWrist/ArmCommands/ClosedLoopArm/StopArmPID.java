@@ -11,9 +11,8 @@ import frc.robot.subsystems.Arm.ArmSubsystem;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class StopArmPID extends InstantCommand {
-  private final ArmSubsystem m_ArmSubsystem;
-  public StopArmPID(ArmSubsystem m_ArmSubsystem) {
-    this.m_ArmSubsystem = m_ArmSubsystem;
+  public StopArmPID(ArmSubsystem m_ArmSubsystem) 
+  {
     addRequirements(m_ArmSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }

@@ -5,6 +5,8 @@
 package frc.robot.subsystems.Swerve;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -23,6 +25,7 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import frc.robot.LimelightHelpers;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
@@ -93,6 +96,13 @@ private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
     m_VisionLockController.setSetpoint(0);
 
     zeroHeading();
+    AutoBuilder.configureHolonomic(
+      this::getPose,
+      this::resetOdometry,
+      this::getChassisSpeeds,
+      this::setRobotRelativeSpeeds, 
+      AutoConstants.autoBuilderPathConfig,
+      this);
    
    
 
@@ -168,8 +178,7 @@ private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
 
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_HeadingDegrees)) //TODO: changed getHeadingDegrees()
-            : new ChassisSpeeds(xSpeed, ySpeed, rot));
+            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_HeadingDegrees))             : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
@@ -200,8 +209,7 @@ private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
 
     var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(
         fieldRelative
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_HeadingDegrees)) //TODO: changed getHeadingDegrees()
-            : new ChassisSpeeds(xSpeed, ySpeed, rot));
+            ? ChassisSpeeds.fromFieldRelativeSpeeds(xSpeed, ySpeed, rot, Rotation2d.fromDegrees(m_HeadingDegrees))             : new ChassisSpeeds(xSpeed, ySpeed, rot));
     SwerveDriveKinematics.desaturateWheelSpeeds(
         swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
     m_frontLeft.setDesiredState(swerveModuleStates[0]);
@@ -225,6 +233,7 @@ public void setModuleTurnVoltage(double voltage)
   m_rearLeft.setTurnVoltage(voltage);
   m_rearRight.setTurnVoltage(voltage);
 }
+
 
 
   /**
@@ -254,6 +263,35 @@ public void setModuleTurnVoltage(double voltage)
     m_rearLeft.setDesiredState(desiredStates[2]);
     m_rearRight.setDesiredState(desiredStates[3]);
   }
+
+  public void setRobotRelativeSpeeds(ChassisSpeeds chassisSpeeds)
+  {
+    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+      swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+  m_frontLeft.setDesiredState(swerveModuleStates[0]);
+  m_frontRight.setDesiredState(swerveModuleStates[1]);
+  m_rearLeft.setDesiredState(swerveModuleStates[2]);
+  m_rearRight.setDesiredState(swerveModuleStates[3]);
+  }
+
+  public SwerveModuleState[] getModuleStates()
+  {
+    SwerveModuleState[] moduleStates = new SwerveModuleState[4];
+    MAXSwerveModule[] modules = getMaxSwerveModules();
+    for(int i = 0; i < modules.length; i++)
+    {
+       moduleStates[i] = modules[i].getState();
+    }
+    return moduleStates;
+  }
+
+  public ChassisSpeeds getChassisSpeeds()
+  {
+    return DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
+  }
+
+  
 
   /** Resets the drive encoders to currently read a position of 0. */
   public void resetEncoders() 

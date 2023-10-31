@@ -155,8 +155,7 @@ private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
     m_currentCommandLog = new StringLogEntry(m_log, "/swerve/command");
 
 
-    AutoBuilder.configureLTV(null, null, null, null, null, null, getAverageDistanceMeters(), null, null);
-    AutoBuilder.configureHolonomic(
+     AutoBuilder.configureHolonomic(
       this::getPose,
       this::resetOdometry,
       this::getChassisSpeeds,

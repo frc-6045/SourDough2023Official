@@ -7,6 +7,8 @@ package frc.robot.subsystems.Swerve;
 import java.util.function.DoubleSupplier;
 
 import com.kauailabs.navx.frc.AHRS;
+import com.pathplanner.lib.auto.AutoBuilder;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
@@ -33,10 +35,13 @@ import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
 import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.robot.Constants;
 import frc.robot.LimelightHelpers;
+import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+
 
 public class DriveSubsystem extends SubsystemBase {
   //Create Slew rate limiters
@@ -90,7 +95,6 @@ private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
   // Odometry class for tracking robot pose
 
   //gyro.getHeadingDegrees();
-
 
 
 
@@ -150,7 +154,16 @@ private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
     m_calculatedPitch = new DoubleLogEntry(m_log, "swerve/pigeon/calculated_pitch");
     m_currentCommandLog = new StringLogEntry(m_log, "/swerve/command");
 
-    logData();
+
+    AutoBuilder.configureLTV(null, null, null, null, null, null, getAverageDistanceMeters(), null, null);
+    AutoBuilder.configureHolonomic(
+      this::getPose,
+      this::resetOdometry,
+      this::getChassisSpeeds,
+      this::setRobotRelativeSpeeds, 
+       AutoConstants.autoBuilderPathConfig,
+      this);
+  
   }
 
   @Override
@@ -216,6 +229,7 @@ private final AHRS m_gyro = new AHRS(SPI.Port.kMXP, (byte) 200);
         },
         pose);
   }
+
 
   public void updateOdometry() 
   {
@@ -467,10 +481,46 @@ public void setModuleTurnVoltage(double voltage) {
     return maxArray;
   }
 
+  public SwerveModuleState[] getModuleStates()
+  {
+    SwerveModuleState[] moduleStates = new SwerveModuleState[4];
+    MAXSwerveModule[] modules = getMaxSwerveModules();
+    for(int i = 0; i < modules.length; i++)
+    {
+       moduleStates[i] = modules[i].getState();
+    }
+    return moduleStates;
+  }
+
+  public ChassisSpeeds getChassisSpeeds()
+  {
+    return Constants.DriveConstants.kDriveKinematics.toChassisSpeeds(getModuleStates());
+  }
+
+  public void setRobotRelativeSpeeds(ChassisSpeeds chassisSpeeds)
+  {
+    var swerveModuleStates = DriveConstants.kDriveKinematics.toSwerveModuleStates(chassisSpeeds);
+    SwerveDriveKinematics.desaturateWheelSpeeds(
+      swerveModuleStates, DriveConstants.kMaxSpeedMetersPerSecond);
+  m_frontLeft.setDesiredState(swerveModuleStates[0]);
+  m_frontRight.setDesiredState(swerveModuleStates[1]);
+  m_rearLeft.setDesiredState(swerveModuleStates[2]);
+  m_rearRight.setDesiredState(swerveModuleStates[3]);
+  }
+
+ 
+
+
+
+
+
+
+
+
+
   public double getAverageDistanceMeters()
   {
   return m_frontLeft.getEncoderCounts();
-  
   }
 
   public double getFrontLeftRot()

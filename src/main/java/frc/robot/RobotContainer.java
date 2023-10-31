@@ -39,12 +39,8 @@ import frc.robot.commands.ArmAndWrist.WristCommands.ClosedLoopWrist.PIDWristComm
 import frc.robot.commands.ArmAndWrist.WristCommands.ClosedLoopWrist.StopWristPID;
 import frc.robot.commands.ArmAndWrist.WristCommands.OpenLoopWrist.ActuateWrist;
 import frc.robot.commands.AutoCommands.AutoBalance;
-import frc.robot.commands.AutoCommands.AutoScore;
 import frc.robot.commands.AutoCommands.WristConsumeWithTime;
 import frc.robot.commands.AutoCommands.WristEjectWithTime;
-import frc.robot.commands.AutoCommands.SwerveToAndAuto.SwerveWithHighCone;
-import frc.robot.commands.AutoCommands.SwerveToMethods.FollowTrajectory;
-import frc.robot.commands.AutoCommands.SwerveToNearest.SwerveToNearestPole;
 import frc.robot.subsystems.Autos;
 import frc.robot.subsystems.LEDS;
 import frc.robot.subsystems.LEDSubsystem;
@@ -77,15 +73,6 @@ import java.util.HashMap;
 import java.util.List;
 
 
-
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.PathPlannerTrajectory;
-import com.pathplanner.lib.PathPoint;
-import com.pathplanner.lib.auto.PIDConstants;
-import com.pathplanner.lib.auto.SwerveAutoBuilder;
-import com.pathplanner.lib.commands.FollowPathWithEvents;
-import com.pathplanner.lib.commands.PPSwerveControllerCommand;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a

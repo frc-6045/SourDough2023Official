@@ -7,7 +7,7 @@
 //comment from Graham
 package frc.robot;
 
-import com.pathplanner.lib.server.PathPlannerServer;
+//import com.pathplanner.lib.server.PathPlannerServer;
 
 import edu.wpi.first.util.datalog.DataLog;
 import edu.wpi.first.util.datalog.DoubleLogEntry;
@@ -44,7 +44,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
 
-    PathPlannerServer.startServer(5811); 
+    //PathPlannerServer.startServer(5811); 
    //DataLogManager.start();
     //DataLog log = DataLogManager.getLog();
     

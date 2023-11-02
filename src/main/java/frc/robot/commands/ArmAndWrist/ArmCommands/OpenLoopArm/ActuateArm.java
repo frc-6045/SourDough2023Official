@@ -11,10 +11,10 @@ import frc.robot.subsystems.Arm.ArmSubsystem;
 
 public class ActuateArm extends CommandBase {
   private final ArmSubsystem m_ArmSubsystem;
-  private Supplier speedSupplier;
+  private Supplier<Double> speedSupplier;
   
   /** Creates a new ActuateUp. */
-  public ActuateArm(ArmSubsystem m_ArmSubsystem, Supplier speedSupplier) {
+  public ActuateArm(ArmSubsystem m_ArmSubsystem, Supplier<Double> speedSupplier) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_ArmSubsystem = m_ArmSubsystem;
     addRequirements(m_ArmSubsystem);

@@ -11,9 +11,7 @@ import frc.robot.subsystems.Wrist.WristSubsystem;
 // information, see:
 // https://docs.wpilib.org/en/stable/docs/software/commandbased/convenience-features.html
 public class StopWristPID extends InstantCommand {
-  private final WristSubsystem m_WristSubsystem;
   public StopWristPID(WristSubsystem m_WristSubsystem) {
-    this.m_WristSubsystem = m_WristSubsystem;
     addRequirements(m_WristSubsystem);
     // Use addRequirements() here to declare subsystem dependencies.
   }

@@ -62,7 +62,7 @@ public class RobotContainer {
   {
     // Configure the button bindings
     configureButtonBindings();
-    m_autos = new Autos(m_robotDrive, m_WristSubsystem, m_ArmSubsystem, m_armIntake);
+    m_autos = new Autos(m_WristSubsystem, m_ArmSubsystem, m_armIntake);
     m_tests = new Tests(m_robotDrive, m_WristSubsystem, m_ArmSubsystem, m_armIntake);
   // Configure default commands
     m_robotDrive.setDefaultCommand(

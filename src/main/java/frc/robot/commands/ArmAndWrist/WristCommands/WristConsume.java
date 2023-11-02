@@ -11,10 +11,10 @@ import frc.robot.subsystems.Wrist.WristIntake;
 
 public class WristConsume extends CommandBase {
   public final WristIntake armIntake;
-  public Supplier speedSupplier;
+  public Supplier<Double> speedSupplier;
 
   /** Creates a new ArmEjectSlow. */
-  public WristConsume(WristIntake armIntake, Supplier speedSupplier) {
+  public WristConsume(WristIntake armIntake, Supplier<Double> speedSupplier) {
     this.armIntake = armIntake;
     addRequirements(armIntake);
     this.speedSupplier = speedSupplier;

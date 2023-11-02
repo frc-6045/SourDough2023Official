@@ -6,6 +6,9 @@ package frc.robot;
 
 import java.util.HashMap;
 
+import com.pathplanner.lib.util.HolonomicPathFollowerConfig;
+import com.pathplanner.lib.util.PIDConstants;
+import com.pathplanner.lib.util.ReplanningConfig;
 import com.revrobotics.CANSparkMax.IdleMode;
 
 import edu.wpi.first.math.geometry.Translation2d;
@@ -47,6 +50,9 @@ public final class Constants {
     // Distance between centers of right and left wheels on robot
     public static final double kWheelBase = Units.inchesToMeters(26.7); // 26.7
     // Distance between front and back wheels on robot
+    public static final double radiusMeters = 0.8879;
+    //the distance from the center of the robot to the furthest swerve module
+  
     public static final SwerveDriveKinematics kDriveKinematics = new SwerveDriveKinematics(
         new Translation2d(kWheelBase / 2, kTrackWidth / 2),
         new Translation2d(kWheelBase / 2, -kTrackWidth / 2),
@@ -114,7 +120,7 @@ public final class Constants {
     public static final double kTurningP = 01; //was 1
     public static final double kTurningI = 0;
     public static final double kTurningD = 0;
-    public static final double kTurningFF = -0.00; //FIXME: changed feed forward from 0
+    public static final double kTurningFF = 0.00; 
     public static final double kTurningMinOutput = -1;
     public static final double kTurningMaxOutput = 1;
 
@@ -133,6 +139,12 @@ public final class Constants {
 
   public static final class AutoConstants 
   {
+    public static final HolonomicPathFollowerConfig autoBuilderPathConfig = new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+    new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
+    new PIDConstants(1.5, 0.0, 0), //5.0, 0, 0.2
+    DriveConstants.kMaxSpeedMetersPerSecond, // Max module speed, in m/s
+    DriveConstants.radiusMeters, // Drive base radius in meters. Distance from robot center to furthest module.
+    new ReplanningConfig());
     public static final HashMap<String, Command> eventMap = new HashMap<>();
 
     public static final double slowIntakeSpeed = 0.5;

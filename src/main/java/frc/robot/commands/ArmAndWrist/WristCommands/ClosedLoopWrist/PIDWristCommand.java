@@ -5,10 +5,8 @@
 package frc.robot.commands.ArmAndWrist.WristCommands.ClosedLoopWrist;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandBase;
-import frc.robot.Constants.WristConstants;
 import frc.robot.subsystems.Wrist.WristSubsystem;
 
 public class PIDWristCommand extends CommandBase {

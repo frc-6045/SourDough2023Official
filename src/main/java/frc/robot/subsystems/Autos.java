@@ -1,9 +1,6 @@
 package frc.robot.subsystems;
 
-import com.pathplanner.lib.PathConstraints;
-import com.pathplanner.lib.PathPlanner;
-import com.pathplanner.lib.auto.PIDConstants;
-import com.pathplanner.lib.auto.SwerveAutoBuilder;
+import com.pathplanner.lib.commands.PathPlannerAuto;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj.shuffleboard.Shuffleboard;
@@ -11,9 +8,7 @@ import edu.wpi.first.wpilibj.shuffleboard.ShuffleboardTab;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Constants.AutoConstants;
-import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.PositionConstants;
 import frc.robot.commands.ArmAndWrist.SetArmWithWristPosition;
 import frc.robot.commands.ArmAndWrist.ArmCommands.ClosedLoopArm.PIDArmCommand;
@@ -21,7 +16,6 @@ import frc.robot.commands.ArmAndWrist.WristCommands.ClosedLoopWrist.PIDWristComm
 import frc.robot.commands.AutoCommands.WristConsumeWithTime;
 import frc.robot.commands.AutoCommands.WristEjectWithTime;
 import frc.robot.subsystems.Arm.ArmSubsystem;
-import frc.robot.subsystems.Swerve.DriveSubsystem;
 import frc.robot.subsystems.Wrist.WristIntake;
 import frc.robot.subsystems.Wrist.WristSubsystem;
 
@@ -34,7 +28,6 @@ import java.util.List;
  */
 public class Autos {
 
-    private final DriveSubsystem m_drivetrainSubsystem;
     private final WristSubsystem m_WristSubsystem;
     private final ArmSubsystem m_ArmSubsystem;
     private final WristIntake m_WristIntake;
@@ -42,8 +35,10 @@ public class Autos {
 
     private SendableChooser<String> autoChooser;
 
-    private HashMap<String, List<Command>> m_commandMap;
+    private HashMap<String, List<PathPlannerAuto>> m_commandMap;
     ShuffleboardTab autoTab = Shuffleboard.getTab("Autonomous");
+
+
 
     /**
      * A wrapper class that used Path Planer lib to generate autos and selects the
@@ -54,9 +49,7 @@ public class Autos {
      * @param armSubsystem         The Arm Subsystem
      * @param manipulatorSubsystem The Manipulator Subsystem
      */
-    public Autos(DriveSubsystem drivetrainSubsystem, WristSubsystem wristSubsystem,
-            ArmSubsystem armSubsystem, WristIntake wristIntake) {
-        m_drivetrainSubsystem = drivetrainSubsystem;
+    public Autos(WristSubsystem wristSubsystem, ArmSubsystem armSubsystem, WristIntake wristIntake) {
         m_WristSubsystem = wristSubsystem;
         m_ArmSubsystem = armSubsystem;
         m_WristIntake = wristIntake;
@@ -89,46 +82,32 @@ public class Autos {
         autoTab.add(autoChooser);
         m_commandMap = new HashMap<>();
 
-        SwerveAutoBuilder autoBuilder = new SwerveAutoBuilder(
-            m_drivetrainSubsystem::getPose, 
-            m_drivetrainSubsystem::resetOdometry,
-            DriveConstants.kDriveKinematics,
-            new PIDConstants(5.0, 0.0 ,0.2), //original p = 5, 1st attempt: p = 5, d = 0.5, 2nd attempt: p= 5, d = 0.5, 3rd attempt: p = 5, d = 3 this caused the wheels to shutter
-            new PIDConstants(1.5, 0.0, 0), //5.0, 0, 0.2
-            m_drivetrainSubsystem::setModuleStates,
-            AutoConstants.eventMap,
-            true,
-            m_drivetrainSubsystem);
 
+        autoChooser.setDefaultOption("DoNothing", "DoNothing");
+        autoChooser.addOption("3PieceCable", "3PieceCable");
+        autoChooser.addOption("3Piece", "3Piece");   
+        autoChooser.addOption("2CubeBalance", "2CubeBalance");
+        autoChooser.addOption("OneMobility", "OneMobility"); 
 
+        m_commandMap.put("DoNothing", List.of());
 
-            autoChooser.setDefaultOption("DoNothing", "DoNothing");
-            autoChooser.addOption("3PieceCable", "3PieceCable");
-            autoChooser.addOption("3Piece", "3Piece");   
-            autoChooser.addOption("2CubeBalance", "2CubeBalance");
-            autoChooser.addOption("OneMobility", "OneMobility"); 
-
-        PathConstraints standardConstraints = new PathConstraints(2.5, 3.0);
-
-
-        m_commandMap.put("DoNothing", List.of(
-               new InstantCommand(), new InstantCommand()));
-
+               
         m_commandMap.put("3PieceCable", List.of(
-                autoBuilder.fullAuto(PathPlanner.loadPathGroup("3PieceCableBLUENew", standardConstraints)),
-                autoBuilder.fullAuto(PathPlanner.loadPathGroup("3PieceCableRED", standardConstraints))));
+            new PathPlannerAuto("3PieceCableBLUENew"),
+            new PathPlannerAuto("3PieceCableRED")));
 
         m_commandMap.put("3Piece", List.of(
-                autoBuilder.fullAuto(PathPlanner.loadPathGroup("3PieceBLUENew", standardConstraints)),
-                autoBuilder.fullAuto(PathPlanner.loadPathGroup("3PieceREDNew", standardConstraints))));
+            new PathPlannerAuto("3PieceBLUENew"),
+            new PathPlannerAuto("3PieceREDNew")));
 
+                
         m_commandMap.put("OneMobility", List.of(
-                autoBuilder.fullAuto(PathPlanner.loadPathGroup("OneMobility", standardConstraints)),
-                autoBuilder.fullAuto(PathPlanner.loadPathGroup("OneMobility", standardConstraints))));
+            new PathPlannerAuto("OneMobility"),
+            new PathPlannerAuto("OneMobility")));
 
         m_commandMap.put("2CubeBalance", List.of(
-            autoBuilder.fullAuto(PathPlanner.loadPathGroup("2CubeBalance", standardConstraints)),
-            autoBuilder.fullAuto(PathPlanner.loadPathGroup("2CubeBalanceRed", standardConstraints))));
+            new PathPlannerAuto("2CubeBalance"),
+            new PathPlannerAuto("2CubeBalanceRed")));
     
         SmartDashboard.putData(autoChooser);
     }

@@ -12,9 +12,9 @@ import frc.robot.subsystems.Wrist.WristSubsystem;
 public class ActuateWrist extends CommandBase {
   /** Creates a new ActuateWristDown. */
   private final WristSubsystem m_WristSubsystem;
-  private Supplier speedSupplier;
+  private Supplier<Double> speedSupplier;
   /** Creates a new ActuateUp. */
-  public ActuateWrist(WristSubsystem m_WristSubsystem, Supplier speedSupplier) {
+  public ActuateWrist(WristSubsystem m_WristSubsystem, Supplier<Double> speedSupplier) {
     // Use addRequirements() here to declare subsystem dependencies.
     this.m_WristSubsystem = m_WristSubsystem;
     this.speedSupplier = speedSupplier;
